@@ -1,0 +1,518 @@
+arena-mini/index.html — 515 líneas
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0e1024">
+<title>Arena Mini</title>
+<meta name="description" content="Minijuegos rápidos para 1 a 4 jugadores en el mismo celular. Reflejos, velocidad y cerebro.">
+<meta property="og:title" content="Arena Mini — ¿quién es el más rápido?">
+<meta property="og:description" content="8 minijuegos para 1 a 4 jugadores en el mismo celular. Sin descargar nada.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1024;--bg2:#171a38;--panel:#1e2247;--line:rgba(255,255,255,.1);--ink:#fff;--dim:#a9aed6;
+  --p1:#ff5a5f;--p2:#3da9fc;--p3:#ffd23f;--p4:#2ec4b6;--ac:#9b5cff;--good:#3ddc84;--bad:#ff4d6d;
+  --disp:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;--body:"Nunito","Segoe UI",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+body{font-family:var(--body);color:var(--ink);user-select:none;-webkit-user-select:none;touch-action:manipulation;
+  background:radial-gradient(120% 70% at 50% -10%,#2a2f6b 0%,var(--bg) 60%) fixed}
+#app{position:fixed;inset:0;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 18px) 18px calc(env(safe-area-inset-bottom,0px) + 22px)}
+.wrap{max-width:460px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:16px;animation:in .35s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-family:var(--disp);font-weight:400;margin:0;letter-spacing:.01em}
+p{margin:0;line-height:1.45}
+.dim{color:var(--dim)}.center{text-align:center}.grow{flex:1}
+.logo{font-family:var(--disp);font-size:64px;line-height:.9;text-align:center;letter-spacing:.02em;text-shadow:0 6px 0 rgba(0,0,0,.35)}
+.logo span{display:inline-block}
+.logo .a{color:var(--p1)}.logo .r{color:var(--p3)}.logo .e{color:var(--p2)}.logo .n{color:var(--p4)}
+.logo .mini{display:block;font-size:40px;color:#fff;letter-spacing:.3em;margin-top:4px}
+.dots4{display:flex;justify-content:center;gap:10px}.dots4 i{width:14px;height:14px;border-radius:50%;animation:bob 1.2s ease-in-out infinite}
+.dots4 i:nth-child(2){animation-delay:.15s}.dots4 i:nth-child(3){animation-delay:.3s}.dots4 i:nth-child(4){animation-delay:.45s}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.btn{appearance:none;border:0;cursor:pointer;font:400 22px var(--disp);letter-spacing:.03em;color:#fff;background:var(--ac);border-radius:18px;padding:18px 20px;
+  box-shadow:0 6px 0 rgba(0,0,0,.35),inset 0 -4px 0 rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;gap:12px;width:100%;transition:transform .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 -2px 0 rgba(0,0,0,.18)}
+.btn.p1{background:var(--p1)}.btn.p2{background:var(--p2)}.btn.p4{background:var(--p4)}.btn.p3{background:var(--p3);color:#2a2100}
+.btn.ghost{background:var(--panel);box-shadow:0 5px 0 rgba(0,0,0,.35)}
+.btn small{font:800 13px var(--body);opacity:.85;display:block;letter-spacing:0}
+.btn .ic{width:34px;height:34px;flex:none}
+.btn:focus-visible,.chip:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:16px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.chip{appearance:none;border:2px solid var(--line);background:var(--bg2);color:#fff;border-radius:14px;padding:12px 0;font:400 22px var(--disp);cursor:pointer}
+.chip.on{border-color:#fff;background:var(--ac)}
+.label{font:900 12px var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.players{display:grid;gap:10px}
+.pl{display:flex;align-items:center;gap:12px;background:var(--bg2);border-radius:14px;padding:10px 12px;border-left:6px solid var(--c)}
+.pl input{flex:1;min-width:0;background:transparent;border:0;color:#fff;font:800 17px var(--body);user-select:text;-webkit-user-select:text}
+.pl input:focus{outline:none}
+.pl .av{width:30px;height:30px;border-radius:50%;background:var(--c);flex:none;display:grid;place-items:center;font:400 16px var(--disp);color:#0e1024}
+.topbar{display:flex;align-items:center;justify-content:space-between}
+.back{appearance:none;border:0;background:var(--panel);color:#fff;border-radius:12px;padding:10px 14px;font:800 14px var(--body);cursor:pointer}
+.gl{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gi{background:var(--bg2);border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center}
+.gi b{font:400 16px var(--disp);display:block}.gi span{font-size:12.5px;color:var(--dim);line-height:1.3}
+.gi .ic{width:36px;height:36px;flex:none}
+.banner{background:linear-gradient(90deg,var(--p1),var(--ac));border-radius:16px;padding:12px 14px;font-weight:800;text-align:center}
+#mute{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:60;width:40px;height:40px;border-radius:12px;border:0;background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer}
+/* ============ ARENA ============ */
+#stage{position:fixed;inset:0;z-index:40;background:var(--bg);touch-action:none;display:none}
+#stage.on{display:block}
+.zone{position:absolute;display:flex;flex-direction:column;overflow:hidden;background:color-mix(in srgb,var(--c) 14%,var(--bg));border:3px solid color-mix(in srgb,var(--c) 55%,transparent);border-radius:22px;touch-action:none}
+.zone.flip{transform:rotate(180deg)}
+.zone.off{background:var(--bg2);border-color:var(--line)}
+.zh{display:flex;justify-content:space-between;align-items:center;padding:10px 14px 0;font:900 13px var(--body);letter-spacing:.06em}
+.zh .nm{display:flex;align-items:center;gap:8px}.zh .nm i{width:12px;height:12px;border-radius:50%;background:var(--c)}
+.zh .pts{font:400 18px var(--disp);color:var(--c)}
+.zb{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:10px;text-align:center}
+.zt{font:400 26px var(--disp);line-height:1.05}
+.zs{font:800 14px var(--body);color:var(--dim);max-width:300px}
+.big{font:400 64px var(--disp);line-height:1}
+.num{font:700 40px var(--mono)}
+.tapbtn{appearance:none;border:0;border-radius:22px;background:var(--c);color:#0e1024;font:400 30px var(--disp);width:100%;flex:1;max-height:220px;min-height:90px;box-shadow:0 8px 0 rgba(0,0,0,.35);cursor:pointer;touch-action:none}
+.tapbtn:active,.tapbtn.hit{transform:translateY(5px);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.opts{display:flex;gap:10px;width:100%}
+.opt{appearance:none;flex:1;border:0;border-radius:16px;background:rgba(255,255,255,.12);color:#fff;font:400 30px var(--disp);padding:14px 0;cursor:pointer;touch-action:none;box-shadow:0 5px 0 rgba(0,0,0,.3)}
+.opt.ok{background:var(--good)}.opt.no{background:var(--bad)}
+.opt.sw{height:64px}
+.light{width:120px;height:120px;border-radius:50%;background:#3a0d18;box-shadow:inset 0 -8px 0 rgba(0,0,0,.3);transition:background .05s}
+.light.red{background:#ff3b3b;box-shadow:0 0 40px #ff3b3b88}.light.green{background:#2cff7a;box-shadow:0 0 60px #2cff7aaa}
+.res{position:absolute;inset:0;display:grid;place-content:center;gap:6px;text-align:center;z-index:3;background:color-mix(in srgb,var(--c) 10%,rgba(14,16,36,.94));backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border-radius:14px;animation:in .25s}
+.res .zt{font-size:34px}.res .plus{font:400 40px var(--disp);color:var(--c)}
+.field{position:relative;width:100%;flex:1;border-radius:16px;background:rgba(0,0,0,.18);overflow:hidden}
+.tgt{position:absolute;width:52px;height:52px;margin:-26px 0 0 -26px;border:0;background:none;padding:0;cursor:pointer;animation:pop .2s ease-out;touch-action:none}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.shapes{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:240px}
+.shapes i{width:26px;height:26px;border-radius:50%;background:var(--c)}
+.shapes i.sq{border-radius:6px}
+#center{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;background:var(--bg);border:4px solid #fff;display:grid;place-items:center;font:400 40px var(--disp);box-shadow:0 0 0 6px rgba(14,16,36,.8)}
+#center small{font:900 11px var(--body);letter-spacing:.12em;color:var(--dim);display:block;margin-top:-4px}
+#center.hide{display:none}
+#stage.over .zone{pointer-events:none}
+#stage.on~#mute{display:none}
+.word{font:400 44px var(--disp);line-height:1}.eq{font:400 46px var(--disp);line-height:1;white-space:nowrap}
+.sm .word{font-size:26px}.sm .eq{font-size:25px}.sm .zt{font-size:20px}.sm .num{font-size:28px}.sm .big{font-size:40px}.sm .zs{font-size:12px}.sm .opt{font-size:22px;padding:10px 0}.sm .opt.sw{height:50px}.sm .opts{gap:6px}.sm .light{width:84px;height:84px}.sm .tapbtn{font-size:22px;min-height:70px}.sm .shapes{max-width:150px}.sm .shapes i{width:20px;height:20px}.sm .res .zt{font-size:24px}.sm .res .plus{font-size:30px}.sm .zb{padding:8px 6px}.sm .ib{width:48px!important;height:48px!important}
+#quit{position:absolute;z-index:6;right:10px;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:8px 10px;font:800 12px var(--body);cursor:pointer}
+.flash{position:absolute;inset:0;z-index:4;pointer-events:none;animation:flash .4s ease-out forwards}
+@keyframes flash{from{background:rgba(255,255,255,.35)}to{background:transparent}}
+/* marcador y podio */
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px}
+.bar .av{width:34px;height:34px;border-radius:50%;background:var(--c);display:grid;place-items:center;font:400 17px var(--disp);color:#0e1024}
+.bar .tr{height:26px;background:var(--bg2);border-radius:13px;overflow:hidden;position:relative}
+.bar .tr i{position:absolute;inset:0 auto 0 0;background:var(--c);border-radius:13px;transition:width .9s cubic-bezier(.2,1.2,.4,1)}
+.bar .tr span{position:absolute;left:12px;top:50%;transform:translateY(-50%);font:900 13px var(--body);color:#0e1024;mix-blend-mode:normal}
+.bar b{font:400 24px var(--disp);min-width:36px;text-align:right}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;height:260px;margin-top:10px}
+.pod{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pod .col{width:100%;border-radius:16px 16px 6px 6px;background:var(--c);display:grid;place-items:start center;padding-top:10px;font:400 36px var(--disp);color:#0e1024;box-shadow:inset 0 -8px 0 rgba(0,0,0,.2);animation:grow .9s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes grow{from{transform:scaleY(0);transform-origin:bottom}to{transform:none}}
+.pod .who{font:400 17px var(--disp);text-align:center;line-height:1.1}
+.crown{width:44px;height:34px}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:70}
+.score-big{font:400 72px var(--disp);text-align:center;background:linear-gradient(90deg,var(--p3),var(--p1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sg{display:grid;gap:8px}
+.sgr{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:12px;padding:10px 12px}
+.sgr .ic{width:26px;height:26px}.sgr span{flex:1;font-weight:800}.sgr b{font:700 16px var(--mono);color:var(--p3)}
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#fff;color:#0e1024;font-weight:900;padding:12px 18px;border-radius:12px;z-index:80;animation:in .25s}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<div id="stage"></div>
+<canvas id="fx"></canvas>
+<button id="mute" aria-label="Sonido"></button>
+<script>
+"use strict";
+/* =====================================================================
+   ARENA MINI · minijuegos para 1–4 jugadores en el mismo dispositivo
+   Arquitectura:
+     - Pantallas (inicio, configuración, marcador, podio, solo) en #app
+     - Arena en #stage: una "zona" por jugador (las de arriba giran 180°
+       para jugar alrededor del celular) + círculo central
+     - Cada minijuego = { id, name, how, better, play(A, done) }
+       y entrega un valor por jugador; el motor calcula puestos y puntos.
+   ===================================================================== */
+const $ = (q, el = document) => el.querySelector(q);
+const h = html => { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+const rnd = (a, b) => a + Math.random() * (b - a), ri = (a, b) => Math.floor(rnd(a, b + 1));
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const COLORS = ["var(--p1)", "var(--p2)", "var(--p3)", "var(--p4)"], HEX = ["#ff5a5f", "#3da9fc", "#ffd23f", "#2ec4b6"];
+const save = () => { try { localStorage.setItem("arena-mini", JSON.stringify(S)); } catch {} };
+let S = Object.assign({ names: ["Jugador 1", "Jugador 2", "Jugador 3", "Jugador 4"], np: 2, rounds: 8, best: 0, bests: {}, muted: false },
+  (() => { try { return JSON.parse(localStorage.getItem("arena-mini")) || {}; } catch { return {}; } })());
+
+/* ---------------- sonido sintetizado ---------------- */
+let ac = null, master = null;
+function audio() { if (!ac) { const A = window.AudioContext || window.webkitAudioContext; if (!A) return null; ac = new A(); master = ac.createGain(); master.gain.value = .9; const cp = ac.createDynamicsCompressor(); master.connect(cp).connect(ac.destination); } if (ac.state !== "running") ac.resume().catch(() => {}); return ac; }
+addEventListener("pointerdown", () => { try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {} audio(); }, { once: true });
+function tone(f, d = .12, type = "sine", v = .2, delay = 0, to = null) {
+  if (S.muted) return; const c = audio(); if (!c) return;
+  const t = c.currentTime + .01 + delay, o = c.createOscillator(), g = c.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t); if (to) o.frequency.exponentialRampToValueAtTime(to, t + d);
+  g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+  o.connect(g).connect(master); o.start(t); o.stop(t + d + .05);
+}
+const sfx = {
+  tap: () => tone(520, .06, "triangle", .14, 0, 820),
+  hit: () => tone(880 + Math.random() * 300, .06, "square", .06),
+  good: () => { tone(660, .12, "triangle", .2); tone(990, .16, "triangle", .18, .08); },
+  bad: () => { tone(200, .2, "square", .1, 0, 110); },
+  tick: () => tone(1000, .05, "square", .06),
+  go: () => { tone(523, .1, "square", .12); tone(1047, .25, "square", .12, .1); },
+  count: n => tone(n ? 440 : 880, n ? .12 : .3, "square", .12),
+  win: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, .22, "triangle", .2, i * .09)),
+  fan: () => [392, 523, 659, 784, 659, 784, 1047].forEach((f, i) => tone(f, .26, "square", .08, i * .12)),
+};
+const $mute = $("#mute");
+const drawMute = () => $mute.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#fff"/>${S.muted ? '<path d="M17 9l5 6M22 9l-5 6"/>' : '<path d="M17 8.5a5 5 0 0 1 0 7M19.5 6a8.5 8.5 0 0 1 0 12"/>'}</svg>`;
+$mute.onclick = () => { S.muted = !S.muted; save(); drawMute(); };
+drawMute();
+document.addEventListener("pointerdown", e => { const b = e.target.closest(".btn,.chip,.back"); if (b) sfx.tap(); });
+
+/* ---------------- íconos ---------------- */
+const IC = {
+  luz: `<svg class="ic" viewBox="0 0 40 40"><rect x="12" y="3" width="16" height="34" rx="6" fill="#2b2f5a"/><circle cx="20" cy="12" r="5" fill="#ff3b3b"/><circle cx="20" cy="28" r="5" fill="#2cff7a"/></svg>`,
+  machaca: `<svg class="ic" viewBox="0 0 40 40"><circle cx="20" cy="22" r="14" fill="#ff5a5f"/><circle cx="20" cy="20" r="14" fill="#ff8a8e"/><path d="M14 4l3 6M26 4l-3 6M20 2v7" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/></svg>`,
+  cuenta: `<svg class="ic" viewBox="0 0 40 40"><circle cx="11" cy="12" r="6" fill="#3da9fc"/><circle cx="27" cy="11" r="6" fill="#3da9fc"/><circle cx="19" cy="27" r="6" fill="#3da9fc"/><text x="33" y="36" font-family="Lilita One,sans-serif" font-size="14" fill="#fff" text-anchor="middle">3</text></svg>`,
+  colores: `<svg class="ic" viewBox="0 0 40 40"><text x="20" y="27" font-family="Lilita One,sans-serif" font-size="13" fill="#3da9fc" text-anchor="middle">ROJO</text><rect x="4" y="32" width="10" height="5" rx="2" fill="#ff5a5f"/><rect x="15" y="32" width="10" height="5" rx="2" fill="#3da9fc"/><rect x="26" y="32" width="10" height="5" rx="2" fill="#ffd23f"/></svg>`,
+  reloj: `<svg class="ic" viewBox="0 0 40 40"><circle cx="20" cy="22" r="14" fill="none" stroke="#ffd23f" stroke-width="4"/><path d="M20 22V13M20 22l6 4" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="16" y="2" width="8" height="5" rx="2" fill="#ffd23f"/></svg>`,
+  estrellas: `<svg class="ic" viewBox="0 0 40 40"><path d="M20 3l5 10 11 1.6-8 7.8 2 11L20 28l-10 5.4 2-11-8-7.8L15 13z" fill="#ffd23f"/></svg>`,
+  duelo: `<svg class="ic" viewBox="0 0 40 40"><path d="M6 30l12-12 4 4-12 12z" fill="#9b5cff"/><path d="M34 30L22 18l-4 4 12 12z" fill="#2ec4b6"/><circle cx="20" cy="10" r="6" fill="#ff5a5f"/></svg>`,
+  mate: `<svg class="ic" viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" rx="8" fill="#2ec4b6"/><path d="M12 15h8M16 11v8M24 15h6M12 27h7M24 25h6M24 29h6" stroke="#0e1024" stroke-width="3" stroke-linecap="round"/></svg>`,
+  fiesta: `<svg class="ic" viewBox="0 0 40 40"><circle cx="12" cy="14" r="7" fill="#ff5a5f"/><circle cx="28" cy="14" r="7" fill="#3da9fc"/><circle cx="12" cy="29" r="7" fill="#ffd23f"/><circle cx="28" cy="29" r="7" fill="#2ec4b6"/></svg>`,
+  solo: `<svg class="ic" viewBox="0 0 40 40"><path d="M20 4l4.5 9.5L35 15l-7.5 7 2 10.5L20 27.5 10.5 32.5l2-10.5L5 15l10.5-1.5z" fill="#fff"/></svg>`,
+  crown: `<svg class="crown" viewBox="0 0 44 34"><path d="M3 30L6 8l10 10L22 3l6 15 10-10 3 22z" fill="#ffd23f" stroke="#b8860b" stroke-width="2" stroke-linejoin="round"/><circle cx="22" cy="3" r="2.5" fill="#fff"/></svg>`,
+  star: c => `<svg width="52" height="52" viewBox="0 0 40 40"><path d="M20 3l5 10 11 1.6-8 7.8 2 11L20 28l-10 5.4 2-11-8-7.8L15 13z" fill="${c}" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>`,
+};
+
+/* ---------------- efectos (confeti) ---------------- */
+const fx = $("#fx"), fc = fx.getContext("2d"); let parts = [];
+function sizeFx() { const d = Math.min(devicePixelRatio || 1, 2); fx.width = innerWidth * d; fx.height = innerHeight * d; fc.setTransform(d, 0, 0, d, 0, 0); }
+addEventListener("resize", sizeFx); sizeFx();
+function confetti(n = 120, x = innerWidth / 2, y = innerHeight * .35) {
+  for (let i = 0; i < n; i++) parts.push({ x, y, vx: rnd(-7, 7), vy: rnd(-12, -3), g: .28, l: 1, c: HEX[i % 4], s: rnd(5, 10), r: rnd(0, 6), vr: rnd(-.3, .3) });
+}
+(function loop() {
+  fc.clearRect(0, 0, innerWidth, innerHeight);
+  for (const p of parts) { p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= .99; p.r += p.vr; p.l -= .006; fc.save(); fc.globalAlpha = Math.max(0, p.l); fc.translate(p.x, p.y); fc.rotate(p.r); fc.fillStyle = p.c; fc.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); fc.restore(); }
+  parts = parts.filter(p => p.l > 0 && p.y < innerHeight + 20);
+  requestAnimationFrame(loop);
+})();
+
+/* =====================================================================
+   MINIJUEGOS
+   A = { zones:[{el, body, p}], after(ms,f), every(ms,f), now(), flash() }
+   done(values)  → values[p] = número o null (descalificado / sin respuesta)
+   ===================================================================== */
+const GAMES = [
+  { id: "luz", name: "Luz verde", how: "Toca tu zona cuando la luz se ponga VERDE. Si tocas antes, quedas fuera.", better: "low", unit: "ms",
+    play(A, done) {
+      const v = A.zones.map(() => undefined); let green = 0;
+      A.zones.forEach((z, i) => { z.body.innerHTML = `<div class="light red"></div><div class="zt">Espera…</div>`;
+        z.el.addEventListener("pointerdown", () => {
+          if (v[i] !== undefined) return;
+          if (!green) { v[i] = null; sfx.bad(); z.body.innerHTML = `<div class="zt" style="color:var(--bad)">¡Muy pronto!</div><div class="zs">Quedaste fuera de esta ronda</div>`; }
+          else { v[i] = Math.round(A.now() - green); sfx.hit(); z.body.innerHTML = `<div class="num">${v[i]} ms</div>`; }
+          check(); });
+      });
+      const check = () => { if (v.every(x => x !== undefined)) A.after(500, () => done(v)); };
+      A.after(rnd(1600, 4200), () => { if (v.every(x => x !== undefined)) return; green = A.now(); sfx.go(); A.flash();
+        A.zones.forEach((z, i) => { if (v[i] === undefined) z.body.innerHTML = `<div class="light green"></div><div class="zt">¡YA!</div>`; });
+        A.after(3000, () => done(v.map(x => x === undefined ? null : x))); });
+    }, solo: v => v == null ? 0 : Math.max(0, Math.min(1000, Math.round(1000 - (v - 180) * 2.2))) },
+
+  { id: "machaca", name: "Machaca", how: "Toca tu botón lo más rápido que puedas durante 5 segundos.", better: "high", unit: "toques",
+    play(A, done) {
+      const v = A.zones.map(() => 0); let on = true;
+      A.zones.forEach((z, i) => { z.body.innerHTML = `<div class="num" data-n>0</div><button class="tapbtn">¡TOCA!</button><div class="zs" data-t>5.0 s</div>`;
+        const b = $(".tapbtn", z.body), n = $("[data-n]", z.body);
+        b.addEventListener("pointerdown", e => { e.preventDefault(); if (!on) return; v[i]++; n.textContent = v[i]; b.classList.add("hit"); setTimeout(() => b.classList.remove("hit"), 60); if (v[i] % 2) sfx.hit(); }); });
+      const t0 = A.now();
+      A.every(100, () => { const left = Math.max(0, 5 - (A.now() - t0) / 1000); A.zones.forEach(z => $("[data-t]", z.body).textContent = left.toFixed(1) + " s"); });
+      A.after(5000, () => { on = false; done(v); });
+    }, solo: v => Math.min(1000, Math.round((v || 0) * 25)) },
+
+  { id: "cuenta", name: "Cuenta rápida", how: "Cuenta las figuras y toca el número correcto. El primero que acierta gana.", better: "low", unit: "ms",
+    play(A, done) {
+      const N = ri(4, 9), sq = Array.from({ length: N }, () => Math.random() < .4), opts = shuffle([N, N + (Math.random() < .5 ? 1 : -1), N + (Math.random() < .5 ? 2 : -2)]);
+      const v = A.zones.map(() => undefined), t0 = A.now();
+      A.zones.forEach((z, i) => {
+        z.body.innerHTML = `<div class="shapes">${sq.map(s => `<i class="${s ? "sq" : ""}"></i>`).join("")}</div><div class="opts">${opts.map(o => `<button class="opt" data-o="${o}">${o}</button>`).join("")}</div>`;
+        z.body.querySelectorAll(".opt").forEach(b => b.addEventListener("pointerdown", e => { e.preventDefault(); if (v[i] !== undefined) return;
+          if (+b.dataset.o === N) { v[i] = Math.round(A.now() - t0); b.classList.add("ok"); sfx.good(); } else { v[i] = null; b.classList.add("no"); sfx.bad(); }
+          if (v.every(x => x !== undefined)) A.after(500, () => done(v)); }));
+      });
+      A.after(7000, () => done(v.map(x => x === undefined ? null : x)));
+    }, solo: v => v == null ? 0 : Math.max(100, Math.min(1000, Math.round(1100 - v / 5))) },
+
+  { id: "colores", name: "Colores tramposos", how: "Toca el COLOR de la tinta, no lo que dice la palabra. 10 segundos.", better: "high", unit: "puntos",
+    play(A, done) {
+      const C = [["ROJO", "#ff5a5f"], ["AZUL", "#3da9fc"], ["AMARILLO", "#ffd23f"], ["VERDE", "#2ec4b6"]];
+      const seq = Array.from({ length: 40 }, () => { const w = ri(0, 3); let c; do { c = ri(0, 3); } while (c === w && Math.random() < .75); const o = shuffle([c, ...shuffle([0, 1, 2, 3].filter(k => k !== c)).slice(0, 2)]); return { w, c, o }; });
+      const v = A.zones.map(() => 0), idx = A.zones.map(() => 0); let on = true;
+      const draw = (z, i) => { const q = seq[idx[i]]; z.body.innerHTML = `<div class="word" style="color:${C[q.c][1]}">${C[q.w][0]}</div><div class="zs">Toca el color de la tinta</div>
+        <div class="opts">${q.o.map(k => `<button class="opt sw" data-k="${k}" style="background:${C[k][1]}"></button>`).join("")}</div><div class="zs">Puntos: <b>${v[i]}</b></div>`;
+        z.body.querySelectorAll(".opt").forEach(b => b.addEventListener("pointerdown", e => { e.preventDefault(); if (!on) return;
+          if (+b.dataset.k === q.c) { v[i]++; sfx.hit(); } else { v[i] = Math.max(0, v[i] - 1); sfx.bad(); }
+          idx[i]++; draw(z, i); })); };
+      A.zones.forEach(draw);
+      A.after(10000, () => { on = false; done(v); });
+    }, solo: v => Math.min(1000, Math.round((v || 0) * 80)) },
+
+  { id: "reloj", name: "Detén el reloj", how: "El reloj se esconde. Toca ¡ALTO! justo cuando creas que llegó a 5,00 segundos.", better: "low", unit: "ms de diferencia",
+    play(A, done) {
+      const v = A.zones.map(() => undefined), t0 = A.now();
+      A.zones.forEach((z, i) => { z.body.innerHTML = `<div class="num" data-n>0.00</div><div class="zs">Meta: 5.00 s</div><button class="tapbtn">¡ALTO!</button>`;
+        $(".tapbtn", z.body).addEventListener("pointerdown", e => { e.preventDefault(); if (v[i] !== undefined) return; const t = A.now() - t0; v[i] = Math.round(Math.abs(t - 5000)); sfx.hit();
+          z.body.innerHTML = `<div class="num">${(t / 1000).toFixed(2)} s</div><div class="zs">${v[i]} ms de diferencia</div>`; if (v.every(x => x !== undefined)) A.after(700, () => done(v)); }); });
+      A.every(30, () => { const t = (A.now() - t0) / 1000; A.zones.forEach((z, i) => { const n = $("[data-n]", z.body); if (n && v[i] === undefined) n.textContent = t < 1.6 ? t.toFixed(2) : "?.??"; }); });
+      A.after(9000, () => done(v.map(x => x === undefined ? null : x)));
+    }, solo: v => v == null ? 0 : Math.max(0, Math.min(1000, Math.round(1000 - v / 1.8))) },
+
+  { id: "estrellas", name: "Lluvia de estrellas", how: "Toca todas las estrellas que aparezcan en tu zona. 10 segundos.", better: "high", unit: "estrellas",
+    play(A, done) {
+      const v = A.zones.map(() => 0); let on = true;
+      A.zones.forEach((z, i) => {
+        z.body.innerHTML = `<div class="zs">Estrellas: <b data-n>0</b></div><div class="field"></div>`;
+        const f = $(".field", z.body), n = $("[data-n]", z.body);
+        const spawn = () => { if (!on) return; const s = h(`<button class="tgt" style="left:${rnd(12, 88)}%;top:${rnd(14, 86)}%">${IC.star(HEX[i])}</button>`);
+          s.addEventListener("pointerdown", e => { e.preventDefault(); if (!on) return; s.remove(); v[i]++; n.textContent = v[i]; sfx.hit(); spawn(); });
+          f.appendChild(s); A.after(rnd(900, 1300), () => { if (s.isConnected) { s.remove(); spawn(); } }); };
+        spawn(); A.after(1500, spawn);
+      });
+      A.after(10000, () => { on = false; done(v); });
+    }, solo: v => Math.min(1000, Math.round((v || 0) * 50)) },
+
+  { id: "duelo", name: "Duelo del oeste", how: "Toca SOLO cuando aparezca la palabra ¡FUEGO! Cuidado con las trampas.", better: "low", unit: "ms",
+    play(A, done) {
+      const FAKE = ["¡FUEGA!", "¡JUEGO!", "¡FUE!", "¡FRESA!", "¡FÚTBOL!", "¡FUEGUITO?"];
+      const v = A.zones.map(() => undefined); let real = 0;
+      A.zones.forEach((z, i) => { z.body.innerHTML = `<div class="big" data-w>…</div><div class="zs">Espera la palabra ¡FUEGO!</div>`;
+        z.el.addEventListener("pointerdown", () => { if (v[i] !== undefined) return;
+          if (!real) { v[i] = null; sfx.bad(); z.body.innerHTML = `<div class="zt" style="color:var(--bad)">¡Caíste en la trampa!</div>`; }
+          else { v[i] = Math.round(A.now() - real); sfx.hit(); z.body.innerHTML = `<div class="num">${v[i]} ms</div>`; }
+          if (v.every(x => x !== undefined)) A.after(500, () => done(v)); }); });
+      const say = w => A.zones.forEach((z, i) => { const el = $("[data-w]", z.body); if (el && v[i] === undefined) { el.textContent = w; el.style.color = w === "¡FUEGO!" ? "var(--good)" : "#fff"; } });
+      let t = rnd(900, 1500); const fakes = ri(1, 3);
+      for (let k = 0; k < fakes; k++) { const w = FAKE[ri(0, FAKE.length - 1)]; A.after(t, () => { say(w); tone(300, .08, "square", .06); }); A.after(t + 650, () => say("…")); t += rnd(1100, 1700); }
+      A.after(t, () => { if (v.every(x => x !== undefined)) return; real = A.now(); say("¡FUEGO!"); sfx.go(); A.flash(); A.after(3000, () => done(v.map(x => x === undefined ? null : x))); });
+    }, solo: v => v == null ? 0 : Math.max(0, Math.min(1000, Math.round(1000 - (v - 200) * 2))) },
+
+  { id: "mate", name: "Mate veloz", how: "¿La cuenta está bien o mal? Responde todas las que puedas en 10 segundos.", better: "high", unit: "puntos",
+    play(A, done) {
+      const mk = () => { const op = Math.random() < .5 ? "+" : Math.random() < .6 ? "−" : "×"; let a = ri(2, 12), b = ri(2, 9); if (op === "−" && b > a) [a, b] = [b, a];
+        const r = op === "+" ? a + b : op === "−" ? a - b : a * b, ok = Math.random() < .5, shown = ok ? r : r + (Math.random() < .5 ? ri(1, 3) : -ri(1, 3)); return { t: `${a} ${op} ${b} = ${shown}`, ok: shown === r }; };
+      const seq = Array.from({ length: 40 }, mk), v = A.zones.map(() => 0), idx = A.zones.map(() => 0); let on = true;
+      const draw = (z, i) => { const q = seq[idx[i]]; z.body.innerHTML = `<div class="eq">${q.t}</div><div class="opts"><button class="opt ok" data-a="1">✔</button><button class="opt no" data-a="0">✘</button></div><div class="zs">Puntos: <b>${v[i]}</b></div>`;
+        z.body.querySelectorAll(".opt").forEach(b => b.addEventListener("pointerdown", e => { e.preventDefault(); if (!on) return;
+          if ((b.dataset.a === "1") === q.ok) { v[i]++; sfx.hit(); } else { v[i] = Math.max(0, v[i] - 1); sfx.bad(); } idx[i]++; draw(z, i); })); };
+      A.zones.forEach(draw); A.after(10000, () => { on = false; done(v); });
+    }, solo: v => Math.min(1000, Math.round((v || 0) * 90)) },
+];
+const G = id => GAMES.find(g => g.id === id);
+
+/* =====================================================================
+   ARENA (zonas por jugador)
+   ===================================================================== */
+const stage = $("#stage");
+let timers = [];
+function clearTimers() { timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers = []; }
+function buildArena(np, scores, label) {
+  clearTimers(); stage.innerHTML = ""; stage.className = np >= 3 ? "on sm" : "on"; $("#app").replaceChildren();
+  const W = innerWidth, H = innerHeight, g = 8, mid = 56, zones = [];
+  const rects = np === 1 ? [[g, g, W - 2 * g, H - 2 * g, false]]
+    : np === 2 ? [[g, H / 2 + mid / 2, W - 2 * g, H / 2 - mid / 2 - g, false], [g, g, W - 2 * g, H / 2 - mid / 2 - g, true]]
+    : [[g, H / 2 + mid / 2, W / 2 - 1.5 * g, H / 2 - mid / 2 - g, false], [W / 2 + g / 2, H / 2 + mid / 2, W / 2 - 1.5 * g, H / 2 - mid / 2 - g, false],
+       [g, g, W / 2 - 1.5 * g, H / 2 - mid / 2 - g, true], [W / 2 + g / 2, g, W / 2 - 1.5 * g, H / 2 - mid / 2 - g, true]];
+  rects.forEach(([x, y, w, hh, flip], i) => {
+    const active = i < np;
+    const el = h(`<div class="zone${flip ? " flip" : ""}${active ? "" : " off"}" style="left:${x}px;top:${y}px;width:${w}px;height:${hh}px;--c:${COLORS[i]}">
+      ${active ? `<div class="zh"><span class="nm"><i></i>${np === 1 ? "DESAFÍO SOLO · " + label : esc(S.names[i])}</span><span class="pts">${scores ? scores[i] : 0}</span></div>` : ""}<div class="zb"></div></div>`);
+    if (!active) $(".zb", el).innerHTML = `<div class="logo" style="font-size:30px;opacity:.35">ARENA<span class="mini" style="font-size:18px">MINI</span></div>`;
+    stage.appendChild(el); if (active) zones.push({ el, body: $(".zb", el), p: i });
+  });
+  const center = h(`<div id="center" class="${np === 1 ? "hide" : ""}"></div>`); stage.appendChild(center);
+  const quit = h(`<button id="quit" style="${np === 1 ? "top:auto;bottom:16px;transform:none" : ""}">Salir</button>`); stage.appendChild(quit);
+  quit.onclick = () => { clearTimers(); stage.classList.remove("on"); stage.innerHTML = ""; home(); };
+  const A = {
+    zones, center,
+    after: (ms, f) => { const t = setTimeout(f, ms); timers.push(t); return t; },
+    every: (ms, f) => { const t = setInterval(f, ms); timers.push(t); return t; },
+    now: () => performance.now(),
+    flash: () => { const f = h(`<div class="flash"></div>`); stage.appendChild(f); setTimeout(() => f.remove(), 420); navigator.vibrate && navigator.vibrate(30); },
+  };
+  return A;
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* Presenta el minijuego en cada zona, cuenta 3-2-1 y lo juega */
+function runGame(np, game, label, scores, onDone) {
+  const A = buildArena(np, scores, label);
+  A.zones.forEach(z => z.body.innerHTML = `${IC[game.id].replace('class="ic"', 'class="ic ib" style="width:64px;height:64px"')}<div class="zt">${game.name}</div><div class="zs">${game.how}</div>`);
+  A.center.innerHTML = `<div style="text-align:center;line-height:1">${label}<small>RONDA</small></div>`;
+  let n = 3; const cd = () => {
+    if (n > 0) { A.center.innerHTML = n; if (np === 1) A.zones[0].body.innerHTML = `<div class="big" style="font-size:120px">${n}</div>`; sfx.count(n); n--; A.after(750, cd); }
+    else { A.center.innerHTML = "¡YA!"; sfx.count(0); A.after(400, () => { A.center.innerHTML = `<div style="font-size:26px">${label}</div>`; });
+      let finished = false;
+      game.play(A, vals => { if (finished) return; finished = true; clearTimers(); stage.classList.add("over"); onDone(A, vals); }); }
+  };
+  A.after(np === 1 ? 2200 : 2600, cd);
+}
+
+/* Ordena resultados → puestos y puntos (1º +3, 2º +1 si hay 3+ jugadores) */
+function rank(game, vals) {
+  const idx = vals.map((v, i) => i).filter(i => vals[i] != null);
+  idx.sort((a, b) => game.better === "low" ? vals[a] - vals[b] : vals[b] - vals[a]);
+  const place = vals.map(() => null); let p = 0;
+  idx.forEach((i, k) => { if (k > 0 && vals[i] !== vals[idx[k - 1]]) p = k; place[i] = p; });
+  if (game.better === "high") idx.forEach(i => { if (vals[i] === 0) place[i] = null; });
+  return place.map(pl => pl === 0 ? 3 : pl === 1 && vals.length >= 3 ? 1 : 0).map((pts, i) => ({ pts, place: place[i] }));
+}
+
+/* =====================================================================
+   PANTALLAS
+   ===================================================================== */
+function show(html) { clearTimers(); stage.className = ""; const w = h(`<div class="wrap">${html}</div>`); $("#app").replaceChildren(w); $("#app").scrollTop = 0; return w; }
+const RETO = (() => { const m = location.hash.match(/reto(\d+)/); return m ? +m[1] : null; })();
+
+function home() {
+  const v = show(`
+    <div style="height:18px"></div>
+    <div class="dots4"><i style="background:var(--p1)"></i><i style="background:var(--p2)"></i><i style="background:var(--p3)"></i><i style="background:var(--p4)"></i></div>
+    <div class="logo"><span class="a">A</span><span class="r">R</span><span class="e">E</span><span class="n">N</span><span class="a">A</span><span class="mini">MINI</span></div>
+    <p class="center dim" style="font-weight:800">8 minijuegos de reflejos, velocidad y cerebro.<br>De 1 a 4 jugadores en el mismo celular.</p>
+    ${RETO ? `<div class="banner">Un amigo te retó: sacó <b>${RETO}</b> puntos. ¿Lo superas?</div>` : ""}
+    <div class="grow"></div>
+    <button class="btn p1" id="party">${IC.fiesta}<span>FIESTA<small>2 a 4 jugadores</small></span></button>
+    <button class="btn p2" id="solo">${IC.solo}<span>DESAFÍO SOLO<small>${S.best ? "Tu récord: " + S.best : "8 juegos seguidos, bate tu récord"}</small></span></button>
+    <button class="btn ghost" id="how">CÓMO SE JUEGA</button>
+    <p class="center dim" style="font-size:12px">Próximamente: salas en línea con código</p>`);
+  $("#party", v).onclick = setup; $("#solo", v).onclick = soloStart; $("#how", v).onclick = how;
+}
+
+function how() {
+  const v = show(`<div class="topbar"><button class="back" id="bk">‹ Volver</button></div>
+    <h2 style="font-size:34px">Cómo se juega</h2>
+    <div class="card"><p><b>Fiesta:</b> pongan el celular en la mesa, en medio de todos. Cada jugador toca solo su zona de color. Las zonas de arriba se ven al revés a propósito: son para quien está sentado enfrente.</p></div>
+    <div class="card"><p><b>Puntos:</b> quien gana cada minijuego suma <b>3</b>. Con 3 o 4 jugadores, el segundo lugar suma <b>1</b>. Al final gana quien tenga más puntos.</p></div>
+    <div class="gl">${GAMES.map(g => `<div class="gi">${IC[g.id]}<div><b>${g.name}</b><span>${g.how}</span></div></div>`).join("")}</div>
+    <button class="btn" id="go">¡A JUGAR!</button>`);
+  $("#bk", v).onclick = home; $("#go", v).onclick = setup;
+}
+
+function setup() {
+  const v = show(`<div class="topbar"><button class="back" id="bk">‹ Volver</button><span class="label">Fiesta</span><span style="width:70px"></span></div>
+    <h2 style="font-size:34px">¿Cuántos juegan?</h2>
+    <div class="row" id="np">${[2, 3, 4].map(n => `<button class="chip ${S.np === n ? "on" : ""}" data-n="${n}">${n}</button>`).join("")}</div>
+    <p class="label">Nombres (toca para cambiar)</p>
+    <div class="players" id="pls"></div>
+    <p class="label">Rondas</p>
+    <div class="row" id="rd">${[5, 8, 12].map(n => `<button class="chip ${S.rounds === n ? "on" : ""}" data-n="${n}">${n}</button>`).join("")}</div>
+    <div class="grow"></div>
+    <button class="btn p4" id="go">EMPEZAR</button>`);
+  const draw = () => { $("#pls", v).innerHTML = Array.from({ length: S.np }, (_, i) => `<label class="pl" style="--c:${COLORS[i]}"><span class="av">${i + 1}</span><input maxlength="14" value="${esc(S.names[i])}" data-i="${i}" aria-label="Nombre del jugador ${i + 1}"></label>`).join("");
+    v.querySelectorAll(".pl input").forEach(inp => inp.oninput = () => { S.names[+inp.dataset.i] = inp.value.trim() || `Jugador ${+inp.dataset.i + 1}`; save(); }); };
+  v.querySelectorAll("#np .chip").forEach(b => b.onclick = () => { S.np = +b.dataset.n; save(); v.querySelectorAll("#np .chip").forEach(x => x.classList.toggle("on", x === b)); draw(); });
+  v.querySelectorAll("#rd .chip").forEach(b => b.onclick = () => { S.rounds = +b.dataset.n; save(); v.querySelectorAll("#rd .chip").forEach(x => x.classList.toggle("on", x === b)); });
+  $("#bk", v).onclick = home; $("#go", v).onclick = () => party(S.np, S.rounds);
+  draw();
+}
+
+/* ---------------- modo fiesta ---------------- */
+function party(np, rounds) {
+  const plan = []; while (plan.length < rounds) plan.push(...shuffle(GAMES));
+  const scores = Array(np).fill(0), wins = Array(np).fill(0); let r = 0;
+  const next = () => {
+    if (r >= rounds) return podium(np, scores, wins);
+    const game = plan[r]; r++;
+    runGame(np, game, `${r}/${rounds}`, scores, (A, vals) => {
+      const res = rank(game, vals.slice(0, np));
+      A.zones.forEach((z, k) => { const i = z.p, rr = res[i];
+        scores[i] += rr.pts; if (rr.place === 0) wins[i]++;
+        const val = vals[i] == null ? "—" : `${vals[i]} ${game.unit}`;
+        z.body.appendChild(h(`<div class="res"><div class="zt">${rr.place === 0 ? "¡GANASTE!" : vals[i] == null ? "Fuera" : rr.place === 1 ? "2º lugar" : "Casi…"}</div><div class="zs">${val}</div>${rr.pts ? `<div class="plus">+${rr.pts}</div>` : ""}</div>`));
+        const pts = $(".pts", z.el); if (pts) pts.textContent = scores[i]; });
+      if (res.some(x => x.place === 0)) sfx.win(); else sfx.bad();
+      A.after(2400, () => board(np, scores, r, rounds, next));
+    });
+  };
+  next();
+}
+function board(np, scores, r, rounds, next) {
+  const max = Math.max(1, ...scores), order = scores.map((s, i) => i).sort((a, b) => scores[b] - scores[a]);
+  const v = show(`<div class="topbar"><span class="label">Marcador</span><span class="label">Ronda ${r} de ${rounds}</span></div>
+    <h2 style="font-size:34px">${r === rounds ? "¡Última ronda terminada!" : r === rounds - 1 ? "¡Queda una ronda!" : "Así van"}</h2>
+    <div class="bars">${order.map(i => `<div class="bar" style="--c:${COLORS[i]}"><span class="av">${i + 1}</span><div class="tr"><i style="width:0"></i><span>${esc(S.names[i])}</span></div><b>${scores[i]}</b></div>`).join("")}</div>
+    <div class="grow"></div><button class="btn" id="go">${r >= rounds ? "VER GANADOR" : "SIGUIENTE RONDA"}</button>
+    <button class="btn ghost" id="q">Terminar partida</button>`);
+  requestAnimationFrame(() => setTimeout(() => v.querySelectorAll(".bar").forEach((b, k) => $(".tr i", b).style.width = Math.max(8, scores[order[k]] / max * 100) + "%"), 60));
+  $("#go", v).onclick = () => { $("#go", v).onclick = null; next(); }; $("#q", v).onclick = home;
+}
+function podium(np, scores, wins) {
+  const order = scores.map((s, i) => i).sort((a, b) => scores[b] - scores[a] || wins[b] - wins[a]);
+  const top = order[0], tie = order.length > 1 && scores[order[1]] === scores[top] && wins[order[1]] === wins[top];
+  const cols = [order[1], order[0], order[2]].filter(x => x !== undefined), hgt = { 0: 190, 1: 130, 2: 90 };
+  const v = show(`<p class="label center" style="margin-top:10px">Fin de la partida</p>
+    <h2 class="center" style="font-size:40px;color:${COLORS[top]}">${tie ? "¡EMPATE!" : "¡GANA " + esc(S.names[top]).toUpperCase() + "!"}</h2>
+    <div class="podium">${cols.map(i => { const pl = order.indexOf(i); return `<div class="pod" style="--c:${COLORS[i]}">${pl === 0 ? IC.crown : ""}<div class="who">${esc(S.names[i])}<br><span class="dim" style="font-family:var(--body);font-weight:800;font-size:13px">${scores[i]} pts</span></div><div class="col" style="height:${hgt[pl]}px;animation-delay:${pl === 0 ? .5 : pl === 1 ? .25 : 0}s">${pl + 1}</div></div>`; }).join("")}</div>
+    ${order.length === 4 ? `<p class="center dim">4º lugar: ${esc(S.names[order[3]])} · ${scores[order[3]]} pts</p>` : ""}
+    <div class="grow"></div><button class="btn p4" id="re">REVANCHA</button><button class="btn ghost" id="hm">Inicio</button>`);
+  sfx.fan(); setTimeout(() => confetti(160), 500); setTimeout(() => confetti(100, innerWidth * .2), 1100); setTimeout(() => confetti(100, innerWidth * .8), 1500);
+  $("#re", v).onclick = () => party(np, S.rounds); $("#hm", v).onclick = home;
+}
+
+/* ---------------- desafío solo ---------------- */
+function soloStart() {
+  const plan = shuffle(GAMES), res = []; let k = 0;
+  const next = () => {
+    if (k >= plan.length) return soloEnd(res);
+    const game = plan[k]; k++;
+    runGame(1, game, `${k}/${plan.length}`, [res.reduce((a, r) => a + r.pts, 0)], (A, vals) => {
+      const pts = game.solo(vals[0]); res.push({ g: game, v: vals[0], pts });
+      const pe = $(".pts", A.zones[0].el); if (pe) pe.textContent = res.reduce((a, r) => a + r.pts, 0);
+      A.zones[0].body.appendChild(h(`<div class="res" style="--c:var(--p3)"><div class="zs">${game.name}</div><div class="plus">+${pts}</div><div class="zs">${vals[0] == null ? "Sin puntos" : vals[0] + " " + game.unit}</div></div>`));
+      pts >= 700 ? sfx.win() : pts > 0 ? sfx.good() : sfx.bad();
+      A.after(2100, next);
+    });
+  };
+  next();
+}
+function soloEnd(res) {
+  const total = res.reduce((a, r) => a + r.pts, 0), record = total > (S.best || 0);
+  if (record) { S.best = total; }
+  res.forEach(r => { S.bests[r.g.id] = Math.max(S.bests[r.g.id] || 0, r.pts); }); save();
+  const beat = RETO && total > RETO;
+  const v = show(`<p class="label center" style="margin-top:10px">Desafío terminado</p>
+    <div class="score-big">${total}</div>
+    <p class="center" style="font:400 22px var(--disp)">${record ? "¡NUEVO RÉCORD!" : "Tu récord: " + S.best}</p>
+    ${RETO ? `<div class="banner">${beat ? "¡Superaste el reto de tu amigo!" : "El reto era " + RETO + ". ¡Inténtalo otra vez!"}</div>` : ""}
+    <div class="sg">${res.map(r => `<div class="sgr">${IC[r.g.id]}<span>${r.g.name}</span><b>${r.pts}</b></div>`).join("")}</div>
+    <button class="btn p3" id="sh">RETAR A UN AMIGO</button>
+    <button class="btn p2" id="re">JUGAR OTRA VEZ</button><button class="btn ghost" id="hm">Inicio</button>`);
+  if (record || beat) { sfx.fan(); confetti(160); } else sfx.win();
+  $("#re", v).onclick = soloStart; $("#hm", v).onclick = home;
+  $("#sh", v).onclick = async () => {
+    const url = location.href.split("#")[0] + "#reto" + total, txt = `Saqué ${total} puntos en Arena Mini. ¿Me superas? ${url}`;
+    try { if (navigator.share) { await navigator.share({ title: "Arena Mini", text: txt }); return; } } catch { return; }
+    try { await navigator.clipboard.writeText(txt); toast("Link copiado. Pégalo en WhatsApp"); } catch { prompt("Copia este mensaje:", txt); }
+  };
+}
+function toast(t) { const el = h(`<div class="toast">${t}</div>`); document.body.appendChild(el); setTimeout(() => el.remove(), 2400); }
+
+addEventListener("resize", () => { if (!stage.classList.contains("on")) sizeFx(); });
+home();
+</script>
+</body>
+</html>
+
