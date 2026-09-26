@@ -290,6 +290,20 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 #pause.on{display:grid}
 #pause .box{width:min(340px,100%);display:grid;gap:12px;text-align:center}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:70}
+/* voz */
+.vc-row{display:flex;align-items:center;gap:8px;min-height:44px}
+.vc-join{flex:1;border:0;border-radius:14px;padding:11px 12px;font:900 15px var(--body);color:#fff;background:linear-gradient(135deg,#7b5cff,#3d8bfc);box-shadow:0 3px 0 rgba(0,0,0,.25);cursor:pointer}
+.vc-join:disabled{opacity:.7}
+.vc-mic,.vc-x,.vc-tap{border:0;border-radius:12px;height:40px;min-width:44px;font-size:20px;background:#22c55e;color:#fff;cursor:pointer;flex:none}
+.vc-mic.off{background:#ef4444}.vc-x{background:var(--panel);font-size:15px;font-weight:900}.vc-tap{background:#ffb627;color:#2a2100;font:900 13px var(--body);padding:0 10px}
+.vc-ppl{flex:1;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:3px 2px}.vc-ppl::-webkit-scrollbar{display:none}
+.vc-p{position:relative;display:flex;align-items:center;gap:5px;background:var(--panel);border-radius:20px;padding:3px 9px 3px 3px;flex:none;transition:box-shadow .12s}
+.vc-p i{width:26px;height:26px;border-radius:50%;background:var(--c);display:grid;place-items:center;font:900 13px var(--body);font-style:normal;color:#111}
+.vc-p b{font:800 12px var(--body);max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vc-p u{position:absolute;left:18px;top:-4px;font-size:11px;text-decoration:none}
+.vc-p.wait{opacity:.45}.vc-p.talk{box-shadow:0 0 0 2px var(--c),0 0 12px var(--c)}
+#vcf{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 62px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:#22c55e;font-size:19px;display:grid;place-items:center;cursor:pointer}
+#vcf.off{background:#ef4444}
 #mute{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer}
 body.playing #mute{display:none}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -880,6 +894,7 @@ function onNetMsg(m) {
     else if (m.k === "leave") { if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); toast(`${NET.names[m.from] || "Alguien"} salió de la partida`); }
     else if (m.k === "tm") { if (T.g && T.online && T.s) { const pi = T.seats.indexOf(m.from); if (pi >= 0) tApply(pi, m.a || {}); } }
     else if (m.k === "mc") mediaChunk(m, m.from);
+    else if (m.k === "vj" || m.k === "vl" || m.k === "vm") VOICE.hostMsg(m);
     return;
   }
   // invitado
@@ -892,6 +907,7 @@ function onNetMsg(m) {
   else if (m.k === "ts") tRecv(m);
   else if (m.k === "duo") { if (E.st !== "off") stopMatch(); duoResult(m.r, true); }
   else if (m.k === "mc") mediaChunk(m, 0);
+  else if (m.k === "vr") VOICE.onMembers(m.mem);
 }
 function startGuest(g, opt) {
   if (g.setOpt) g.setOpt(opt);
@@ -1638,6 +1654,7 @@ function tFrame() {
     if (!confirm("¿Salir de la partida?")) return;
     if (T.online) { const host = T.me === 0; tStop(); NET.send({ k: host ? "lobby" : "leave" }); lobby(); } else { tStop(); home(); }
   };
+  VOICE.draw();
   return v;
 }
 function tRender() {
@@ -2883,6 +2900,176 @@ const BOTTLE = {
 };
 
 /* =====================================================================
+   VOZ · hablar por micrófono en la sala (Botellita, Stop, Ludo, Ahorcado)
+   - Llamadas de audio directas entre celulares (WebRTC / PeerJS)
+   - El anfitrión lleva la lista de quién está en la voz y la reparte
+   - Para cada pareja, llama el de asiento mayor al de asiento menor
+   ===================================================================== */
+const VOICE_ICE = { iceServers: [...ICE.iceServers,
+  { urls: ["turn:eu-0.turn.peerjs.com:3478", "turn:us-0.turn.peerjs.com:3478"], username: "peerjs", credential: "peerjsp" }] };
+const VOICE = {
+  games: ["botellita", "stop", "ludo", "ahorcado"],
+  on: false, busy: false, muted: false, listen: false, peer: null, pid: "", stream: null, ctx: null,
+  members: {}, calls: new Map(), lv: {}, needTap: false, timer: null, key: "",
+  mySeat() { return NET.role === "host" ? 0 : NET.me; },
+  inVoiceGame() { return !!(T.g && T.online && this.games.includes(T.g.id)); },
+  /* ---------- entrar / salir ---------- */
+  async join() {
+    if (this.on || this.busy || NET.st !== "ok") return;
+    this.busy = true; this.draw();
+    try { if (navigator.audioSession) navigator.audioSession.type = "play-and-record"; } catch {}
+    try {
+      this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      this.listen = false;
+    } catch (e) {
+      this.stream = this.silent(); this.listen = true;
+      toast("Sin permiso del micrófono: solo vas a escuchar. Actívalo en los ajustes del navegador.");
+    }
+    try {
+      const A = window.AudioContext || window.webkitAudioContext; if (A && !this.ctx) this.ctx = new A();
+      if (this.ctx && this.ctx.state !== "running") this.ctx.resume().catch(() => {});
+      await loadLib("peer");
+      this.peer = new Peer(Object.assign({ debug: 0, config: VOICE_ICE }, window.__PEEROPT || {}));
+      this.peer.on("call", c => this.incoming(c));
+      this.peer.on("error", e => { if (e && e.type === "peer-unavailable") return; });
+      this.peer.on("disconnected", () => { try { this.peer && !this.peer.destroyed && this.peer.reconnect(); } catch {} });
+      this.pid = await new Promise((res, rej) => { this.peer.once("open", res); setTimeout(() => rej(new Error("t")), 12000); });
+    } catch (e) { this.busy = false; this.stop(); toast("No se pudo conectar la voz. Revisa tu internet e intenta otra vez."); this.draw(); return; }
+    this.on = true; this.busy = false; this.muted = this.listen;
+    this.track(this.mySeat(), this.stream, true);
+    this.announce({ k: "vj", pid: this.pid, m: this.muted });
+    this.timer = setInterval(() => this.tick(), 150);
+    sfx.pick(); this.draw();
+  },
+  leave(quiet) {
+    if (!this.on && !this.busy) return;
+    if (!quiet && NET.st === "ok") this.announce({ k: "vl" });
+    this.stop(); this.draw();
+  },
+  stop() {
+    clearInterval(this.timer); this.timer = null;
+    for (const c of this.calls.values()) this.drop(c); this.calls.clear();
+    if (this.stream) this.stream.getTracks().forEach(t => t.stop()); this.stream = null;
+    try { this.peer && this.peer.destroy(); } catch {} this.peer = null; this.pid = "";
+    this.on = false; this.busy = false; this.lv = {}; this.needTap = false;
+    if (NET.st !== "ok") this.members = {};
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
+  },
+  silent() {                                                   // stream mudo para quien solo escucha
+    const A = window.AudioContext || window.webkitAudioContext; if (!this.ctx && A) this.ctx = new A();
+    return this.ctx ? this.ctx.createMediaStreamDestination().stream : new MediaStream();
+  },
+  mute(v) {
+    if (!this.on || this.listen) return;
+    this.muted = v === undefined ? !this.muted : !!v;
+    if (this.stream) this.stream.getAudioTracks().forEach(t => t.enabled = !this.muted);
+    this.announce({ k: "vm", m: this.muted }); this.draw();
+  },
+  /* ---------- señales por la sala ---------- */
+  announce(o) {
+    if (NET.role === "host") this.hostMsg(Object.assign({}, o, { from: 0 }));
+    else NET.send(o);
+  },
+  hostMsg(m) {                                                  // el anfitrión actualiza la lista y la reparte
+    const s = m.from;
+    if (m.k === "vj") this.members[s] = { pid: String(m.pid || "").slice(0, 64), m: !!m.m };
+    else if (m.k === "vl") delete this.members[s];
+    else if (m.k === "vm") { if (!this.members[s]) return; this.members[s].m = !!m.m; }
+    this.bcast();
+  },
+  bcast() { NET.send({ k: "vr", mem: this.members }); this.onMembers(this.members); },
+  seatLeft(seat) { if (NET.role === "host" && this.members[seat]) { delete this.members[seat]; this.bcast(); } },
+  onMembers(mem) {
+    this.members = mem || {};
+    for (const [s, c] of [...this.calls]) if (!this.members[s] || this.members[s].pid !== c.pid) { this.drop(c); this.calls.delete(+s); }
+    this.connect(); this.draw();
+  },
+  connect() {
+    if (!this.on || !this.peer) return;
+    const me = this.mySeat();
+    for (const k in this.members) {
+      const s = +k, mm = this.members[k]; if (s === me || s > me || !mm.pid) continue;
+      const c = this.calls.get(s); if (c && (c.ok || Date.now() - c.t0 < 9000)) continue;
+      if (c) { this.drop(c); this.calls.delete(s); }
+      try { const call = this.peer.call(mm.pid, this.stream, { metadata: { seat: me } }); if (call) this.wire(call, s, mm.pid); } catch {}
+    }
+  },
+  incoming(call) {
+    if (!this.on) { try { call.close(); } catch {} return; }
+    const s = +((call.metadata && call.metadata.seat) ?? -1); if (s < 0) { try { call.close(); } catch {} return; }
+    const old = this.calls.get(s); if (old) { this.drop(old); this.calls.delete(s); }
+    call.answer(this.stream); this.wire(call, s, call.peer);
+  },
+  wire(call, s, pid) {
+    const c = { call, seat: s, pid, t0: Date.now(), ok: false, el: null, an: null };
+    this.calls.set(s, c);
+    call.on("stream", st => {
+      c.ok = true;
+      if (!c.el) { c.el = document.createElement("audio"); c.el.autoplay = true; c.el.setAttribute("playsinline", ""); $("#vca").appendChild(c.el); }
+      c.el.srcObject = st; const p = c.el.play(); if (p && p.catch) p.catch(() => { this.needTap = true; this.draw(); });
+      c.an = this.track(s, st, false); this.draw();
+    });
+    const gone = () => { if (this.calls.get(s) === c) { this.drop(c); this.calls.delete(s); this.draw(); } };
+    call.on("close", gone); call.on("error", gone);
+  },
+  drop(c) { try { c.call.close(); } catch {} if (c.el) { c.el.srcObject = null; c.el.remove(); } if (c.an) try { c.an.src.disconnect(); } catch {} delete this.lv[c.seat]; },
+  track(seat, st, mine) {                                       // medidor para saber quién habla
+    if (!this.ctx || !st.getAudioTracks().length) return null;
+    try {
+      const src = this.ctx.createMediaStreamSource(st), an = this.ctx.createAnalyser(); an.fftSize = 512; src.connect(an);
+      const o = { src, an, buf: new Uint8Array(an.fftSize), seat, mine }; (this.meters = this.meters || {})[seat] = o; return o;
+    } catch { return null; }
+  },
+  unlock() { this.needTap = false; if (this.ctx) this.ctx.resume().catch(() => {}); for (const c of this.calls.values()) if (c.el) c.el.play().catch(() => {}); this.draw(); },
+  /* ---------- cada 150 ms: volumen, contexto y reconexión ---------- */
+  tick() {
+    if (!this.on) return;
+    if (NET.st !== "ok") { this.leave(true); return; }
+    if (E.st !== "off" || (T.g && !this.inVoiceGame())) { this.leave(); toast("La voz se apagó: este juego no tiene chat de voz"); return; }
+    const me = this.mySeat(); let ch = false;
+    for (const k in this.meters || {}) {
+      const o = this.meters[k]; if (!o) continue; const s = +k;
+      if (s !== me && !this.calls.has(s)) { delete this.meters[k]; continue; }
+      o.an.getByteTimeDomainData(o.buf); let sum = 0; for (let i = 0; i < o.buf.length; i += 4) { const v = (o.buf[i] - 128) / 128; sum += v * v; }
+      const talk = Math.sqrt(sum / (o.buf.length / 4)) > .035 && !(s === me && this.muted);
+      if (!!this.lv[s] !== talk) { this.lv[s] = talk; ch = true; }
+    }
+    if (ch) this.paint();
+    if (this.inVoiceGame() !== !!$(".vc-row") || (!T.g && E.st === "off") !== !!$("#vcf")) this.draw();
+    if ((this.k2 = (this.k2 || 0) + 1) % 20 === 0) this.connect();   // reintento cada 3 s
+  },
+  /* ---------- interfaz ---------- */
+  draw() {
+    let row = $(".vc-row");
+    const want = NET.st === "ok" && this.inVoiceGame();
+    if (want && !row) { const tg = $(".tg"), bar = tg && $(".tg-bar", tg); if (bar) { row = h(`<div class="vc-row"></div>`); bar.after(row); } }
+    if (row && !want) { row.remove(); row = null; }
+    let fl = $("#vcf"); const float = this.on && !T.g && E.st === "off";
+    if (float && !fl) { fl = h(`<button id="vcf" aria-label="Micrófono"></button>`); document.body.appendChild(fl); fl.onclick = () => this.listen ? this.leave() : this.mute(); }
+    if (fl && !float) { fl.remove(); fl = null; }
+    if (fl) { fl.classList.toggle("off", this.muted); fl.innerHTML = this.muted ? "🔇" : "🎙️"; }
+    if (!row) return;
+    const me = this.mySeat();
+    if (!this.on) {
+      const n = Object.keys(this.members).length;
+      row.innerHTML = `<button class="vc-join" ${this.busy ? "disabled" : ""}>${this.busy ? "Conectando la voz…" : `🎤 Hablar por voz${n ? ` · ${n} conectado${n > 1 ? "s" : ""}` : ""}`}</button>`;
+      $(".vc-join", row).onclick = () => this.join(); return;
+    }
+    const seats = Object.keys(this.members).map(Number).sort((a, b) => a - b);
+    row.innerHTML = `<button class="vc-mic ${this.muted ? "off" : ""}" aria-label="Silenciar">${this.listen ? "🔈" : this.muted ? "🔇" : "🎙️"}</button>
+      <div class="vc-ppl">${seats.map(s => { const mm = this.members[s], c = this.calls.get(s), wait = s !== me && !(c && c.ok);
+        return `<span class="vc-p ${wait ? "wait" : ""}" data-s="${s}" style="--c:${COL[s % COL.length]}"><i>${esc((NET.names[s] || "?").slice(0, 1))}</i>${mm.m ? "<u>🔇</u>" : ""}<b>${s === me ? "Tú" : esc(NET.names[s] || "Amigo")}</b></span>`; }).join("")}</div>
+      ${this.needTap ? `<button class="vc-tap">🔈 Toca para oír</button>` : ""}<button class="vc-x" aria-label="Salir de la voz">✕</button>`;
+    $(".vc-mic", row).onclick = () => this.listen ? toast("Estás en modo escuchar (sin micrófono)") : this.mute();
+    $(".vc-x", row).onclick = () => this.leave();
+    const tp = $(".vc-tap", row); if (tp) tp.onclick = () => this.unlock();
+    this.paint();
+  },
+  paint() { document.querySelectorAll(".vc-p").forEach(el => el.classList.toggle("talk", !!this.lv[+el.dataset.s])); },
+};
+document.body.appendChild(h(`<div id="vca" hidden></div>`));
+
+/* =====================================================================
    PANTALLAS (HTML): inicio · cómo se juega · nombres · resultado
    ===================================================================== */
 const ART = {
@@ -3220,8 +3407,9 @@ function onNetJoined() { sfx.pick(); vib(60); lobby(); }
 function onNetRoster(ev, seat, name, timeout) {
   const inLobby = !!document.querySelector(".lobbyv");
   if (NET.role === "host") {
-    if (ev === "join") { toast(`${name} entró a la sala`); sfx.pick(); }
+    if (ev === "join") { toast(`${name} entró a la sala`); sfx.pick(); if (Object.keys(VOICE.members).length) VOICE.bcast(); }
     if (ev === "left") {
+      VOICE.seatLeft(seat);
       toast(`${name || "Alguien"} ${timeout ? "se desconectó" : "salió de la sala"}`);
       const inGame = (E.st !== "off" && NET.gseats.includes(seat)) || (T.g && T.online && (T.seats || []).includes(seat));
       if (inGame) { if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); return; }
@@ -3273,7 +3461,7 @@ onNetMsg = function (m) {
   _onNetMsg(m);
 };
 
-window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, tApply, tAct, launch, S };
+window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, VOICE, tApply, tAct, launch, S };
 /* arranque: si el link trae #sala-XXXX, ir directo a unirse */
 (() => { const m = location.hash.match(/sala-([A-Z0-9]{4})/i); if (m) onlineMenu(m[1].toUpperCase()); else home(); })();
 function phoneOnline(id, me) {
