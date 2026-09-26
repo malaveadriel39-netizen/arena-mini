@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d1f">
 <title>Arena Mini</title>
-<meta name="description" content="12 juegos para jugar con amigos, en el mismo celular o en línea: Ajedrez, Ludo, Stop, Botellita, Ahorcado y más.">
+<meta name="description" content="13 juegos para jugar con amigos, en el mismo celular o en línea: Ajedrez, Ludo, Stop, Botellita, Ahorcado y más.">
 <meta property="og:title" content="Arena Mini: juegos con amigos">
 <meta property="og:description" content="Ajedrez, Ludo, Última Carta, Stop, Botellita, Ahorcado, ¿Quién es? y más. Sin descargar nada.">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -320,7 +320,9 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .cf-panel{display:flex;flex-direction:column;align-items:center;gap:5px;width:100%}
 .cf-dock{display:none}.cf.zoom .cf-dock{display:block;background:linear-gradient(180deg,#1b2455,#111838);border-radius:16px;padding:10px;box-shadow:inset 0 0 0 1px rgba(216,182,90,.2)}
 .cf.zoom .cf-dock .die{width:34px}.cf.zoom .cf-cardv{position:fixed;z-index:65}.cf.zoom .cf-card{max-width:340px}
-.cf-t .nm.long{font-size:.8em;letter-spacing:-.02em}
+.cf-t .nm.long{font-size:.74em;letter-spacing:-.03em}.s-b .nm,.s-t .nm{font-size:.9em;letter-spacing:-.02em;overflow-wrap:normal}
+.s-b.built .band,.s-t.built .band{height:40%}.s-l.built .band,.s-r.built .band{width:30%}.s-b.built.ty-PROPERTY{padding-top:58%}.s-t.built.ty-PROPERTY{padding-bottom:58%}.s-l.built.ty-PROPERTY{padding-right:31%}.s-r.built.ty-PROPERTY{padding-left:31%}.s-l.built .nm,.s-r.built .nm{font-size:.82em}
+.s-l.built .band svg,.s-r.built .band svg{width:215%;height:46%}
 .cf-t{appearance:none;border:0;padding:0 1px;margin:0;position:relative;background:var(--ivory);color:var(--ink2);font:800 clamp(5.4px,1.75vw,10px)/1.05 var(--body);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;overflow:hidden;cursor:pointer;border-radius:3px;text-align:center;min-width:0;min-height:0}
 .cf.zoom .cf-t{font-size:clamp(8px,3.3vw,14px)}
 .cf-t:focus-visible{outline:2px solid var(--goldc);outline-offset:1px;z-index:2}
@@ -345,7 +347,8 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .cf-mid>*{position:relative}
 .cf-brand{font:900 clamp(11px,4vw,20px) var(--body);letter-spacing:.2em;color:#e8e2d0}.cf-brand b{color:var(--goldc);font-weight:900}
 .cf-round{font:800 clamp(8px,2.6vw,11px) var(--body);color:#9aa0cf;letter-spacing:.08em;text-transform:uppercase;margin-top:-4px}
-.has-offer .cf-brand,.has-offer .cf-round{display:none}
+.has-offer .cf-brand,.has-offer .cf-round,.ph-debt .cf-brand,.ph-debt .cf-round{display:none}
+.ph-auction .cf-dice,.ph-trade .cf-dice,.ph-debt .cf-dice,.ph-auction .cf-tip,.ph-trade .cf-tip{display:none}.cf.zoom .cf-dice{display:flex}
 .cf-dice{display:flex;gap:8px}.cf-dice.dim{opacity:.3}
 .die{width:clamp(24px,8.4vw,40px);aspect-ratio:1;background:#fbf8f1;border-radius:22%;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:13%;box-sizing:border-box;box-shadow:0 3px 0 #c9c2b0,0 6px 14px rgba(0,0,0,.4)}
 .die b{border-radius:50%}.die b.on{background:var(--ink2);margin:12%}
@@ -398,6 +401,30 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .cf-note,.cf-desc{font:700 12.5px/1.4 var(--body);color:#c8cbe8}.cf-desc{font-size:14px;color:#e9e4d4}
 .cf-float{position:fixed;z-index:70;transform:translateX(-50%);font:900 14px var(--body);pointer-events:none;animation:cfFloat 1.2s forwards;text-shadow:0 2px 4px rgba(0,0,0,.7)}.cf-float.up{color:#3ddc84}.cf-float.down{color:#ff7b7b}
 @keyframes cfFloat{0%{opacity:0;transform:translate(-50%,6px)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-34px)}}
+.cf-pc.ap{box-shadow:inset 0 0 0 2px var(--c),0 0 0 2px rgba(216,182,90,.6)}
+.cf-t .band svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.s-l .band svg,.s-r .band svg{left:50%;top:50%;width:294%;height:34%;transform:translate(-50%,-50%) rotate(90deg)}.s-r .band svg{transform:translate(-50%,-50%) rotate(-90deg)}.s-t .band svg{transform:rotate(180deg)}
+.cf-t.lv4{box-shadow:inset 0 0 0 1.5px var(--goldc)}
+.cf-t.mort .own{background:repeating-linear-gradient(45deg,var(--oc) 0 3px,transparent 3px 6px)!important}
+.cf-b.tool{background:rgba(216,182,90,.16);color:#f0dfae;box-shadow:inset 0 0 0 1px rgba(216,182,90,.35)}
+.cf-bidders{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:5px}.cf-bidders span{font:800 clamp(8.5px,2.5vw,11px) var(--body);padding:2px 7px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid transparent}.cf-bidders .on{border-color:var(--c)}.cf-bidders .lead{background:rgba(216,182,90,.25);color:#f0dfae}
+.cf-tc{display:flex;align-items:center;gap:6px;background:var(--ivory);color:var(--ink2);border-radius:10px;padding:6px 8px;max-width:100%;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.cf-tc>span{font-size:16px;opacity:.5}.cf-tc>div{flex:1;min-width:0}.cf-tc small{display:block;font:900 clamp(8px,2.4vw,10px) var(--body);opacity:.6;text-transform:uppercase}.cf-tc p{margin:2px 0 0;display:flex;flex-wrap:wrap;gap:3px;font:800 clamp(9px,2.7vw,12px) var(--body)}
+.cf-tc i{font-style:normal;border-left:4px solid var(--dc);padding-left:3px}
+.cf-mini{appearance:none;border:0;margin-left:auto;background:rgba(216,182,90,.18);color:#f0dfae;font:900 12px var(--body);padding:6px 10px;border-radius:10px;cursor:pointer}
+.cf-gh{display:flex;align-items:center;gap:6px;margin:12px 0 6px;font:900 13px var(--body)}.cf-gh i{width:10px;height:10px;border-radius:3px;background:var(--dc)}.cf-gh small{color:#a3a8d4;font-weight:800}
+.cf-mr{background:rgba(255,255,255,.05);border-left:4px solid var(--dc);border-radius:10px;padding:8px 10px;margin-bottom:6px}
+.cf-mr .h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cf-mr .h b{font:900 14px var(--body)}.cf-mr .h small{color:#c8cbe8;font:800 12px var(--body)}
+.lvbar{display:flex;gap:2px;margin-left:auto}.lvbar u{width:9px;height:9px;border-radius:2px;background:rgba(255,255,255,.12)}.lvbar u.on{background:var(--goldc)}
+.cf-sh{text-align:left}.cf-mr .cf-mbt{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;justify-content:flex-start;align-items:center}.cf-mr .cf-mbt .cf-mb{flex:0 0 auto;width:auto}
+.cf-mb{appearance:none;border:0;border-radius:10px;padding:8px 10px;font:900 12.5px var(--body);color:#fff;background:#2b3470;cursor:pointer}.cf-mb.pri{background:linear-gradient(180deg,#e2c16a,#b8923a);color:#1d1604}.cf-mb:disabled{opacity:.38;cursor:default}
+.cf-mr .why{margin:5px 0 0;font:700 11px var(--body);color:#a3a8d4}
+.cf-debt{background:rgba(255,90,95,.12);border:1px solid rgba(255,90,95,.35);border-radius:12px;padding:10px 12px;font:800 13.5px var(--body);margin:0 0 8px}
+.cf-with{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.cf-with button{appearance:none;border:0;display:flex;align-items:center;gap:5px;padding:7px 10px;border-radius:12px;background:rgba(255,255,255,.06);color:#fff;font:800 13px var(--body);cursor:pointer}.cf-with button.on{box-shadow:inset 0 0 0 2px var(--c);background:rgba(255,255,255,.12)}.cf-with .cf-shape{width:16px;height:16px}
+.cf-tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cf-tcol{background:rgba(255,255,255,.04);border-radius:12px;padding:8px;min-width:0}.cf-tcol .cf-gh{margin:0 0 6px}.cf-tcol .cf-gh i{border-radius:50%}
+.cf-cash{display:flex;align-items:center;gap:3px}.cf-cash b{flex:1;text-align:center;font:900 14px var(--body);color:var(--goldc)}.cf-cash button{appearance:none;border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:8px;padding:6px 5px;font:900 11px var(--body);cursor:pointer}
+.cf-tcol>small{display:block;font:700 10.5px var(--body);margin:3px 0 6px}
+.cf-tp{display:grid;gap:4px}.cf-tp button{appearance:none;border:0;text-align:left;background:rgba(255,255,255,.06);color:#fff;border-left:4px solid var(--dc,#d8b65a);border-radius:8px;padding:7px 8px;font:800 12px var(--body);cursor:pointer}.cf-tp button.on{background:rgba(216,182,90,.28);box-shadow:inset 0 0 0 1px var(--goldc)}.cf-tp button:disabled{opacity:.4}
 @media (prefers-reduced-motion:reduce){.cf *,.cf-float,.cf-sh{animation:none!important;transition:none!important}}
 #mute{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer}
 body.playing #mute{display:none}
@@ -3007,13 +3034,16 @@ const CF_RULES = {
   detention: { fine: 50, maxTurns: 3, doublesRelease: true },
   festivalPot: true,               // impuestos y multas van al bote de la Plaza del Festival
   districtControlMult: 2,          // DISTRICT CONTROL: renta base ×2 si tienes todo el distrito
-  levelMult: [1, 5, 14, 32, 46],   // renta por nivel = renta base × multiplicador
+  levelMult: [1, 7, 20, 55, 80],   // renta por nivel = base × multiplicador (ajustado con simulaciones; TODO_BALANCE: revisar con la IA de la parte 4)
   transportRent: [30, 60, 120, 200],
   utilityMult: [4, 10, 20],
-  mortgage: { rate: .5, interest: .1 },               // TODO_PHASE2 (hipotecas)
-  building: { maxLevel: 4, evenBuild: true, sellRate: .5 }, // TODO_PHASE2 (construcción)
+  mortgage: { rate: .5, interest: .1 },               // hipoteca: recibes 50 % del precio; recuperarla cuesta +10 %
+  building: { maxLevel: 4, evenBuild: true, sellRate: .5 }, // construir parejo en el distrito; vender devuelve 50 %
+  sellToBank: { enabled: true, rate: .5 },            // vender una propiedad sin construir al banco (50 %)
+  auction: { minBid: 10, minInc: 10 },
+  trade: { mortgageFee: .1 },                         // quien recibe una propiedad hipotecada paga 10 % de interés
   victory: { mode: "classic", maxRounds: 20 },        // classic: último solvente · rounds: mayor patrimonio tras X rondas
-  features: { build: false, auction: false, mortgage: false, trade: false }, // se activan en la parte 2
+  features: { build: true, auction: true, mortgage: true, trade: true },
   logSize: 90, txSize: 120,
 };
 /* nombres de los niveles de construcción */
@@ -3156,11 +3186,15 @@ const CF_KEEP = {
 /* =====================================================================
    CITY FORTUNE · MOTOR DE JUEGO (sin DOM, sin interfaz)
    Solo el anfitrión (o el celular local) ejecuta CF.act(). Los demás
-   solo piden acciones: { t: "ROLL" | "BUY" | "DECLINE" | "END_TURN" |
-   "PAY_FINE" | "USE_CARD" | "PAY_RENT" | "USE_PROTECTION", aid }
+   solo piden acciones: ROLL · BUY · DECLINE · END_TURN · PAY_FINE ·
+   USE_CARD · PAY_RENT · USE_PROTECTION · BUILD · SELL_BUILDING ·
+   MORTGAGE · UNMORTGAGE · SELL_PROPERTY · BID · AUC_PASS ·
+   TRADE_PROPOSE · TRADE_ACCEPT · TRADE_REJECT · PAY_DEBT ·
+   DECLARE_BANKRUPTCY   (+ aid para no procesar dos veces)
    Dados, dinero, dueños, rentas, posición y ganador los decide el motor.
-   Submódulos: estado · reglas/turnos · economía · propiedades · eventos
-               · detención · bancarrota · victoria · filtro de privacidad
+   Submódulos: estado · turnos · economía · propiedades · construcción ·
+   hipotecas · eventos · detención · subastas · negociación · deudas y
+   bancarrota · victoria · filtro de privacidad
    ===================================================================== */
 const CF = (() => {
   const T40 = CF_TILES.length;
@@ -3187,7 +3221,8 @@ const CF = (() => {
       players: Array.from({ length: np }, () => ({ cash: r.startingMoney, pos: 0, jail: false, jt: 0, cards: [], out: false })),
       own: Array(T40).fill(-1), lvl: Array(T40).fill(0), mort: Array(T40).fill(false),
       pot: 0, decks: {}, rng: (seed ?? newSeed()) >>> 0, log: [], tx: [], ev: [], evn: 0, aids: {}, acts: [], w: null, why: "",
-      st: Array.from({ length: np }, () => ({ rentPaid: 0, rentGot: 0, bought: 0, spent: 0, jailed: 0, laps: 0, taxes: 0, cards: 0 })),
+      debts: [], resume: null, auc: null, trade: null, tradeBack: null, tid: 0,
+      st: Array.from({ length: np }, () => ({ rentPaid: 0, rentGot: 0, bought: 0, spent: 0, jailed: 0, laps: 0, taxes: 0, cards: 0, built: 0, trades: 0, auctions: 0, mortgages: 0 })),
     };
     s.seed0 = s.rng;
     for (const d of ["city", "market"]) s.decks[d] = shuffle(s, CF_CARDS.filter(c => c.deck === d && (!c.needs || r.features[c.needs])).map(c => c.id));
@@ -3205,11 +3240,23 @@ const CF = (() => {
     E(s, "$", { from, to, amt, why });
   }
   const sink = s => s.r.festivalPot ? "pot" : "bank";
-  /* cobra: si alcanza paga; si no, bancarrota (TODO_PHASE2: antes ofrecer vender/hipotecar) */
+  /* cobra: si alcanza, paga. Si no, pero vendiendo/hipotecando podría, queda una DEUDA que debe
+     resolver antes de seguir. Si ni así alcanza: bancarrota. */
+  const owedBy = (s, p) => s.debts.reduce((a, d) => a + (d.p === p ? d.amt : 0), 0);
+  function liquidity(s, p) {
+    let v = s.players[p].cash;
+    for (let i = 0; i < T40; i++) if (s.own[i] === p) { const t = CF_TILES[i]; v += Math.floor(s.lvl[i] * (t.cost || 0) * s.r.building.sellRate); if (!s.mort[i]) v += t.mortgage; }
+    return v;
+  }
   function pay(s, p, to, amt, why) {
     amt = Math.round(amt); if (!(amt > 0)) return true;
-    const pl = s.players[p];
-    if (pl.cash >= amt) { transfer(s, p, to, amt, why); return true; }
+    const pl = s.players[p]; if (pl.out) return false;
+    const owed = owedBy(s, p);
+    if (!owed && pl.cash >= amt) { transfer(s, p, to, amt, why); return true; }
+    if (s.r.features.mortgage && liquidity(s, p) - owed >= amt) {
+      s.debts.push({ p, to, amt, why }); E(s, "DEBT", { p, to, amt });
+      log(s, `${nm(s, p)} debe ${money(amt)} (${why}) y no tiene suficiente efectivo: tiene que vender o hipotecar.`, p); return true;
+    }
     bankrupt(s, p, typeof to === "number" ? to : "bank", amt); return false;
   }
   const gain = (s, p, amt, why) => transfer(s, "bank", p, amt, why);
@@ -3222,9 +3269,10 @@ const CF = (() => {
   /* =================== PROPIEDADES =================== */
   const controls = (s, o, d) => o >= 0 && CF_DISTRICTS[d].tiles.every(i => s.own[i] === o);
   const countType = (s, o, type) => CF_TILES.filter(t => t.type === type && s.own[t.pos] === o).length;
+  const levelRent = (s, pos, lv) => Math.round(CF_TILES[pos].base * s.r.levelMult[lv] / 5) * 5;
   function rentFor(s, pos, ctx = {}) {
     const t = CF_TILES[pos], o = s.own[pos], r = s.r; if (o < 0 || s.mort[pos]) return 0;
-    if (t.type === "PROPERTY") { const lv = s.lvl[pos]; return lv > 0 ? t.rent[lv] : t.base * (controls(s, o, t.d) ? r.districtControlMult : 1); }
+    if (t.type === "PROPERTY") { const lv = s.lvl[pos]; return lv > 0 ? levelRent(s, pos, lv) : t.base * (controls(s, o, t.d) ? r.districtControlMult : 1); }
     if (t.type === "TRANSPORT") return r.transportRent[countType(s, o, "TRANSPORT") - 1] * (ctx.mult || 1);
     if (t.type === "UTILITY") return (ctx.roll || 0) * (ctx.utilX || r.utilityMult[countType(s, o, "UTILITY") - 1]);
     return 0;
@@ -3301,7 +3349,7 @@ const CF = (() => {
       case "PAY": pay(s, p, sink(s), c.value, "evento"); break;
       case "ALL_PAY_POT": for (const i of s.players.map((q, i) => i)) if (!s.players[i].out) pay(s, i, sink(s), c.value, "evento"); break;
       case "COLLECT_EACH": for (const q of others) pay(s, q, p, c.value, "evento"); break;
-      case "PAY_EACH": { const tot = c.value * others.length; if (pl.cash >= tot) others.forEach(q => transfer(s, p, q, c.value, "evento")); else bankrupt(s, p, "bank", tot); break; }
+      case "PAY_EACH": for (const q of others) if (!pay(s, p, q, c.value, "evento")) break; break;
       case "GAIN_PER_PROPERTY": { const n = s.own.filter(o => o === p).length; if (n) gain(s, p, n * c.value, "evento"); else log(s, `${nm(s, p)} no tiene propiedades: no recibe nada.`, p); break; }
       case "PAY_PER_BUILDING": { let tot = 0; s.own.forEach((o, i) => { if (o === p) tot += s.lvl[i] * c.value + (s.lvl[i] >= 4 ? c.top : 0); }); if (tot) pay(s, p, sink(s), tot, "evento"); else log(s, `${nm(s, p)} no tiene construcciones: no paga nada.`, p); break; }
       case "MOVE_TO": moveTo(s, p, c.value); resolveTile(s, p, { roll: s.dice ? s.dice[0] + s.dice[1] : 7 }, depth + 1); break;
@@ -3316,12 +3364,15 @@ const CF = (() => {
     }
   }
 
-  /* =================== BANCARROTA (versión parte 1) ===================
-     TODO_PHASE2: antes de quebrar, el jugador podrá vender construcciones
-     e hipotecar para cubrir la deuda (liquidación). */
+  /* =================== BANCARROTA ===================
+     Solo llega aquí si ni vendiendo todo alcanza, o si el jugador se rinde.
+     Construcciones → se venden al banco; efectivo y propiedades → al acreedor
+     (o al banco, que las deja libres y sin hipoteca). */
   function bankrupt(s, p, creditor, owed) {
     const pl = s.players[p]; if (pl.out) return;
-    const toP = typeof creditor === "number" && !s.players[creditor].out;
+    const toP = typeof creditor === "number" && creditor !== p && !s.players[creditor].out;
+    for (let i = 0; i < T40; i++) if (s.own[i] === p && s.lvl[i] > 0) { gain(s, p, Math.floor(s.lvl[i] * CF_TILES[i].cost * s.r.building.sellRate), "venta"); s.lvl[i] = 0; }
+    s.debts = s.debts.filter(d => d.p !== p);
     if (pl.cash > 0) transfer(s, p, toP ? creditor : "bank", pl.cash, "quiebra");
     for (let i = 0; i < T40; i++) if (s.own[i] === p) { if (toP) s.own[i] = creditor; else { s.own[i] = -1; s.lvl[i] = 0; s.mort[i] = false; } }
     while (pl.cards.length) useCard(s, p, 0);
@@ -3330,6 +3381,96 @@ const CF = (() => {
     log(s, `💥 ${nm(s, p)} quebró (debía ${money(owed)}). ${toP ? `Sus propiedades pasan a ${nm(s, creditor)}.` : "Sus propiedades vuelven al banco."}`, p);
     checkVictory(s);
   }
+
+  /* =================== CONSTRUCCIÓN · HIPOTECAS · VENTAS (validadores) ===================
+     Devuelven null si se puede, o el motivo. La interfaz y la IA usan estos mismos. */
+  const okPos = pos => Number.isInteger(pos) && pos >= 0 && pos < T40;
+  const dTiles = pos => CF_DISTRICTS[CF_TILES[pos].d].tiles;
+  const unmortCost = (s, pos) => Math.round(CF_TILES[pos].mortgage * (1 + s.r.mortgage.interest));
+  const check = {
+    build(s, p, pos, free) {
+      if (!s.r.features.build) return "disabled"; if (!okPos(pos)) return "tile";
+      const t = CF_TILES[pos]; if (t.type !== "PROPERTY") return "tile"; if (s.own[pos] !== p) return "owner";
+      if (!controls(s, p, t.d)) return "district"; const D = dTiles(pos);
+      if (D.some(i => s.mort[i])) return "mortgaged"; if (s.lvl[pos] >= s.r.building.maxLevel) return "max";
+      if (s.r.building.evenBuild && s.lvl[pos] > Math.min(...D.map(i => s.lvl[i]))) return "even";
+      if (!free && s.players[p].cash < t.cost) return "cash"; return null;
+    },
+    sell(s, p, pos) {
+      if (!okPos(pos)) return "tile"; const t = CF_TILES[pos]; if (t.type !== "PROPERTY" || s.own[pos] !== p) return "owner";
+      if (s.lvl[pos] <= 0) return "none"; if (s.r.building.evenBuild && s.lvl[pos] < Math.max(...dTiles(pos).map(i => s.lvl[i]))) return "even"; return null;
+    },
+    mortgage(s, p, pos) {
+      if (!s.r.features.mortgage) return "disabled"; if (!okPos(pos)) return "tile"; const t = CF_TILES[pos];
+      if (!CF_OWNABLE(t) || s.own[pos] !== p) return "owner"; if (s.mort[pos]) return "already";
+      if (t.type === "PROPERTY" && dTiles(pos).some(i => s.lvl[i] > 0)) return "buildings"; return null;
+    },
+    unmortgage(s, p, pos) {
+      if (!okPos(pos)) return "tile"; if (s.own[pos] !== p) return "owner"; if (!s.mort[pos]) return "not";
+      if (s.players[p].cash < unmortCost(s, pos)) return "cash"; return null;
+    },
+    sellProp(s, p, pos) {
+      if (!s.r.sellToBank.enabled) return "disabled"; if (!okPos(pos)) return "tile"; const t = CF_TILES[pos];
+      if (!CF_OWNABLE(t) || s.own[pos] !== p) return "owner"; if (s.mort[pos]) return "mortgaged";
+      if (t.type === "PROPERTY" && dTiles(pos).some(i => s.lvl[i] > 0)) return "buildings"; return null;
+    },
+    /* negociación: todo lo ofrecido debe existir y ser de quien lo ofrece */
+    trade(s, from, o) {
+      if (!s.r.features.trade) return "disabled";
+      const to = o.to; if (!Number.isInteger(to) || to < 0 || to >= s.np || to === from || s.players[to].out) return "target";
+      const side = (who, x) => {
+        if (x.cash > s.players[who].cash) return "cash";
+        for (const pos of x.props) { if (!okPos(pos) || s.own[pos] !== who) return "owner"; if (CF_TILES[pos].type === "PROPERTY" && dTiles(pos).some(i => s.lvl[i] > 0)) return "buildings"; }
+        for (const id of x.cards) if (!s.players[who].cards.includes(id)) return "card";
+        return null;
+      };
+      const e = side(from, o.give) || side(to, o.get); if (e) return e;
+      if (!o.give.cash && !o.get.cash && !o.give.props.length && !o.get.props.length && !o.give.cards.length && !o.get.cards.length) return "empty";
+      const fee = props => props.reduce((a, pos) => a + (s.mort[pos] ? Math.round(CF_TILES[pos].mortgage * s.r.trade.mortgageFee) : 0), 0);
+      if (s.players[from].cash - o.give.cash + o.get.cash < fee(o.get.props)) return "fee";
+      if (s.players[to].cash - o.get.cash + o.give.cash < fee(o.give.props)) return "fee";
+      return null;
+    },
+  };
+  function normTrade(a) {
+    const side = x => {
+      x = x && typeof x === "object" ? x : {};
+      const cash = x.cash === undefined ? 0 : x.cash, props = Array.isArray(x.props) ? x.props : [], cards = Array.isArray(x.cards) ? x.cards : [];
+      if (!Number.isInteger(cash) || cash < 0 || cash > 1e6) return null;
+      if (props.length > 28 || cards.length > 10 || !props.every(Number.isInteger) || !cards.every(Number.isInteger)) return null;
+      if (new Set(props).size !== props.length || new Set(cards).size !== cards.length) return null;
+      return { cash, props: props.slice(), cards: cards.slice() };
+    };
+    const give = side(a.give), get = side(a.get); if (!give || !get) return null;
+    return { to: a.to, give, get };
+  }
+  function build(s, p, pos, free) {
+    const t = CF_TILES[pos]; if (!free) transfer(s, p, "bank", t.cost, "construcción");
+    s.lvl[pos]++; s.st[p].built++; E(s, "BUILD", { p, pos, lvl: s.lvl[pos], free: !!free });
+    log(s, `${nm(s, p)} construyó ${CF_LEVELS[s.lvl[pos]] === "Local" ? "un Local" : CF_LEVELS[s.lvl[pos]] === "Edificio" ? "un Edificio" : CF_LEVELS[s.lvl[pos]] === "Torre" ? "una Torre" : "un Complejo"} en ${t.name}${free ? " gratis" : ` por ${money(t.cost)}`}.`, p);
+  }
+
+  /* =================== SUBASTAS (por turnos: ofertar o retirarse) =================== */
+  function startAuction(s, pos, from) {
+    const a = alive(s), k = a.indexOf(from), order = a.slice(k + 1).concat(a.slice(0, k + 1));
+    s.auc = { pos, bid: 0, lead: -1, act: order, i: 0 }; s.phase = "auction";
+    E(s, "AUCTION", { pos }); log(s, `🔨 Subasta de ${CF_TILES[pos].name}. Empieza en ${money(s.r.auction.minBid)}.`);
+  }
+  function aucNext(s, removed) {
+    const A = s.auc; if (!removed) A.i++;
+    if (!A.act.length || (A.act.length === 1 && A.act[0] === A.lead)) return aucEnd(s);
+    A.i %= A.act.length; if (A.act[A.i] === A.lead) A.i = (A.i + 1) % A.act.length;
+  }
+  function aucEnd(s) {
+    const A = s.auc, t = CF_TILES[A.pos];
+    if (A.lead >= 0) {
+      transfer(s, A.lead, "bank", A.bid, "subasta"); s.own[A.pos] = A.lead; s.st[A.lead].auctions++; s.st[A.lead].spent += A.bid;
+      E(s, "AUC_WON", { p: A.lead, pos: A.pos, amt: A.bid }); log(s, `🔨 ${nm(s, A.lead)} ganó la subasta: ${t.name} por ${money(A.bid)}.`, A.lead);
+      if (t.type === "PROPERTY" && controls(s, A.lead, t.d)) { E(s, "DISTRICT", { p: A.lead, d: t.d }); log(s, `¡${nm(s, A.lead)} controla todo ${CF_DISTRICTS[t.d].name}! Sus rentas se duplican.`, A.lead); }
+    } else { E(s, "AUC_NONE", { pos: A.pos }); log(s, `Nadie ofertó por ${t.name}: sigue libre.`); }
+    s.auc = null; s.phase = "moving"; afterMove(s, s.turn, s.again);
+  }
+  const minBid = s => s.auc.lead < 0 ? s.r.auction.minBid : s.auc.bid + s.r.auction.minInc;
 
   /* =================== VICTORIA =================== */
   const alive = s => s.players.map((q, i) => i).filter(i => !s.players[i].out);
@@ -3354,7 +3495,7 @@ const CF = (() => {
     if (extra) { E(s, "AGAIN", { p }); log(s, `¡Dobles! ${nm(s, p)} tira otra vez.`, p); }
   }
   function nextTurn(s) {
-    s.dc = 0; s.pend = -1; s.rq = null; s.again = false;
+    s.dc = 0; s.pend = -1; s.rq = null; s.again = false; s.auc = null; s.trade = null;
     const a = alive(s); if (a.length < 2) return checkVictory(s);
     let i = s.turn; do i = (i + 1) % s.np; while (s.players[i].out);
     if (i <= s.turn) {
@@ -3392,8 +3533,9 @@ const CF = (() => {
     DECLINE(s, p) {
       if (s.phase !== "buy" || s.pend < 0) return "phase";
       log(s, `${nm(s, p)} no compró ${CF_TILES[s.pend].name}.`, p); E(s, "DECLINE", { p, pos: s.pend });
-      // TODO_PHASE2: si r.features.auction, aquí empieza la subasta
-      s.pend = -1; s.phase = "moving"; afterMove(s, p, s.again);
+      const pos = s.pend; s.pend = -1;
+      if (s.r.features.auction && alive(s).length > 1) return void startAuction(s, pos, p);
+      s.phase = "moving"; afterMove(s, p, s.again);
     },
     PAY_RENT(s, p) {
       if (s.phase !== "rentq" || !s.rq) return "phase";
@@ -3416,18 +3558,101 @@ const CF = (() => {
       if (k < 0) return "card";
       if (kind === "GET_OUT") { if (s.phase !== "turn" || !pl.jail) return "phase"; useCard(s, p, k); release(s, p); log(s, `${nm(s, p)} usó «${CF_KEEP.GET_OUT.name}» y salió.`, p); return; }
       if (kind === "EXTRA_ROLL") { if (s.phase !== "done" || pl.jail) return "phase"; useCard(s, p, k); s.dc = 0; s.phase = "turn"; E(s, "AGAIN", { p }); log(s, `${nm(s, p)} usó «${CF_KEEP.EXTRA_ROLL.name}»: tira otra vez.`, p); return; }
-      return "disabled";                                    // FREE_BUILD: TODO_PHASE2 · los demás se usan solos
+      if (kind === "FREE_BUILD") { if (!manage(s)) return "phase"; const e = check.build(s, p, a.pos, true); if (e) return e; useCard(s, p, k); build(s, p, a.pos, true); return; }
+      return "disabled";                                    // los demás se usan solos
     },
     END_TURN(s, p) { if (s.phase !== "done") return "phase"; nextTurn(s); },
+    /* ---- construcción, ventas e hipotecas: en tu turno (antes o después de tirar) o para pagar una deuda ---- */
+    BUILD(s, p, a) { if (!manage(s) || s.phase === "debt") return "phase"; const e = check.build(s, p, a.pos); if (e) return e; build(s, p, a.pos); },
+    SELL_BUILDING(s, p, a) {
+      if (!manage(s)) return "phase"; const e = check.sell(s, p, a.pos); if (e) return e;
+      const t = CF_TILES[a.pos], v = Math.floor(t.cost * s.r.building.sellRate); s.lvl[a.pos]--; gain(s, p, v, "venta");
+      E(s, "SELL", { p, pos: a.pos, lvl: s.lvl[a.pos] }); log(s, `${nm(s, p)} vendió una construcción de ${t.name} por ${money(v)}.`, p);
+    },
+    MORTGAGE(s, p, a) {
+      if (!manage(s)) return "phase"; const e = check.mortgage(s, p, a.pos); if (e) return e;
+      const t = CF_TILES[a.pos]; s.mort[a.pos] = true; s.st[p].mortgages++; gain(s, p, t.mortgage, "hipoteca");
+      E(s, "MORTGAGE", { p, pos: a.pos }); log(s, `${nm(s, p)} hipotecó ${t.name} y recibió ${money(t.mortgage)}.`, p);
+    },
+    UNMORTGAGE(s, p, a) {
+      if (!manage(s) || s.phase === "debt") return "phase"; const e = check.unmortgage(s, p, a.pos); if (e) return e;
+      const c = unmortCost(s, a.pos); transfer(s, p, "bank", c, "deshipoteca"); s.mort[a.pos] = false;
+      E(s, "UNMORTGAGE", { p, pos: a.pos }); log(s, `${nm(s, p)} recuperó ${CF_TILES[a.pos].name} pagando ${money(c)}.`, p);
+    },
+    SELL_PROPERTY(s, p, a) {
+      if (!manage(s)) return "phase"; const e = check.sellProp(s, p, a.pos); if (e) return e;
+      const t = CF_TILES[a.pos], v = Math.round(t.price * s.r.sellToBank.rate); s.own[a.pos] = -1; gain(s, p, v, "venta");
+      E(s, "SELL_PROP", { p, pos: a.pos }); log(s, `${nm(s, p)} le vendió ${t.name} al banco por ${money(v)}.`, p);
+    },
+    /* ---- subasta ---- */
+    BID(s, p, a) {
+      if (s.phase !== "auction") return "phase"; const amt = a.amt;
+      if (!Number.isInteger(amt) || amt > 1e6) return "amt"; if (amt < minBid(s)) return "low"; if (amt > s.players[p].cash) return "cash";
+      s.auc.bid = amt; s.auc.lead = p; E(s, "BID", { p, amt }); log(s, `${nm(s, p)} ofrece ${money(amt)}.`, p); aucNext(s, false);
+    },
+    AUC_PASS(s, p) {
+      if (s.phase !== "auction") return "phase"; s.auc.act.splice(s.auc.i, 1);
+      E(s, "AUC_PASS", { p }); log(s, `${nm(s, p)} se retira de la subasta.`, p); aucNext(s, true);
+    },
+    /* ---- negociación: se propone en tu turno; el otro acepta o rechaza; se aplica todo junto ---- */
+    TRADE_PROPOSE(s, p, a) {
+      if (s.phase !== "turn" && s.phase !== "done") return "phase";
+      const o = normTrade(a); if (!o) return "bad"; const e = check.trade(s, p, o); if (e) return e;
+      s.trade = { id: ++s.tid, from: p, to: o.to, give: o.give, get: o.get }; s.tradeBack = s.phase; s.phase = "trade";
+      E(s, "TRADE", { from: p, to: o.to }); log(s, `🤝 ${nm(s, p)} le propone un trato a ${nm(s, o.to)}.`, p);
+    },
+    TRADE_ACCEPT(s, p) {
+      if (s.phase !== "trade" || !s.trade) return "phase"; const T = s.trade, o = { to: T.to, give: T.give, get: T.get };
+      const e = check.trade(s, T.from, o); if (e) return e;
+      const move = (from, to, x) => {
+        if (x.cash) transfer(s, from, to, x.cash, "trato");
+        for (const pos of x.props) { s.own[pos] = to; if (s.mort[pos]) transfer(s, to, "bank", Math.round(CF_TILES[pos].mortgage * s.r.trade.mortgageFee), "interés hipoteca"); }
+        for (const id of x.cards) { const h = s.players[from].cards; h.splice(h.indexOf(id), 1); s.players[to].cards.push(id); }
+      };
+      move(T.from, T.to, T.give); move(T.to, T.from, T.get);
+      s.st[T.from].trades++; s.st[T.to].trades++;
+      E(s, "TRADE_OK", { from: T.from, to: T.to }); log(s, `🤝 ${nm(s, T.to)} aceptó el trato con ${nm(s, T.from)}.`, T.to);
+      for (const who of [T.from, T.to]) for (const d of CF_DISTRICTS.map((d, k) => k)) if (controls(s, who, d) && [...T.give.props, ...T.get.props].some(pos => CF_TILES[pos].d === d)) { E(s, "DISTRICT", { p: who, d }); log(s, `¡${nm(s, who)} controla todo ${CF_DISTRICTS[d].name}!`, who); }
+      s.phase = s.tradeBack; s.trade = null; s.tradeBack = null;
+    },
+    TRADE_REJECT(s, p) {
+      if (s.phase !== "trade" || !s.trade) return "phase";
+      E(s, "TRADE_NO", { from: s.trade.from, to: s.trade.to }); log(s, `${nm(s, p)} rechazó el trato.`, p);
+      s.phase = s.tradeBack; s.trade = null; s.tradeBack = null;
+    },
+    /* ---- deudas ---- */
+    PAY_DEBT(s, p) {
+      if (s.phase !== "debt") return "phase"; const d = s.debts[0]; if (s.players[p].cash < d.amt) return "cash";
+      const to = typeof d.to === "number" && s.players[d.to].out ? "bank" : d.to;
+      transfer(s, p, to, d.amt, d.why); s.debts.shift(); E(s, "DEBT_PAID", { p, amt: d.amt });
+      log(s, `${nm(s, p)} pagó su deuda de ${money(d.amt)}.`, p); endDebt(s);
+    },
+    DECLARE_BANKRUPTCY(s, p) {
+      if (s.phase !== "debt") return "phase"; const d = s.debts[0]; bankrupt(s, p, d.to, d.amt); endDebt(s);
+    },
   };
+  /* ¿quién puede actuar ahora? */
+  function actor(s) {
+    if (s.phase === "debt" && s.debts.length) return s.debts[0].p;
+    if (s.phase === "auction" && s.auc) return s.auc.act[s.auc.i];
+    if (s.phase === "trade" && s.trade) return s.trade.to;
+    return s.turn;
+  }
+  const manage = s => s.phase === "turn" || s.phase === "done" || s.phase === "debt";
+  function endDebt(s) { if (s.phase === "debt" && !s.debts.length) { s.phase = s.resume || "done"; s.resume = null; } }
   /* qué puede hacer cada jugador ahora (la UI y la IA solo leen esto) */
   function actions(s, p) {
-    const out = []; if (s.phase === "over" || p !== s.turn || s.players[p].out) return out;
+    const out = []; if (s.phase === "over" || p !== actor(s) || s.players[p].out) return out;
     const pl = s.players[p], has = k => findCard(s, p, k) >= 0;
+    if (s.phase === "auction") { const m = minBid(s); for (const inc of [0, 40, 90]) { const amt = m + inc; out.push({ t: "BID", amt, ok: amt <= pl.cash }); } out.push({ t: "AUC_PASS" }); return out; }
+    if (s.phase === "trade") { out.push({ t: "TRADE_ACCEPT", ok: !check.trade(s, s.trade.from, { to: s.trade.to, give: s.trade.give, get: s.trade.get }) }); out.push({ t: "TRADE_REJECT" }); return out; }
+    if (s.phase === "debt") { out.push({ t: "PAY_DEBT", ok: pl.cash >= s.debts[0].amt, amt: s.debts[0].amt }); out.push({ t: "MANAGE", ui: true }); out.push({ t: "DECLARE_BANKRUPTCY" }); return out; }
     if (s.phase === "turn") { out.push({ t: "ROLL" }); if (pl.jail) { out.push({ t: "PAY_FINE", ok: pl.cash >= s.r.detention.fine }); if (has("GET_OUT")) out.push({ t: "USE_CARD", card: "GET_OUT" }); } }
     if (s.phase === "buy") { out.push({ t: "BUY", ok: pl.cash >= CF_TILES[s.pend].price }); out.push({ t: "DECLINE" }); }
     if (s.phase === "rentq") { out.push({ t: "PAY_RENT" }); out.push({ t: "USE_PROTECTION" }); }
     if (s.phase === "done") { out.push({ t: "END_TURN" }); if (!pl.jail && has("EXTRA_ROLL")) out.push({ t: "USE_CARD", card: "EXTRA_ROLL" }); }
+    if ((s.phase === "turn" || s.phase === "done") && (s.r.features.build || s.r.features.mortgage) && s.own.includes(p)) out.push({ t: "MANAGE", ui: true });
+    if ((s.phase === "turn" || s.phase === "done") && s.r.features.trade && alive(s).length > 1) out.push({ t: "TRADE", ui: true });
     return out;
   }
   /* punto único de entrada: valida, aplica, registra. Devuelve {ok, s} o {ok:false, err} */
@@ -3436,12 +3661,13 @@ const CF = (() => {
     if (!a || typeof a !== "object" || typeof a.t !== "string" || !H.hasOwnProperty(a.t)) return { ok: false, err: "unknown" };
     if (!Number.isInteger(p) || p < 0 || p >= s.np) return { ok: false, err: "player" };
     if (s.players[p].out) return { ok: false, err: "out" };
-    if (p !== s.turn) return { ok: false, err: "turn" };
+    if (p !== actor(s)) return { ok: false, err: "turn" };
     const aid = a.aid !== undefined ? String(a.aid).slice(0, 40) : null;
     if (aid && (s.aids[p] || []).includes(aid)) return { ok: false, err: "dup" };
     s.ev = [];
     const e = H[a.t](s, p, a); if (e) return { ok: false, err: e };
     if (s.phase !== "over" && s.players[s.turn].out) nextTurn(s);
+    if (s.phase !== "over") { s.debts = s.debts.filter(d => !s.players[d.p].out); if (s.debts.length && s.phase !== "debt") { s.resume = s.phase; s.phase = "debt"; } else endDebt(s); }
     if (aid) { const L = s.aids[p] = s.aids[p] || []; L.push(aid); if (L.length > 40) L.shift(); }
     s.n++; s.evn++;
     s.acts.push({ n: s.n, p, t: a.t, c: a.card, aid, at: Date.now() });
@@ -3454,7 +3680,7 @@ const CF = (() => {
     o.players = s.players.map((q, i) => i === p ? q : Object.assign({}, q, { cards: q.cards.map(() => -1) }));
     return o;
   }
-  return { newGame, act, actions, redact, assets, rentFor, controls, alive, money, H, _: { rand, rollDice, transfer, pay, moveBy, moveTo, resolveTile, drawCard, bankrupt, nextTurn, toDetention, findCard } };
+  return { newGame, act, actions, actor, check, redact, assets, liquidity, unmortCost, minBid: s => minBid(s), rentFor, levelRent, controls, alive, money, H, _: { rand, rollDice, transfer, pay, moveBy, moveTo, resolveTile, drawCard, bankrupt, nextTurn, toDetention, findCard } };
 })();
 
 /* =====================================================================
@@ -3509,7 +3735,7 @@ function cfBuild(root, s) {
   const tiles = CF_TILES.map((t, i) => {
     const [x, y] = cfCell(i), side = i % 10 === 0 ? "corner" : i < 10 ? "s-b" : i < 20 ? "s-l" : i < 30 ? "s-t" : "s-r";
     return `<button class="cf-t ${side} ty-${t.type}" data-i="${i}" style="grid-column:${x + 1};grid-row:${y + 1};${t.color ? `--dc:${t.color}` : ""}" aria-label="${esc(t.name)}">
-      ${t.type === "PROPERTY" ? '<i class="band"></i>' : ""}<span class="ic">${t.icon || ""}</span><span class="nm ${t.short.length >= 8 ? "long" : ""}">${esc(t.short)}</span>${t.price ? `<span class="pr">$${t.price}</span>` : ""}<i class="own"></i></button>`;
+      ${t.type === "PROPERTY" ? '<i class="band"></i>' : ""}<span class="ic">${t.icon || ""}</span><span class="nm ${t.short.length >= 7 ? "long" : ""}">${esc(t.short)}</span>${t.price ? `<span class="pr">$${t.price}</span>` : ""}<i class="own"></i></button>`;
   }).join("");
   root.innerHTML = `<div class="cf">
     <div class="cf-pl"></div>
@@ -3538,21 +3764,103 @@ function cfZoom(cf) { cf.classList.toggle("zoom", CFV.zoom); const pn = $(".cf-p
 function cfPaint(s) {
   const cf = $(".cf"); if (!cf) return;
   cfPaintPlayers(s); cfPaintTiles(s); cfPlace(s); cfPaintMid(s); cfPaintTab(s);
-  if (CFV.sheet >= 0) cfSheet(CFV.sheet, true);
+  if (CFV.sheet !== -1) cfReopen();
 }
+/* ---------------- construcciones en el tablero (siluetas propias) ---------------- */
+const CF_BLD = [
+  "",
+  '<path d="M11 11V6h8v5z"/><path d="M10 6l1.5-2.2h7L20 6z" opacity=".8"/>',                                       // Local
+  '<path d="M10.5 11V2h9v9z"/><g fill="rgba(0,0,0,.35)"><rect x="12" y="3.5" width="2" height="1.6"/><rect x="16" y="3.5" width="2" height="1.6"/><rect x="12" y="6.5" width="2" height="1.6"/><rect x="16" y="6.5" width="2" height="1.6"/></g>', // Edificio
+  '<path d="M12.5 11V2.5l2.5-2 2.5 2V11z"/><path d="M8 11V6h4v5zM18 11V5h4v6z" opacity=".75"/>',                    // Torre
+  '<path d="M4 11V6.5h5V11zM21 11V5h5v6z" opacity=".75"/><path d="M9.5 11V3h4v8zM16.5 11V1.5l2-1.3 2 1.3V11z"/><path d="M13.5 11V4.5h3V11z" opacity=".9"/>', // Complejo
+];
+const cfBld = lv => lv > 0 ? `<svg viewBox="0 0 30 12" preserveAspectRatio="xMidYMax meet"><g fill="#fff" stroke="rgba(0,0,0,.35)" stroke-width=".5">${CF_BLD[lv]}</g></svg>` : "";
 function cfPaintPlayers(s) {
   const el = $(".cf-pl"), ctx = CFV.ctx; if (!el) return;
+  const ap = s.phase === "over" ? -1 : CF.actor(s);
   el.style.gridTemplateColumns = `repeat(${s.np === 4 ? 2 : Math.min(s.np, 3)},minmax(0,1fr))`;
-  el.innerHTML = s.players.map((q, i) => `<div class="cf-pc ${i === s.turn && s.phase !== "over" ? "on" : ""} ${q.out ? "out" : ""}" data-p="${i}" style="--c:${COL[i % COL.length]}">
+  el.innerHTML = s.players.map((q, i) => `<div class="cf-pc ${i === s.turn && s.phase !== "over" ? "on" : ""} ${i === ap && ap !== s.turn ? "ap" : ""} ${q.out ? "out" : ""}" data-p="${i}" style="--c:${COL[i % COL.length]}">
     ${cfTok(i)}<b>${esc(ctx.name(i))}${ctx.online && i === ctx.me ? " (tú)" : ""}</b><span class="cash">${q.out ? "Quebró" : cfMoney(CFV.busy ? CFV.cash[i] : q.cash)}</span>${q.jail ? '<em title="En el Centro de Detención">🔒</em>' : ""}${q.cards.length ? `<em title="Tarjetas guardadas">🎴${q.cards.length}</em>` : ""}</div>`).join("");
 }
 function cfPaintTiles(s) {
   document.querySelectorAll(".cf-t").forEach(el => {
-    const i = +el.dataset.i, o = s.own[i];
+    const i = +el.dataset.i, o = s.own[i], t = CF_TILES[i];
     el.classList.toggle("owned", o >= 0); el.style.setProperty("--oc", o >= 0 ? COL[o % COL.length] : "transparent");
     el.classList.toggle("mort", !!s.mort[i]);
-    const t = CF_TILES[i]; el.classList.toggle("dc", t.type === "PROPERTY" && o >= 0 && CF.controls(s, o, t.d));
+    el.classList.toggle("dc", t.type === "PROPERTY" && o >= 0 && CF.controls(s, o, t.d));
+    el.classList.toggle("lv4", s.lvl[i] >= 4); el.classList.toggle("built", s.lvl[i] > 0);
+    const b = el.querySelector(".band"); if (b && +b.dataset.lv !== s.lvl[i]) { b.dataset.lv = s.lvl[i]; b.innerHTML = cfBld(s.lvl[i]); }
   });
+}
+/* ---------------- hojas: detalle de casilla · gestionar · negociar ---------------- */
+function cfReopen() { const k = CFV.sheet; if (k === "manage") cfManage(true); else if (k === "trade") cfTradeSheet(true); else if (k >= 0) cfSheet(k, true); }
+function cfOpenSheet(html, key, keep) {
+  const wrap = $(".cf-sheet"); if (!wrap) return null; CFV.sheet = key;
+  const sh = $(".cf-sh", wrap), top = keep ? sh.scrollTop : 0;
+  sh.innerHTML = html; sh.scrollTop = top; wrap.hidden = false; if (!keep) sfx.tap();
+  sh.querySelectorAll(".cf-x").forEach(b => b.onclick = () => cfSheet(-1));
+  return sh;
+}
+const CF_WHY = { district: "Completa el distrito", even: "Construye parejo", max: "Ya es Complejo", cash: "No te alcanza", mortgaged: "Hay hipotecas en el distrito", buildings: "Primero vende las construcciones del distrito" };
+function cfManage(keep) {
+  const s = CFV.disp, ctx = CFV.ctx, p = s.phase === "debt" ? s.debts[0].p : s.turn, pl = s.players[p], debt = s.phase === "debt";
+  const can = s.phase !== "over" && ctx.mine(p) && (s.phase === "turn" || s.phase === "done" || debt) && CF.actor(s) === p;
+  const free = pl.cards.some(id => id >= 0 && CF_CARDS[id].keep === "FREE_BUILD");
+  const mine = CF_TILES.filter(t => s.own[t.pos] === p);
+  const row = t => {
+    const i = t.pos, lv = s.lvl[i], btns = [], note = [];
+    const B = (t2, label, err, extra = "") => btns.push(`<button class="cf-mb ${extra}" data-t="${t2}" data-i="${i}" ${err || !can ? "disabled" : ""}>${label}</button>`);
+    if (t.type === "PROPERTY" && !debt) { const e = CF.check.build(s, p, i); if (lv < s.r.building.maxLevel) B("BUILD", `🏗️ ${CF_LEVELS[lv + 1]} ${cfMoney(t.cost)}`, e, "pri"); if (e && e !== "max") note.push(CF_WHY[e] || ""); if (free && !CF.check.build(s, p, i, true)) B("FREE", "🎴 Gratis", null, "pri"); }
+    if (t.type === "PROPERTY" && lv > 0) B("SELL_BUILDING", `Vender ${CF_LEVELS[lv]} +${cfMoney(Math.floor(t.cost * s.r.building.sellRate))}`, CF.check.sell(s, p, i));
+    if (!s.mort[i]) { const e = CF.check.mortgage(s, p, i); B("MORTGAGE", `Hipotecar +${cfMoney(t.mortgage)}`, e); }
+    else if (!debt) B("UNMORTGAGE", `Recuperar −${cfMoney(CF.unmortCost(s, i))}`, CF.check.unmortgage(s, p, i));
+    if (debt && !s.mort[i] && !CF.check.sellProp(s, p, i)) B("SELL_PROPERTY", `Vender al banco +${cfMoney(Math.round(t.price * s.r.sellToBank.rate))}`, null);
+    return `<div class="cf-mr" style="--dc:${t.color || "#8a93c9"}"><div class="h"><b>${t.icon && t.type !== "PROPERTY" ? t.icon + " " : ""}${esc(t.name)}</b><small>${s.mort[i] ? "Hipotecada" : t.type === "PROPERTY" ? `${CF_LEVELS[lv]} · cobra ${cfMoney(CF.rentFor(s, i, { roll: 7 }))}` : "cobra " + (t.type === "UTILITY" ? "según dados" : cfMoney(CF.rentFor(s, i)))}</small>${t.type === "PROPERTY" ? `<i class="lvbar">${[1, 2, 3, 4].map(k => `<u class="${k <= lv ? "on" : ""}"></u>`).join("")}</i>` : ""}</div>
+      <div class="cf-mbt">${btns.join("")}</div>${note.filter(Boolean).length && can ? `<p class="why">${note.join(" · ")}</p>` : ""}</div>`;
+  };
+  const groups = CF_DISTRICTS.map((d, k) => ({ d, k, list: mine.filter(t => t.d === k && t.type === "PROPERTY") })).filter(g => g.list.length);
+  const other = mine.filter(t => t.type !== "PROPERTY");
+  const html = `<div class="cf-sh-top" style="--dc:#d8b65a"><span>${debt ? "🏦" : "🏗️"}</span><div><small>${esc(ctx.name(p))} · efectivo ${cfMoney(pl.cash)}</small><h3>${debt ? "Conseguir dinero" : "Construir y gestionar"}</h3></div><button class="cf-x" aria-label="Cerrar">✕</button></div>
+    ${debt ? `<p class="cf-debt">Debes <b>${cfMoney(s.debts[0].amt)}</b>. Tienes <b>${cfMoney(pl.cash)}</b>. ${pl.cash >= s.debts[0].amt ? "¡Ya te alcanza! Cierra y toca «Pagar»." : `Te faltan ${cfMoney(s.debts[0].amt - pl.cash)}.`}</p>` : `<p class="cf-note">Con un distrito completo puedes construir: Local → Edificio → Torre → Complejo. Hay que construir parejo. Hipotecar da la mitad del precio; recuperarla cuesta ${Math.round(s.r.mortgage.interest * 100)} % más.</p>`}
+    ${!can ? `<p class="cf-no" style="text-align:left">Solo se puede gestionar en tu turno.</p>` : ""}
+    ${groups.map(g => `<p class="cf-gh" style="--dc:${g.d.color}"><i></i>${esc(g.d.name)} <small>${g.list.length}/${g.d.tiles.length}${CF.controls(s, p, g.k) ? " · ✅ completo" : ""}</small></p>${g.list.map(row).join("")}`).join("")}
+    ${other.length ? `<p class="cf-gh" style="--dc:#8a93c9"><i></i>Transporte y servicios</p>${other.map(row).join("")}` : ""}
+    ${!mine.length ? `<p class="cf-empty">No tienes propiedades todavía.</p>` : ""}`;
+  const sh = cfOpenSheet(html, "manage", keep); if (!sh) return;
+  sh.querySelectorAll(".cf-mb").forEach(b => b.onclick = () => {
+    if (b.disabled || CFV.busy) return; sfx.tap(); const i = +b.dataset.i;
+    if (b.dataset.t === "FREE") cfAct({ t: "USE_CARD", card: "FREE_BUILD", pos: i, p }); else cfAct({ t: b.dataset.t, pos: i, p });
+  });
+}
+function cfTradeSheet(keep) {
+  const s = CFV.disp, ctx = CFV.ctx, p = s.turn, N = i => esc(ctx.name(i));
+  const others = CF.alive(s).filter(i => i !== p);
+  if (!keep || !CFV.td || CFV.td.from !== p || !others.includes(CFV.td.to)) CFV.td = { from: p, to: others[0], give: { cash: 0, props: [], cards: [] }, get: { cash: 0, props: [], cards: [] } };
+  const d = CFV.td, q = d.to;
+  const blocked = pos => CF_TILES[pos].type === "PROPERTY" && CF_DISTRICTS[CF_TILES[pos].d].tiles.some(i => s.lvl[i] > 0);
+  const col = (who, side, x) => {
+    const props = CF_TILES.filter(t => s.own[t.pos] === who), cards = s.players[who].cards.filter(id => id >= 0);
+    return `<div class="cf-tcol"><p class="cf-gh"><i style="background:${COL[who % COL.length]}"></i>${side === "give" ? "Tú das" : `${N(who)} te da`}</p>
+      <div class="cf-cash" data-side="${side}"><button data-d="-50">−50</button><button data-d="-10">−10</button><b>${cfMoney(x.cash)}</b><button data-d="10">+10</button><button data-d="50">+50</button></div>
+      <small class="dim">Tiene ${cfMoney(s.players[who].cash)}</small>
+      <div class="cf-tp">${props.map(t => `<button class="${x.props.includes(t.pos) ? "on" : ""}" data-side="${side}" data-i="${t.pos}" ${blocked(t.pos) ? "disabled" : ""} style="--dc:${t.color || "#8a93c9"}">${esc(t.name)}${s.mort[t.pos] ? " · hip." : ""}${blocked(t.pos) ? " · con construcción" : ""}</button>`).join("") || `<small class="dim">Sin propiedades</small>`}
+      ${cards.map(id => `<button class="${x.cards.includes(id) ? "on" : ""}" data-side="${side}" data-c="${id}">🎴 ${esc(CF_KEEP[CF_CARDS[id].keep].name)}</button>`).join("")}</div></div>`;
+  };
+  const o = { to: q, give: d.give, get: d.get }, err = CF.check.trade(s, p, o);
+  const ERR = { empty: "Elige algo para cambiar.", cash: "Alguien no tiene ese dinero.", fee: "No alcanza para el interés de la hipoteca (10 %).", buildings: "No se pueden cambiar propiedades con construcciones.", owner: "Esa propiedad ya no es suya.", target: "Elige con quién negociar." };
+  const html = `<div class="cf-sh-top" style="--dc:#3ddc84"><span>🤝</span><div><small>Negociación</small><h3>Proponer un trato</h3></div><button class="cf-x" aria-label="Cerrar">✕</button></div>
+    <div class="cf-with">${others.map(i => `<button class="${i === q ? "on" : ""}" data-to="${i}" style="--c:${COL[i % COL.length]}">${cfTok(i)} ${N(i)}</button>`).join("")}</div>
+    <div class="cf-tgrid">${col(p, "give", d.give)}${col(q, "get", d.get)}</div>
+    <p class="cf-no" style="min-height:14px">${err ? ERR[err] || "" : "El otro jugador debe aceptar. Todo se cambia al mismo tiempo."}</p>
+    <button class="btn green" id="cfsend" ${err ? "disabled" : ""} style="width:100%">ENVIAR PROPUESTA</button>`;
+  const sh = cfOpenSheet(html, "trade", keep); if (!sh) return;
+  sh.querySelectorAll(".cf-with button").forEach(b => b.onclick = () => { d.to = +b.dataset.to; d.get = { cash: 0, props: [], cards: [] }; cfTradeSheet(true); });
+  sh.querySelectorAll(".cf-cash button").forEach(b => b.onclick = () => { const x = d[b.parentNode.dataset.side], who = b.parentNode.dataset.side === "give" ? p : q; x.cash = Math.max(0, Math.min(s.players[who].cash, x.cash + +b.dataset.d)); cfTradeSheet(true); });
+  sh.querySelectorAll(".cf-tp button").forEach(b => b.onclick = () => {
+    const x = d[b.dataset.side], arr = b.dataset.c !== undefined ? x.cards : x.props, v = +(b.dataset.c ?? b.dataset.i), k = arr.indexOf(v);
+    if (k >= 0) arr.splice(k, 1); else arr.push(v); cfTradeSheet(true);
+  });
+  $("#cfsend", sh).onclick = () => { if (CF.check.trade(s, p, { to: q, give: d.give, get: d.get })) return; cfAct({ t: "TRADE_PROPOSE", to: q, give: d.give, get: d.get, p }); CFV.td = null; cfSheet(-1); };
 }
 function cfPlace(s) {
   const at = {}; CFV.tok.forEach((pos, p) => { if (!s.players[p].out) (at[pos] = at[pos] || []).push(p); });
@@ -3571,57 +3879,90 @@ function cfFocus(p) {
 }
 /* texto de estado + acciones disponibles: nunca dejar al jugador sin saber qué hacer */
 function cfPaintMid(s) {
-  const ctx = CFV.ctx, p = s.turn, pl = s.players[p], N = i => esc(ctx.name(i)), mine = ctx.mine(p);
-  const who = ctx.online ? (mine ? "Tu turno" : `Turno de <b style="color:${COL[p]}">${N(p)}</b>`) : `Turno de <b style="color:${COL[p]}">${N(p)}</b>`;
+  const ctx = CFV.ctx, p = s.turn, pl = s.players[p], N = i => esc(ctx.name(i)), C = i => `<b style="color:${COL[i % COL.length]}">${N(i)}</b>`;
+  const ap = s.phase === "over" ? -1 : CF.actor(s), mine = ap >= 0 && ctx.mine(ap);
+  const who = ctx.online && ctx.mine(p) ? "Tu turno" : `Turno de ${C(p)}`;
   const st = $(".cf-stat"), acts = $(".cf-acts"), off = $(".cf-offer"), tip = $(".cf-tip"), rd = $(".cf-round"); if (!st) return;
-  rd.textContent = s.r.victory.mode === "rounds" ? `Ronda ${s.round} de ${s.r.victory.maxRounds}` : `Ronda ${s.round}`;
+  rd.textContent = s.r.victory.mode === "rounds" ? `Ronda ${s.round} de ${s.r.victory.maxRounds}` : `Ronda ${s.round} · modo clásico`;
   if (s.dice) $(".cf-dice").innerHTML = s.dice.map(v => `<i class="die">${cfDie(v)}</i>`).join("");
   $(".cf-dice").classList.toggle("dim", !s.dice);
   let line = "", hint = "", offer = "";
-  const t = CF_TILES[pl.pos], sum = s.dice ? s.dice[0] + s.dice[1] : 0;
-  if (s.phase === "over") { line = `🏆 <b style="color:${COL[s.w]}">${N(s.w)}</b> gana la partida`; }
-  else if (CFV.busy) line = `${who}`;
+  const sum = s.dice ? s.dice[0] + s.dice[1] : 0, pass = !ctx.online && ap !== p && ap >= 0 ? ` Pásale el celular a ${C(ap)}.` : "";
+  if (s.phase === "over") line = `🏆 ${C(s.w)} gana la partida`;
+  else if (CFV.busy) line = who;
   else if (s.phase === "turn") {
     if (pl.jail) { line = `${who} · Centro de Detención`; hint = `Intento ${pl.jt + 1} de ${s.r.detention.maxTurns}: saca dobles, paga ${cfMoney(s.r.detention.fine)} o usa una tarjeta.`; }
-    else { line = `${who}`; hint = s.dc > 0 ? "¡Sacaste dobles! Tira otra vez." : "Tira los dados para avanzar."; }
-  } else if (s.phase === "buy") {
-    const T2 = CF_TILES[s.pend]; line = `${who} · sacaste ${sum}`; hint = `Caíste en <b>${esc(T2.name)}</b>. ¿La compras?`;
-    offer = cfMiniCard(s, s.pend);
-  } else if (s.phase === "rentq") { line = `${who}`; hint = `Debes pagar ${cfMoney(s.rq.amt)} a ${N(s.rq.o)} por ${esc(CF_TILES[s.rq.pos].name)}. ¿Usas tu Seguro de renta?`; }
-  else if (s.phase === "done") {
-    line = `${who}${sum ? ` · sacaste ${sum}` : ""}`;
-    const last = s.log.filter(l => l.p === p).slice(-1)[0]; hint = (last ? esc(last.txt) + " " : "") + (mine ? "Termina tu turno." : "");
+    else { line = who; hint = s.dc > 0 ? "¡Sacaste dobles! Tira otra vez." : "Tira los dados para avanzar."; }
+  } else if (s.phase === "buy") { line = `${who} · sacaste ${sum}`; hint = `Caíste en <b>${esc(CF_TILES[s.pend].name)}</b>. ¿La compras? Si no, se subasta.`; offer = cfMiniCard(s, s.pend); }
+  else if (s.phase === "rentq") { line = who; hint = `Debes pagar ${cfMoney(s.rq.amt)} a ${C(s.rq.o)} por ${esc(CF_TILES[s.rq.pos].name)}. ¿Usas tu Seguro de renta?`; }
+  else if (s.phase === "done") { line = `${who}${sum ? ` · sacaste ${sum}` : ""}`; const last = s.log.filter(l => l.p === p).slice(-1)[0]; hint = (last ? esc(last.txt) + " " : "") + (ctx.mine(p) ? "Puedes construir o negociar, o terminar tu turno." : ""); }
+  else if (s.phase === "auction") {
+    const A = s.auc; line = `🔨 Subasta · ${esc(CF_TILES[A.pos].name)}`;
+    hint = (A.lead >= 0 ? `Va ganando ${C(A.lead)} con ${cfMoney(A.bid)}.` : "Todavía nadie ofrece.") + ` Le toca a ${C(ap)}.`;
+    offer = cfMiniCard(s, A.pos) + `<div class="cf-bidders">${A.act.map(i => `<span class="${i === ap ? "on" : ""} ${i === A.lead ? "lead" : ""}" style="--c:${COL[i % COL.length]}">${N(i)}${i === A.lead ? " · " + cfMoney(A.bid) : ""}</span>`).join("")}</div>`;
+  } else if (s.phase === "trade") {
+    const T = s.trade; line = `🤝 ${C(T.from)} le propone un trato a ${C(T.to)}`; hint = pass;
+    offer = cfTradeCard(s, T);
+  } else if (s.phase === "debt") {
+    const d = s.debts[0]; line = `⚠️ ${C(d.p)} debe ${cfMoney(d.amt)}`;
+    hint = `a ${typeof d.to === "number" ? C(d.to) : "el banco"} (${esc(d.why)}). Tiene ${cfMoney(s.players[d.p].cash)} en efectivo: vende construcciones o hipoteca para pagar.${pass}`;
   }
   st.innerHTML = `<p class="l1">${line}</p>${hint ? `<p class="l2">${hint}</p>` : ""}`;
-  off.innerHTML = offer; $(".cf-mid").classList.toggle("has-offer", !!offer);
+  off.innerHTML = offer; const mid = $(".cf-mid"); mid.classList.toggle("has-offer", !!offer);
+  mid.className = mid.className.replace(/\bph-\w+/g, "").trim() + " ph-" + s.phase;
   // botones: solo los que el motor dice que se pueden usar ahora
-  const list = (CFV.busy || !mine) ? [] : CF.actions(s, p);
+  const list = (CFV.busy || !mine) ? [] : CF.actions(s, ap);
   const lab = a => ({
     ROLL: "🎲 TIRAR DADOS", PAY_FINE: `Pagar ${cfMoney(s.r.detention.fine)}`, BUY: `COMPRAR ${cfMoney(s.pend >= 0 ? CF_TILES[s.pend].price : 0)}`, DECLINE: "No comprar",
     PAY_RENT: `Pagar ${s.rq ? cfMoney(s.rq.amt) : ""}`, USE_PROTECTION: "🛡️ Usar seguro", END_TURN: "TERMINAR TURNO",
+    BID: `Ofrecer ${cfMoney(a.amt || 0)}`, AUC_PASS: "Retirarme", TRADE_ACCEPT: "✅ Aceptar", TRADE_REJECT: "Rechazar",
+    PAY_DEBT: `Pagar ${cfMoney(a.amt || 0)}`, MANAGE: s.phase === "debt" ? "🏦 Vender o hipotecar" : "🏗️ Construir", TRADE: "🤝 Negociar", DECLARE_BANKRUPTCY: "Me rindo (quiebra)",
   }[a.t] || (a.card === "GET_OUT" ? "🎴 Usar tarjeta" : a.card === "EXTRA_ROLL" ? "🎴 Turno extra" : a.t));
-  acts.innerHTML = list.map((a, k) => `<button class="cf-b ${k === 0 ? "pri" : ""} ${a.t === "DECLINE" || a.t === "PAY_FINE" && list.length > 1 ? "sec" : ""}" data-k="${k}" ${a.ok === false ? "disabled" : ""}>${lab(a)}</button>`).join("")
-    + (s.phase === "buy" && list[0] && list[0].ok === false ? `<p class="cf-no">No te alcanza el dinero.</p>` : "")
-    + (!CFV.busy && !mine && s.phase !== "over" ? `<p class="cf-wait">Esperando a ${N(p)}…</p>` : "");
+  const sec = a => ["DECLINE", "AUC_PASS", "TRADE_REJECT", "DECLARE_BANKRUPTCY"].includes(a.t) || (a.t === "PAY_FINE" && list.length > 1);
+  const tool = a => a.t === "MANAGE" || a.t === "TRADE";
+  acts.innerHTML = list.map((a, k) => `<button class="cf-b ${k === 0 ? "pri" : ""} ${sec(a) ? "sec" : ""} ${tool(a) ? "tool" : ""}" data-k="${k}" ${a.ok === false ? "disabled" : ""}>${lab(a)}</button>`).join("")
+    + (s.phase === "buy" && list[0] && list[0].ok === false ? `<p class="cf-no">No te alcanza el dinero: se va a subasta.</p>` : "")
+    + (s.phase === "trade" && list[0] && list[0].ok === false ? `<p class="cf-no">El trato ya no es válido (cambiaron las propiedades o el dinero).</p>` : "")
+    + (!CFV.busy && !mine && s.phase !== "over" ? `<p class="cf-wait">Esperando a ${N(ap)}…</p>` : "");
   acts.querySelectorAll(".cf-b").forEach(b => b.onclick = () => {
     if (CFV.lock || CFV.busy) return; const a = list[+b.dataset.k]; if (!a || a.ok === false) return;
-    CFV.lock = true; sfx.tap(); ctx.act({ t: a.t, card: a.card, aid: Math.random().toString(36).slice(2, 12), p });
-    setTimeout(() => { CFV.lock = false; }, 1500);
+    sfx.tap();
+    if (a.t === "MANAGE") return cfManage();
+    if (a.t === "TRADE") return cfTradeSheet();
+    if (a.t === "DECLARE_BANKRUPTCY" && !confirm("¿Seguro? Pierdes todo y quedas fuera de la partida.")) return;
+    cfAct(Object.assign({}, a, { p: ap }));
   });
   // ayudas del tutorial
   const tips = !S.cfNoTips && !CFV.busy && mine && s.phase !== "over" ? cfTipFor(s) : "";
   tip.innerHTML = tips ? `<span>💡 ${tips}</span><button aria-label="Ocultar ayudas">✕</button>` : "";
   const tb = $("button", tip); if (tb) tb.onclick = () => { S.cfNoTips = true; save(); tip.innerHTML = ""; toast("Ayudas ocultas. Puedes volver a activarlas en Historial."); };
 }
+/* envía una acción al motor (el motor valida todo; aquí solo se evita el doble toque) */
+function cfAct(a) {
+  if (CFV.lock) return; CFV.lock = true;
+  const o = { t: a.t, aid: Math.random().toString(36).slice(2, 12), p: a.p ?? CF.actor(CFV.disp) };
+  for (const k of ["card", "pos", "amt", "to", "give", "get"]) if (a[k] !== undefined) o[k] = a[k];
+  CFV.ctx.act(o); setTimeout(() => { CFV.lock = false; }, 900);
+}
 function cfTipFor(s) {
-  const pl = s.players[s.turn];
+  const pl = s.players[s.turn], ap = CF.actor(s);
+  if (s.phase === "auction") return "Si nadie ofrece, la propiedad sigue libre. Solo puedes ofrecer lo que tienes en efectivo.";
+  if (s.phase === "trade") return "Revisa bien: al aceptar, todo se cambia al mismo tiempo.";
+  if (s.phase === "debt") return "Hipotecar da la mitad del precio. Vender una construcción devuelve la mitad de lo que costó.";
   if (s.phase === "turn" && pl.jail) return "Con dobles sales gratis. Si fallas 3 veces, pagas y sales.";
   if (s.phase === "turn" && s.turnNo <= s.np) return "Al pasar por la Estación Central cobras $" + s.r.passStartReward + ".";
-  if (s.phase === "buy") return "Si completas un distrito, cobras el doble de alquiler en todas sus propiedades.";
+  if (s.phase === "buy") return "Si completas un distrito, cobras el doble y puedes construir: Local → Edificio → Torre → Complejo.";
   if (s.phase === "rentq") return "El seguro se gasta al usarlo. Guárdalo para un alquiler caro.";
+  if ((s.phase === "turn" || s.phase === "done") && CF_DISTRICTS.some((d, k) => CF.controls(s, ap, k))) return "¡Tienes un distrito completo! Toca «Construir» para subir el alquiler.";
+  if (s.phase === "done" && CF_DISTRICTS.some(d => d.tiles.filter(i => s.own[i] === ap).length === d.tiles.length - 1)) return "Te falta una propiedad para completar un distrito. Prueba «Negociar».";
   if (s.phase === "done" && pl.cards.length) return "Tus tarjetas guardadas están en «Mis propiedades».";
   if (s.phase === "done") return "Toca cualquier casilla del tablero para ver su precio y sus alquileres.";
   return "";
+}
+function cfTradeCard(s, T) {
+  const N = i => esc(CFV.ctx.name(i));
+  const side = x => [x.cash ? cfMoney(x.cash) : "", ...x.props.map(pos => `<i style="--dc:${CF_TILES[pos].color || "#8a93c9"}">${esc(CF_TILES[pos].name)}${s.mort[pos] ? " (hip.)" : ""}</i>`), ...x.cards.map(id => `🎴 ${esc(CF_KEEP[CF_CARDS[id].keep].name)}`)].filter(Boolean).join("") || "<small>nada</small>";
+  return `<div class="cf-tc"><div><small>${N(T.from)} da</small><p>${side(T.give)}</p></div><span>⇄</span><div><small>${N(T.to)} da</small><p>${side(T.get)}</p></div></div>`;
 }
 function cfMiniCard(s, pos) {
   const t = CF_TILES[pos];
@@ -3642,13 +3983,15 @@ function cfPaintTab(s) {
     const groups = CF_DISTRICTS.map((d, k) => ({ d, k, tiles: d.tiles.filter(i => s.own[i] === p) })).filter(g => g.tiles.length);
     const other = CF_TILES.filter(t => (t.type === "TRANSPORT" || t.type === "UTILITY") && s.own[t.pos] === p);
     const cards = pl.cards.filter(id => id >= 0);
-    el.innerHTML = `<p class="cf-who">${cfTok(p)} ${ctx.online ? "Tus propiedades" : `Propiedades de <b>${N(p)}</b>`}</p>` +
+    const canM = s.phase !== "over" && CF.actor(s) === p && ctx.mine(p) && ["turn", "done", "debt"].includes(s.phase) && s.own.includes(p);
+    el.innerHTML = `<p class="cf-who">${cfTok(p)} ${ctx.online ? "Tus propiedades" : `Propiedades de <b>${N(p)}</b>`}${canM ? `<button class="cf-mini" id="cfmg">🏗️ Gestionar</button>` : ""}</p>` +
       (groups.length || other.length ? groups.map(g => `<div class="cf-grp" style="--dc:${g.d.color}"><p><i></i>${esc(g.d.name)} <small>${g.tiles.length}/${g.d.tiles.length}${CF.controls(s, p, g.k) ? " · ✅ Distrito completo" : ""}</small></p>
-        ${g.tiles.map(i => `<button class="cf-row" data-i="${i}"><span>${esc(CF_TILES[i].name)}</span><small>${s.mort[i] ? "Hipotecada" : "Cobra " + cfMoney(CF.rentFor(s, i, { roll: 7 }))}</small></button>`).join("")}</div>`).join("")
+        ${g.tiles.map(i => `<button class="cf-row" data-i="${i}"><span>${esc(CF_TILES[i].name)}</span><small>${s.mort[i] ? "Hipotecada" : (s.lvl[i] ? CF_LEVELS[s.lvl[i]] + " · " : "") + "cobra " + cfMoney(CF.rentFor(s, i, { roll: 7 }))}</small></button>`).join("")}</div>`).join("")
         + (other.length ? `<div class="cf-grp" style="--dc:#8a93c9"><p><i></i>Transporte y servicios</p>${other.map(t => `<button class="cf-row" data-i="${t.pos}"><span>${t.icon} ${esc(t.name)}</span><small>${t.type === "UTILITY" ? "dados × " + s.r.utilityMult[CF_TILES.filter(u => u.type === "UTILITY" && s.own[u.pos] === p).length - 1] : "Cobra " + cfMoney(CF.rentFor(s, t.pos))}</small></button>`).join("")}</div>` : "")
         : `<p class="cf-empty">Todavía no hay propiedades. Cae en una casilla libre y cómprala.</p>`)
       + (cards.length ? `<p class="cf-who" style="margin-top:10px">🎴 Tarjetas guardadas</p>${cards.map(id => { const k = CF_KEEP[CF_CARDS[id].keep]; return `<div class="cf-kc"><b>${esc(k.name)}</b><small>${esc(k.text)}</small></div>`; }).join("")}` : "");
     el.querySelectorAll(".cf-row").forEach(b => b.onclick = () => cfSheet(+b.dataset.i));
+    const mg = $("#cfmg", el); if (mg) mg.onclick = () => cfManage();
   } else {
     el.innerHTML = `<div class="cf-log">${s.log.slice().reverse().map(l => `<p style="--c:${l.p >= 0 ? COL[l.p % COL.length] : "#8a93c9"}">${esc(l.txt)}</p>`).join("")}</div>
       ${S.cfNoTips ? `<button class="cf-row" id="cftips"><span>💡 Volver a mostrar las ayudas</span></button>` : ""}`;
@@ -3657,17 +4000,17 @@ function cfPaintTab(s) {
 }
 /* ---------------- hoja de detalle de una casilla ---------------- */
 function cfSheet(i, keep) {
-  const wrap = $(".cf-sheet"); if (!wrap) return; CFV.sheet = i;
-  if (i < 0) { wrap.hidden = true; return; }
+  const wrap = $(".cf-sheet"); if (!wrap) return;
+  if (i < 0) { CFV.sheet = -1; wrap.hidden = true; return; }
   const s = CFV.disp, t = CF_TILES[i], o = s.own[i], ctx = CFV.ctx, r = s.r;
   let body = "";
   if (t.type === "PROPERTY") {
     const d = CF_DISTRICTS[t.d];
     body = `<p class="cf-sub" style="color:${d.color}">${d.icon} ${esc(d.name)} · ${d.tiles.length} propiedades</p>
-      <table class="cf-rt"><tr><td>Alquiler</td><td>${cfMoney(t.base)}</td></tr><tr><td>Con el distrito completo</td><td>${cfMoney(t.base * r.districtControlMult)}</td></tr>
-      ${CF_LEVELS.slice(1).map((L, k) => `<tr class="${s.lvl[i] === k + 1 ? "cur" : ""}"><td>${L}</td><td>${cfMoney(t.rent[k + 1])}</td></tr>`).join("")}
+      <table class="cf-rt"><tr><td>Precio</td><td>${cfMoney(t.price)}</td></tr><tr class="${s.lvl[i] === 0 ? "cur" : ""}"><td>Alquiler (terreno)</td><td>${cfMoney(t.base)}</td></tr><tr><td>Con el distrito completo</td><td>${cfMoney(t.base * r.districtControlMult)}</td></tr>
+      ${CF_LEVELS.slice(1).map((L, k) => `<tr class="${s.lvl[i] === k + 1 ? "cur" : ""}"><td>${L}</td><td>${cfMoney(CF.levelRent(s, i, k + 1))}</td></tr>`).join("")}
       <tr class="sep"><td>Costo por nivel</td><td>${cfMoney(t.cost)}</td></tr><tr><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>
-      <p class="cf-note">La construcción (Local → Edificio → Torre → Complejo) llega en la parte 2.</p>`;
+      <p class="cf-note">Para construir necesitas todo el distrito y construir parejo: Local → Edificio → Torre → Complejo.</p>`;
   } else if (t.type === "TRANSPORT") body = `<table class="cf-rt">${r.transportRent.map((v, k) => `<tr><td>Con ${k + 1} transporte${k ? "s" : ""}</td><td>${cfMoney(v)}</td></tr>`).join("")}<tr class="sep"><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>`;
   else if (t.type === "UTILITY") body = `<table class="cf-rt">${r.utilityMult.map((v, k) => `<tr><td>Con ${k + 1} servicio${k ? "s" : ""}</td><td>dados × ${v}</td></tr>`).join("")}<tr class="sep"><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>`;
   else body = `<p class="cf-desc">${{
@@ -3679,9 +4022,9 @@ function cfSheet(i, keep) {
     BONUS: r.festivalPot ? `Te llevas todo el bote: impuestos, multas y fianzas. Ahora tiene ${cfMoney(s.pot)}.` : "Descanso: no pasa nada.",
   }[t.type] || ""}</p>`;
   const owner = CF_OWNABLE(t) ? `<p class="cf-owner">${o >= 0 ? `${cfTok(o)} Dueño: <b>${esc(ctx.name(o))}</b>${s.mort[i] ? " · hipotecada" : ""}${t.type === "PROPERTY" && s.lvl[i] ? ` · ${CF_LEVELS[s.lvl[i]]}` : ""}` : `Disponible · ${cfMoney(t.price)}`}</p>` : "";
-  $(".cf-sh", wrap).innerHTML = `<div class="cf-sh-top" style="--dc:${t.color || "#39406e"}"><span>${t.icon || CF_DISTRICTS[t.d]?.icon || ""}</span><div><small>${CF_TYPE[t.type]}</small><h3>${esc(t.name)}</h3></div><button class="cf-x" aria-label="Cerrar">✕</button></div>${owner}${body}`;
-  $(".cf-x", wrap).onclick = () => cfSheet(-1);
-  wrap.hidden = false; if (!keep) sfx.tap();
+  const canM = o >= 0 && CF_OWNABLE(t) && s.phase !== "over" && CF.actor(s) === o && CFV.ctx.mine(o) && ["turn", "done", "debt"].includes(s.phase);
+  const sh = cfOpenSheet(`<div class="cf-sh-top" style="--dc:${t.color || "#39406e"}"><span>${t.icon || CF_DISTRICTS[t.d]?.icon || ""}</span><div><small>${CF_TYPE[t.type]}</small><h3>${esc(t.name)}</h3></div><button class="cf-x" aria-label="Cerrar">✕</button></div>${owner}${body}${canM ? `<button class="btn ghost" id="cfman" style="width:100%;font-size:17px;margin-top:10px">🏗️ Construir / hipotecar</button>` : ""}`, i, keep);
+  const mb = sh && $("#cfman", sh); if (mb) mb.onclick = () => cfManage();
 }
 /* ---------------- animaciones (solo comunican lo que ya decidió el motor) ---------------- */
 async function cfPlay() {
@@ -3739,6 +4082,24 @@ async function cfAnim(e, s) {
     case "AGAIN": toast("🎲 ¡Dobles! Tira otra vez"); break;
     case "PROTECT": tone(880, .15, "sine", .1); toast(`🛡️ ${N(e.p)} usó su seguro`); await cfWait(400); break;
     case "BANKRUPT": tone(200, .5, "sawtooth", .08, 0, 60); toast(`💥 ${N(e.p)} quebró`); await cfWait(900); break;
+    case "BUILD": case "SELL": {
+      const el = document.querySelector(`.cf-t[data-i="${e.pos}"] .band`); if (el) { el.dataset.lv = e.lvl; el.innerHTML = cfBld(e.lvl); el.parentNode.classList.toggle("built", e.lvl > 0); }
+      cfPulse(e.pos, e.k === "BUILD" ? "bought" : "pulse");
+      if (e.k === "BUILD") { noise(.06, .3, 3000, 800); noise(.06, .3, 3000, 800, .12); [392, 523, 659].forEach((f, k) => tone(f, .1, "triangle", .1, .22 + k * .06)); if (e.lvl >= 4) toast(`🏙️ ¡${N(e.p)} levantó un Complejo en ${CF_TILES[e.pos].name}!`); }
+      else tone(440, .12, "triangle", .08, 0, 260);
+      await cfWait(e.k === "BUILD" ? 520 : 300); break;
+    }
+    case "MORTGAGE": case "UNMORTGAGE": { const el = document.querySelector(`.cf-t[data-i="${e.pos}"]`); if (el) el.classList.toggle("mort", e.k === "MORTGAGE"); tone(e.k === "MORTGAGE" ? 300 : 700, .12, "triangle", .08); await cfWait(250); break; }
+    case "SELL_PROP": { const el = document.querySelector(`.cf-t[data-i="${e.pos}"]`); if (el) el.classList.remove("owned"); tone(330, .15, "triangle", .08, 0, 200); await cfWait(250); break; }
+    case "AUCTION": tone(523, .08, "square", .06); tone(523, .08, "square", .06, .15); toast(`🔨 Subasta: ${CF_TILES[e.pos].name}`); await cfWait(450); break;
+    case "BID": tone(880, .06, "triangle", .08); await cfWait(150); break;
+    case "AUC_WON": { const el = document.querySelector(`.cf-t[data-i="${e.pos}"]`); if (el) { el.classList.add("owned"); el.style.setProperty("--oc", COL[e.p % COL.length]); } cfPulse(e.pos, "bought"); noise(.08, .4, 2500, 300); [523, 659, 784].forEach((f, k) => tone(f, .12, "triangle", .12, .1 + k * .07)); toast(`🔨 ¡Vendido a ${N(e.p)}!`); await cfWait(600); break; }
+    case "AUC_NONE": toast("🔨 Nadie ofreció: sigue libre"); await cfWait(300); break;
+    case "TRADE": tone(660, .1, "sine", .08); tone(880, .1, "sine", .08, .1); break;
+    case "TRADE_OK": [523, 784, 1046].forEach((f, k) => tone(f, .14, "triangle", .12, k * .08)); toast(`🤝 ¡Trato hecho entre ${N(e.from)} y ${N(e.to)}!`); await cfWait(600); break;
+    case "TRADE_NO": tone(300, .15, "triangle", .08); toast(`${N(e.to)} rechazó el trato`); await cfWait(300); break;
+    case "DEBT": tone(330, .2, "square", .07); tone(262, .25, "square", .07, .2); toast(`⚠️ ${N(e.p)} no tiene efectivo para pagar ${cfMoney(e.amt)}`); await cfWait(500); break;
+    case "DEBT_PAID": tone(784, .1, "triangle", .1); break;
     case "TURN": break;
   }
 }
@@ -4010,10 +4371,10 @@ const GAMES = [
       "Especiales: <b>⊘</b> salta al siguiente, <b>⇄</b> cambia el sentido, <b>+2</b> y <b>+4</b> hacen robar al siguiente y le quitan el turno. Si no tienes jugada, toca el mazo para robar.",
       "Cuando te quede <b>una sola carta</b>, toca <b>¡ÚLTIMA!</b> rápido. Si se te olvida, robas 2."],
     goal: "Gana el primero que se quede sin cartas.", setup: "En el mismo celular, cuando le toca a otro le pasas el celular: tus cartas se esconden solas." },
-  { g: CITY, cat: "mesa", c1: "#c9a44c", c2: "#1b2658", tag: "Compra la ciudad, cobra alquileres y conviértete en el empresario más rico.", tags: ["2 a 6 jugadores", "Beta · parte 1"], party: 1,
-    steps: ["Tira los dados y avanza por la ciudad. Cada vez que pasas por la <b>Estación Central</b> cobras $200.", "Si caes en una propiedad libre puedes <b>comprarla</b>. Si es de otro, le pagas <b>alquiler</b>. Con un <b>distrito completo</b>, cobras el doble.", "Cuidado con los <b>impuestos</b>, los <b>eventos</b> de la Ciudad y del Mercado, y el <b>Centro de Detención</b>. Toca cualquier casilla para ver sus datos."],
-    goal: "Al terminar las rondas gana quien tenga el mayor patrimonio (dinero + propiedades). Si alguien no puede pagar, quiebra.",
-    setup: "Juegan en este celular y se lo pasan en cada turno. <b>Versión beta, parte 1 de 5:</b> la construcción, las subastas, las hipotecas y la negociación llegan en la parte 2; el modo en línea, en la parte 3." },
+  { g: CITY, cat: "mesa", c1: "#c9a44c", c2: "#1b2658", tag: "Compra la ciudad, cobra alquileres y conviértete en el empresario más rico.", tags: ["2 a 6 jugadores", "Beta · parte 2"], party: 1,
+    steps: ["Tira los dados y avanza por la ciudad. Cada vez que pasas por la <b>Estación Central</b> cobras $200.", "Si caes en una propiedad libre puedes <b>comprarla</b> (si no, se <b>subasta</b>). Si es de otro, le pagas <b>alquiler</b>. Con un <b>distrito completo</b> cobras el doble y puedes <b>construir</b>: Local → Edificio → Torre → Complejo.", "<b>Negocia</b> con los demás para completar distritos. Si te falta dinero, <b>hipoteca</b> o vende. Cuidado con los impuestos, los eventos y el <b>Centro de Detención</b>."],
+    goal: "Modo por rondas: gana el mayor patrimonio al terminar. Modo clásico: gana el último que no quiebre.",
+    setup: "Juegan en este celular y se lo pasan en cada turno. <b>Versión beta, parte 2 de 5:</b> el modo en línea llega en la parte 3 y jugar contra la máquina en la parte 4." },
   { g: DUO, cat: "aventura", c1: "#ff7a1a", c2: "#1f74bd", tag: "Fuego y Agua tienen que ayudarse para escapar del templo.", tags: ["Cooperativo", `${DUO_LEVELS.length} niveles`], lv: 1,
     steps: ["<b>Fuego</b> puede pisar lava y <b>Agua</b> puede pisar agua. El charco del otro color los elimina, y el <b>veneno verde</b> elimina a los dos.",
       "Muévete con <b>◀ ▶</b> y salta con <b>▲</b>. Pon el celular <b>de lado</b>: Fuego usa los botones de la izquierda y Agua los de la derecha. En línea, cada uno maneja a su personaje.",
@@ -4111,7 +4472,7 @@ function info(x, mode) {
     if (g === DUO) optHtml += `<p class="label">Nivel</p><div class="row" id="lv">${DUO_LEVELS.map((L, k) => `<button class="chip ${k === opts.lv ? "on" : ""}" data-n="${k}" ${k >= maxLv ? "disabled" : ""} title="${esc(L.name)}">${k >= maxLv ? "🔒" : k + 1}</button>`).join("")}</div><p class="dim center" style="font-size:12px;font-weight:800;margin-top:-6px">Pasa un nivel para desbloquear el siguiente</p>`;
     if (g === HANG) optHtml += `<p class="label">¿De dónde salen las palabras?</p>${chipsRow("hm", [["rand", "Al azar"], ["player", "Las escribe un jugador"]], "rand")}`;
     if (g === STOP) optHtml += `<p class="label">Rondas</p>${chipsRow("sr", [[3, "3"], [5, "5"], [8, "8"]], 5)}<p class="label">Categorías (toca para cambiar)</p><div class="cats">${STOP_CATS.map(c => `<button class="chip sm ${opts.cats.includes(c) ? "on" : ""}" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div>`;
-    if (g === CITY) optHtml += `<p class="label">¿Cuántas rondas?</p>${chipsRow("cr", [[10, "10 · corta"], [20, "20 · normal"], [30, "30 · larga"]], 20)}<p class="dim" style="font-size:12px;font-weight:800;margin-top:-6px">Cada ronda es un turno de cada jugador. Con 4 jugadores, 20 rondas duran unos 30–40 minutos.</p>`;
+    if (g === CITY) optHtml += `<p class="label">Modo de juego</p>${chipsRow("cm", [["rounds", "Por rondas"], ["classic", "Clásico"]], "rounds")}<p class="dim" id="cmx" style="font-size:12px;font-weight:800;margin-top:-6px">Gana el mayor patrimonio al terminar las rondas.</p><div id="crw"><p class="label">¿Cuántas rondas?</p>${chipsRow("cr", [[10, "10 · corta"], [20, "20 · normal"], [30, "30 · larga"]], 20)}<p class="dim" style="font-size:12px;font-weight:800;margin-top:-6px">Cada ronda es un turno de cada jugador. Con 4 jugadores, 20 rondas duran unos 30–40 minutos.</p></div>`;
     if (g === BOTTLE) optHtml += `<p class="label">Opciones</p><label class="tog"><input type="checkbox" id="shots"><span>Incluir <b>SHOT 🥃</b> (solo mayores de 18; agua también vale)</span></label>`;
     if (!onl && x.party) optHtml += `<p class="label">¿Quiénes juegan? (${g.minp}–${g.maxp})</p><div class="party">${S.party.map((n, i) => `<div class="pf" style="--c:${COL[i % COL.length]}"><i></i><input maxlength="10" value="${esc(n)}" data-i="${i}"><button class="rm" data-i="${i}" aria-label="Quitar">✕</button></div>`).join("")}</div>
       ${S.party.length < g.maxp ? `<button class="btn ghost" id="addp" style="font-size:16px;padding:10px">+ Agregar jugador</button>` : ""}`;
@@ -4130,6 +4491,7 @@ function info(x, mode) {
     <div class="stick">${mode === "guest" ? `<button class="btn ghost" id="go" disabled style="opacity:.85">Esperando que ${esc(NET.names[0] || "el anfitrión")} empiece…</button>` : `<button class="btn green" id="go">¡JUGAR!</button>`}</div>`);
   const chips = (sel, key, num = true) => v.querySelectorAll(sel + " .chip").forEach(b => b.onclick = () => { if (b.disabled) return; opts[key] = num ? +(b.dataset.n ?? b.dataset.v) : b.dataset.v; v.querySelectorAll(sel + " .chip").forEach(z => z.classList.toggle("on", z === b)); });
   chips("#np", "np"); chips("#lv", "lv"); chips("#hm", "mode", false); chips("#sr", "rounds"); chips("#cr", "rounds");
+  v.querySelectorAll("#cm .chip").forEach(b => b.addEventListener("click", () => { opts.mode = b.dataset.v; $("#crw", v).style.display = opts.mode === "rounds" ? "" : "none"; $("#cmx", v).textContent = opts.mode === "rounds" ? "Gana el mayor patrimonio al terminar las rondas." : "Se juega hasta que todos menos uno quiebren. En las simulaciones, con 4 jugadores dura unas 45 rondas (más de una hora)."; }));
   v.querySelectorAll(".cats .chip").forEach(b => b.onclick = () => { const c = b.dataset.c, i = opts.cats.indexOf(c); if (i >= 0) { if (opts.cats.length <= 3) { toast("Mínimo 3 categorías"); return; } opts.cats.splice(i, 1); } else { if (opts.cats.length >= 8) { toast("Máximo 8 categorías"); return; } opts.cats.push(c); } b.classList.toggle("on", i < 0); S.stopCats = opts.cats.slice(); save(); });
   const sh = $("#shots", v); if (sh) sh.onchange = () => opts.shots = sh.checked;
   const syncParty = () => { v.querySelectorAll(".party input").forEach(inp => S.party[+inp.dataset.i] = inp.value.trim() || `Jugador ${+inp.dataset.i + 1}`); save(); };
@@ -4345,4 +4707,3 @@ function phoneOnline(id, me) {
 </script>
 </body>
 </html>
-
