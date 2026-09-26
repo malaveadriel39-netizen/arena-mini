@@ -304,6 +304,101 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .vc-p.wait{opacity:.45}.vc-p.talk{box-shadow:0 0 0 2px var(--c),0 0 12px var(--c)}
 #vcf{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 62px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:#22c55e;font-size:19px;display:grid;place-items:center;cursor:pointer}
 #vcf.off{background:#ef4444}
+/* ===== City Fortune ===== */
+.cf{display:flex;flex-direction:column;gap:8px;--ivory:#f3efe6;--ink2:#1c2240;--goldc:#d8b65a}
+.cf-pl{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.cf-pc{position:relative;display:grid;grid-template-columns:20px 1fr;column-gap:6px;align-items:center;padding:6px 8px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-width:0;transition:background .2s,box-shadow .2s}
+.cf-pc .cf-shape{grid-row:span 2;width:20px;height:20px}
+.cf-pc b{font:800 12px var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cf-pc .cash{font:900 13px var(--body);font-variant-numeric:tabular-nums;color:#e9e4d4}
+.cf-pc.on{background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 2px var(--c)}
+.cf-pc.out{opacity:.38}.cf-pc em{position:absolute;right:6px;top:4px;font-style:normal;font-size:11px}
+.cf-pc em+em{right:26px}
+.cf-bw{width:100%;max-width:640px;margin:0 auto;overflow:auto;border-radius:16px;scrollbar-width:none}.cf-bw::-webkit-scrollbar{display:none}
+.cf-board{position:relative;display:grid;width:100%;aspect-ratio:1;background:#0a0f28;border-radius:14px;padding:3px;gap:1.5px;box-sizing:border-box;box-shadow:0 12px 30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,255,255,.06)}
+.cf.zoom .cf-board{width:200%}.cf.zoom .cf-bw{max-height:58vh}
+.cf-panel{display:flex;flex-direction:column;align-items:center;gap:5px;width:100%}
+.cf-dock{display:none}.cf.zoom .cf-dock{display:block;background:linear-gradient(180deg,#1b2455,#111838);border-radius:16px;padding:10px;box-shadow:inset 0 0 0 1px rgba(216,182,90,.2)}
+.cf.zoom .cf-dock .die{width:34px}.cf.zoom .cf-cardv{position:fixed;z-index:65}.cf.zoom .cf-card{max-width:340px}
+.cf-t .nm.long{font-size:.8em;letter-spacing:-.02em}
+.cf-t{appearance:none;border:0;padding:0 1px;margin:0;position:relative;background:var(--ivory);color:var(--ink2);font:800 clamp(5.4px,1.75vw,10px)/1.05 var(--body);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;overflow:hidden;cursor:pointer;border-radius:3px;text-align:center;min-width:0;min-height:0}
+.cf.zoom .cf-t{font-size:clamp(8px,3.3vw,14px)}
+.cf-t:focus-visible{outline:2px solid var(--goldc);outline-offset:1px;z-index:2}
+.cf-t .nm{max-width:100%;overflow-wrap:anywhere}.cf-t .pr{font-weight:900;opacity:.62;font-size:.92em}.cf-t .ic{font-size:1.35em;line-height:1}
+.ty-PROPERTY .ic{display:none}
+.cf-t .band{position:absolute;background:var(--dc)}
+.s-b .band{left:0;right:0;top:0;height:24%}.s-t .band{left:0;right:0;bottom:0;height:24%}.s-l .band{top:0;bottom:0;right:0;width:22%}.s-r .band{top:0;bottom:0;left:0;width:22%}
+.s-b.ty-PROPERTY{padding-top:36%}.s-t.ty-PROPERTY{padding-bottom:36%}.s-l.ty-PROPERTY{padding-right:24%}.s-r.ty-PROPERTY{padding-left:24%}
+.cf-t .own{position:absolute;background:transparent}
+.s-b .own{left:0;right:0;bottom:0;height:11%}.s-t .own{left:0;right:0;top:0;height:11%}.s-l .own{top:0;bottom:0;left:0;width:10%}.s-r .own{top:0;bottom:0;right:0;width:10%}
+.cf-t.owned .own{background:var(--oc)}
+.cf-t.dc .band{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+.cf-t.mort{filter:grayscale(.85);opacity:.72}
+.cf-t.corner{background:#e6dfcf;font-size:clamp(6px,2vw,11px)}.cf-t.corner .ic{font-size:2.1em}
+.ty-EVENT{background:#ebe6f5}.ty-TAX{background:#f1e4dc}.ty-TRANSPORT,.ty-UTILITY{background:#e7ecf2}
+.cf-t.pulse{animation:cfPulse .8s}.cf-t.bought{animation:cfBought .9s;z-index:2}
+@keyframes cfPulse{0%,100%{box-shadow:none}40%{box-shadow:inset 0 0 0 3px var(--goldc)}}
+@keyframes cfBought{0%{transform:scale(1)}35%{transform:scale(1.22);box-shadow:0 0 0 3px var(--oc,#fff),0 6px 16px #0008}100%{transform:scale(1)}}
+.cf-mid{grid-column:2/11;grid-row:2/11;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:5%;border-radius:8px;overflow:hidden;
+  background:radial-gradient(circle at 50% 38%,#1e2a5e 0%,#111838 62%,#0c1230 100%);box-shadow:inset 0 0 0 1px rgba(216,182,90,.18)}
+.cf-mid::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 22px),repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 22px);pointer-events:none}
+.cf-mid>*{position:relative}
+.cf-brand{font:900 clamp(11px,4vw,20px) var(--body);letter-spacing:.2em;color:#e8e2d0}.cf-brand b{color:var(--goldc);font-weight:900}
+.cf-round{font:800 clamp(8px,2.6vw,11px) var(--body);color:#9aa0cf;letter-spacing:.08em;text-transform:uppercase;margin-top:-4px}
+.has-offer .cf-brand,.has-offer .cf-round{display:none}
+.cf-dice{display:flex;gap:8px}.cf-dice.dim{opacity:.3}
+.die{width:clamp(24px,8.4vw,40px);aspect-ratio:1;background:#fbf8f1;border-radius:22%;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:13%;box-sizing:border-box;box-shadow:0 3px 0 #c9c2b0,0 6px 14px rgba(0,0,0,.4)}
+.die b{border-radius:50%}.die b.on{background:var(--ink2);margin:12%}
+.cf-dice.roll .die{animation:cfShake .14s infinite}.cf-dice.roll .die+.die{animation-delay:.07s}
+@keyframes cfShake{0%{transform:rotate(-10deg) translateY(-2px)}50%{transform:rotate(10deg) translateY(2px)}100%{transform:rotate(-10deg) translateY(-2px)}}
+.cf-stat{text-align:center;max-width:100%}.cf-stat p{margin:0}.cf-stat .l1{font:900 clamp(11px,3.4vw,15px) var(--body)}.cf-stat .l2{font:700 clamp(9.5px,2.9vw,13px) var(--body);color:#c8cbe8;margin-top:2px}
+.cf-acts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;width:100%}
+.cf-b{appearance:none;border:0;border-radius:12px;padding:clamp(6px,2vw,10px) clamp(9px,3vw,14px);font:900 clamp(10.5px,3.2vw,14px) var(--body);color:#fff;background:#2b3470;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.45);letter-spacing:.02em}
+.cf-b.pri{background:linear-gradient(180deg,#e2c16a,#b8923a);color:#1d1604}.cf-b.sec{background:rgba(255,255,255,.1)}.cf-b:disabled{opacity:.45;cursor:default}.cf-b:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
+.cf-no,.cf-wait{font:800 clamp(9px,2.8vw,12px) var(--body);color:#c8cbe8;margin:0;width:100%;text-align:center}
+.cf-tip{display:flex;gap:4px;align-items:flex-start;font:700 clamp(8.5px,2.6vw,11.5px) var(--body);color:#e9dcb4;max-width:100%;text-align:left}
+.cf-tip button{appearance:none;border:0;background:none;color:#9aa0cf;font-size:11px;cursor:pointer;padding:0 2px}
+.cf-mc{background:var(--ivory);color:var(--ink2);border-radius:10px;overflow:hidden;display:grid;gap:1px;padding:0 10px 6px;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.35);animation:cfIn .3s}
+.cf-mc .band{display:block;height:7px;background:var(--dc);margin:0 -10px 4px}.cf-mc b{font:900 clamp(11px,3.5vw,15px) var(--body)}.cf-mc span{font:800 clamp(9px,2.8vw,12px) var(--body);opacity:.75}.cf-mc small{font:700 clamp(8.5px,2.5vw,11px) var(--body);opacity:.7}
+.cf-toks{position:absolute;inset:0;pointer-events:none}
+.cf-tok{position:absolute;width:3.8%;aspect-ratio:1;transform:translate(-50%,-50%);transition:left .12s ease,top .12s ease;filter:drop-shadow(0 2px 2px rgba(0,0,0,.6));z-index:3}
+.cf-tok svg{width:100%;height:100%;display:block}.cf-tok.act{animation:cfBob 1.1s ease-in-out infinite}
+@keyframes cfBob{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-62%) scale(1.15)}}
+.cf-cardv{position:absolute;inset:0;display:grid;place-items:center;background:rgba(8,11,30,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:4;cursor:pointer}
+.cf-cardv[hidden]{display:none}
+.cf-card{width:80%;background:#f7f2e7;color:var(--ink2);border-radius:14px;padding:12px 12px 10px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.5);animation:cfCard .4s cubic-bezier(.2,.9,.3,1.2);border-top:6px solid #2f7fd1}
+.market .cf-card{border-top-color:#b8923a}
+.cf-card small{display:block;font:900 clamp(8px,2.5vw,11px) var(--body);letter-spacing:.08em;opacity:.65}.cf-card b{display:block;font:900 clamp(13px,4.2vw,18px) var(--body);margin:4px 0}.cf-card p{margin:0;font:700 clamp(10px,3.1vw,13px)/1.3 var(--body)}.cf-card em{display:block;margin-top:6px;font:800 10px var(--body);opacity:.45;font-style:normal}
+@keyframes cfCard{0%{transform:rotateY(80deg) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+@keyframes cfIn{0%{transform:translateY(6px);opacity:0}100%{transform:none;opacity:1}}
+.cf-bar{display:flex;gap:4px;background:rgba(255,255,255,.05);padding:4px;border-radius:14px;border:1px solid rgba(255,255,255,.06)}
+.cf-bar button{appearance:none;border:0;flex:1;background:none;color:#a3a8d4;font:900 12px var(--body);padding:9px 4px;border-radius:10px;cursor:pointer}.cf-bar button.on{background:rgba(255,255,255,.12);color:#fff}.cf-bar .cf-zb{flex:none;width:40px;font-size:15px}
+.cf.zoom .cf-zb{background:rgba(216,182,90,.25)}
+.cf-tab{min-height:120px}
+.cf-net{display:grid;gap:6px}.cf-nr{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border-radius:12px;padding:8px 10px}
+.cf-nr.out{opacity:.4}.cf-nr .rk{font:900 13px var(--body);color:#9aa0cf;width:14px}.cf-nr .cf-shape{width:18px;height:18px;flex:none}
+.cf-nr .nm{flex:1;min-width:0;display:grid;gap:2px}.cf-nr .nm b{font:900 13px var(--body)}.cf-nr .nm small{font:700 10.5px var(--body);color:#a3a8d4}
+.cf-nr .bar{display:block;height:4px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}.cf-nr .bar i{display:block;height:100%;border-radius:3px;transition:width .5s}
+.cf-nr .v{font:900 14px var(--body);font-variant-numeric:tabular-nums;color:var(--goldc)}
+.cf-foot{font:700 11px var(--body);color:#8a90c0;margin:8px 2px 0}
+.cf-who{display:flex;align-items:center;gap:6px;font:800 13px var(--body);margin:0 0 6px}.cf-who .cf-shape{width:16px;height:16px}
+.cf-grp{margin-bottom:8px}.cf-grp>p{display:flex;align-items:center;gap:6px;margin:0 0 4px;font:900 12px var(--body)}.cf-grp>p i{width:10px;height:10px;border-radius:3px;background:var(--dc)}.cf-grp small{color:#a3a8d4;font-weight:800}
+.cf-row{appearance:none;border:0;width:100%;display:flex;justify-content:space-between;gap:8px;background:rgba(255,255,255,.05);color:#fff;border-radius:10px;padding:9px 10px;margin-bottom:4px;font:800 13px var(--body);cursor:pointer;text-align:left;border-left:4px solid var(--dc,#8a93c9)}
+.cf-row small{color:#c8cbe8;font-weight:800}
+.cf-kc{background:rgba(216,182,90,.12);border:1px solid rgba(216,182,90,.3);border-radius:10px;padding:8px 10px;margin-bottom:4px;display:grid}.cf-kc b{font:900 13px var(--body);color:#ecd9a0}.cf-kc small{font:700 11px var(--body);color:#c8cbe8}
+.cf-empty{font:700 13px var(--body);color:#a3a8d4;text-align:center;padding:14px}
+.cf-log{display:grid;gap:4px;max-height:320px;overflow:auto}.cf-log p{margin:0;font:700 12.5px/1.35 var(--body);padding:6px 10px;background:rgba(255,255,255,.04);border-radius:8px;border-left:3px solid var(--c)}
+.cf-sheet{position:fixed;inset:0;z-index:60}.cf-sheet[hidden]{display:none}.cf-sh-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.cf-sh{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:#151b3d;border-radius:20px 20px 0 0;padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 18px);max-height:78vh;overflow:auto;animation:cfUp .22s ease-out;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
+@keyframes cfUp{0%{transform:translateY(40px);opacity:0}100%{transform:none;opacity:1}}
+.cf-sh-top{display:flex;gap:10px;align-items:center;border-left:6px solid var(--dc);padding-left:10px;margin-bottom:10px}.cf-sh-top>span{font-size:24px}.cf-sh-top div{flex:1}.cf-sh-top small{font:800 11px var(--body);color:#a3a8d4;text-transform:uppercase;letter-spacing:.06em}.cf-sh-top h3{font:900 20px var(--body)}
+.cf-x{appearance:none;border:0;background:rgba(255,255,255,.08);color:#fff;width:34px;height:34px;border-radius:10px;font-size:14px;cursor:pointer}
+.cf-sub{font:900 12px var(--body);margin:0 0 8px}.cf-owner{display:flex;align-items:center;gap:6px;font:800 13px var(--body);margin:0 0 10px;color:#e9e4d4}.cf-owner .cf-shape{width:16px;height:16px}
+.cf-rt{width:100%;border-collapse:collapse;font:700 13px var(--body)}.cf-rt td{padding:6px 2px;border-bottom:1px solid rgba(255,255,255,.07)}.cf-rt td:last-child{text-align:right;font-weight:900;font-variant-numeric:tabular-nums}.cf-rt tr.cur td{color:var(--goldc)}.cf-rt tr.sep td{color:#a3a8d4}
+.cf-note,.cf-desc{font:700 12.5px/1.4 var(--body);color:#c8cbe8}.cf-desc{font-size:14px;color:#e9e4d4}
+.cf-float{position:fixed;z-index:70;transform:translateX(-50%);font:900 14px var(--body);pointer-events:none;animation:cfFloat 1.2s forwards;text-shadow:0 2px 4px rgba(0,0,0,.7)}.cf-float.up{color:#3ddc84}.cf-float.down{color:#ff7b7b}
+@keyframes cfFloat{0%{opacity:0;transform:translate(-50%,6px)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-34px)}}
+@media (prefers-reduced-motion:reduce){.cf *,.cf-float,.cf-sh{animation:none!important;transition:none!important}}
 #mute{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer}
 body.playing #mute{display:none}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
@@ -1696,7 +1791,7 @@ function tResult(g, w, sc, opts, np) {
       <rect x="53" y="68" width="14" height="16" fill="#e0b21f"/><rect x="36" y="84" width="48" height="12" rx="4" fill="${c}"/><rect x="30" y="96" width="60" height="10" rx="4" fill="${cd}"/></svg>
     <p class="label center">${g.name}</p>
     <h1 class="winner" style="color:${c}">${g.noWinner ? "¡Gracias por jugar!" : w < 0 ? "¡EMPATE!" : `¡GANA ${esc(tname(w).toUpperCase())}!`}</h1>
-    ${g.scores ? `<div class="card" style="display:grid;gap:6px">${order.map((i, k) => `<div style="display:flex;justify-content:space-between;font-weight:900"><span style="color:${COL[i]}">${k + 1}. ${esc(tname(i))}</span><span>${sc[i]} pts</span></div>`).join("")}</div>`
+    ${g.scores ? `<div class="card" style="display:grid;gap:6px">${order.map((i, k) => `<div style="display:flex;justify-content:space-between;font-weight:900"><span style="color:${COL[i]}">${k + 1}. ${esc(tname(i))}</span><span>${g.fmt ? g.fmt(sc[i]) : sc[i] + " pts"}</span></div>`).join("")}</div>`
       : g.need > 1 ? `<div class="score">${sc.map((n, i) => `<span style="color:${COL[i]}">${n}</span>`).join("<i>–</i>")}</div>` : ""}
     ${g.party ? "" : `<div class="card" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">${Array.from({ length: np }, (_, i) => `<span style="font-weight:900;color:${COL[i]}">${esc(tname(i))}: ${rec[i] || 0}</span>`).join("")}<span class="dim" style="width:100%;text-align:center;font-size:12px;font-weight:800">victorias en ${g.name}</span></div>`}
     <div class="grow"></div>
@@ -2900,6 +2995,762 @@ const BOTTLE = {
 };
 
 /* =====================================================================
+   CITY FORTUNE · configuración (GameRulesConfig), tablero y cartas
+   Contenido 100 % original de Arena Mini. Nada de aquí vive en la UI:
+   el motor lee estos valores y la interfaz solo los muestra.
+   ===================================================================== */
+const CF_RULES = {
+  startingMoney: 1500,
+  passStartReward: 200,            // al pasar o caer en Estación Central (una sola vez por vuelta)
+  maxDoubles: 3,                   // dobles seguidos que te mandan a detención
+  doublesExtraRoll: true,
+  detention: { fine: 50, maxTurns: 3, doublesRelease: true },
+  festivalPot: true,               // impuestos y multas van al bote de la Plaza del Festival
+  districtControlMult: 2,          // DISTRICT CONTROL: renta base ×2 si tienes todo el distrito
+  levelMult: [1, 5, 14, 32, 46],   // renta por nivel = renta base × multiplicador
+  transportRent: [30, 60, 120, 200],
+  utilityMult: [4, 10, 20],
+  mortgage: { rate: .5, interest: .1 },               // TODO_PHASE2 (hipotecas)
+  building: { maxLevel: 4, evenBuild: true, sellRate: .5 }, // TODO_PHASE2 (construcción)
+  victory: { mode: "classic", maxRounds: 20 },        // classic: último solvente · rounds: mayor patrimonio tras X rondas
+  features: { build: false, auction: false, mortgage: false, trade: false }, // se activan en la parte 2
+  logSize: 90, txSize: 120,
+};
+/* nombres de los niveles de construcción */
+const CF_LEVELS = ["Terreno", "Local", "Edificio", "Torre", "Complejo"];
+
+/* ---------- distritos (paleta propia) ---------- */
+const CF_DISTRICTS = [
+  { id: "antiguo", name: "Barrio Antiguo", color: "#b86b4b", cost: 50, icon: "🏛️" },
+  { id: "mercado", name: "Mercado Norte", color: "#e0a458", cost: 50, icon: "🧺" },
+  { id: "resid", name: "Distrito Jardín", color: "#6fae6a", cost: 100, icon: "🏡" },
+  { id: "indus", name: "Zona Industrial", color: "#8a8fa3", cost: 100, icon: "🏭" },
+  { id: "tech", name: "Distrito Tecnológico", color: "#4fb3d9", cost: 150, icon: "💡" },
+  { id: "costa", name: "Zona Costera", color: "#2f7fd1", cost: 150, icon: "⛵" },
+  { id: "finan", name: "Distrito Financiero", color: "#7b5cd6", cost: 200, icon: "📈" },
+  { id: "premium", name: "Colinas Premium", color: "#c9a44c", cost: 200, icon: "💎" },
+];
+
+/* ---------- las 40 casillas ---------- */
+const cfP = (name, short, d, price) => ({ type: "PROPERTY", name, short, d, price });
+const CF_TILES = [
+  { type: "START", name: "Estación Central", short: "Salida", icon: "🚉" },
+  cfP("Callejón del Farol", "Farol", 0, 60),
+  { type: "EVENT", deck: "city", name: "Evento de la Ciudad", short: "Ciudad", icon: "🏙️" },
+  cfP("Plaza de los Arcos", "Arcos", 0, 60),
+  { type: "TAX", name: "Impuesto Municipal", short: "Impuesto", icon: "🧾", amount: 200 },
+  { type: "TRANSPORT", name: "Metro Central", short: "Metro", icon: "🚇", price: 200 },
+  cfP("Feria de las Flores", "Feria", 1, 100),
+  { type: "EVENT", deck: "market", name: "Evento del Mercado", short: "Mercado", icon: "📊" },
+  cfP("Mercado del Puente", "Puente", 1, 100),
+  cfP("Galería Aurora", "Aurora", 1, 120),
+  { type: "DETENTION", name: "Centro de Detención", short: "Detención", icon: "🔒" },
+  cfP("Villa Olivo", "Olivo", 2, 140),
+  { type: "UTILITY", name: "Red Eléctrica", short: "Energía", icon: "⚡", price: 150 },
+  cfP("Jardines del Alba", "Alba", 2, 140),
+  cfP("Residencial Mirador", "Mirador", 2, 160),
+  { type: "TRANSPORT", name: "Terminal Norte", short: "Terminal", icon: "🚌", price: 200 },
+  cfP("Fundición Vieja", "Fundición", 3, 180),
+  { type: "EVENT", deck: "city", name: "Evento de la Ciudad", short: "Ciudad", icon: "🏙️" },
+  cfP("Muelle de Carga", "Muelle", 3, 180),
+  cfP("Nave Cobalto", "Cobalto", 3, 200),
+  { type: "BONUS", name: "Plaza del Festival", short: "Festival", icon: "🎪" },
+  cfP("Campus Nébula", "Nébula", 4, 220),
+  { type: "EVENT", deck: "market", name: "Evento del Mercado", short: "Mercado", icon: "📊" },
+  cfP("Parque Silicio", "Silicio", 4, 220),
+  cfP("Torre Pixel", "Pixel", 4, 240),
+  { type: "TRANSPORT", name: "Puerto Principal", short: "Puerto", icon: "⚓", price: 200 },
+  cfP("Marina Azul", "Marina", 5, 260),
+  cfP("Paseo del Sol", "Sol", 5, 260),
+  { type: "UTILITY", name: "Red de Agua", short: "Agua", icon: "💧", price: 150 },
+  cfP("Puerto Vista", "Vista", 5, 280),
+  { type: "GO_TO_DETENTION", name: "¡Inspección!", short: "Inspección", icon: "🚨" },
+  cfP("Plaza Capital", "Capital", 6, 300),
+  cfP("Bolsa Central", "Bolsa", 6, 300),
+  { type: "EVENT", deck: "city", name: "Evento de la Ciudad", short: "Ciudad", icon: "🏙️" },
+  cfP("Torre Meridian", "Meridian", 6, 320),
+  { type: "TRANSPORT", name: "Aeropuerto City", short: "Aeropuerto", icon: "✈️", price: 200 },
+  { type: "UTILITY", name: "City Data", short: "Datos", icon: "📡", price: 150 },
+  cfP("Colina Esmeralda", "Esmeralda", 7, 350),
+  { type: "TAX", name: "Impuesto de Lujo", short: "Lujo", icon: "💎", amount: 120 },
+  cfP("Mirador Imperial", "Imperial", 7, 400),
+];
+/* datos derivados: renta base, rentas por nivel, costo de mejora e hipoteca */
+CF_TILES.forEach((t, i) => {
+  t.pos = i; t.id = "t" + i;
+  if (t.type === "PROPERTY") {
+    t.base = Math.max(4, Math.round(t.price * .065 / 2) * 2);
+    t.rent = CF_RULES.levelMult.map((m, k) => k === 0 ? t.base : Math.round(t.base * m / 5) * 5);
+    t.cost = CF_DISTRICTS[t.d].cost; t.color = CF_DISTRICTS[t.d].color;
+  }
+  if (t.price) t.mortgage = Math.round(t.price * CF_RULES.mortgage.rate);
+});
+const CF_OWNABLE = t => t.type === "PROPERTY" || t.type === "TRANSPORT" || t.type === "UTILITY";
+CF_DISTRICTS.forEach((d, k) => d.tiles = CF_TILES.filter(t => t.d === k && t.type === "PROPERTY").map(t => t.pos));
+
+/* ---------- cartas: 25 de Ciudad + 25 de Mercado (textos originales) ---------- */
+const cfC = (deck, title, text, type, value, extra) => Object.assign({ deck, title, text, type, value: value ?? 0 }, extra || {});
+const CF_CARDS = [
+  // ---- EVENTOS DE LA CIUDAD ----
+  cfC("city", "Contrato municipal", "La alcaldía contrata a tu empresa para renovar el alumbrado. Recibes $150.", "GAIN", 150),
+  cfC("city", "Obras públicas", "La ciudad repavimenta las avenidas: cada jugador aporta $50 al bote del Festival.", "ALL_PAY_POT", 50),
+  cfC("city", "Multa de tránsito", "Estacionaste frente a un hidrante. Pagas $40.", "PAY", 40),
+  cfC("city", "Maratón de la ciudad", "Corres hasta la Estación Central. Avanza a la salida y cobra.", "MOVE_TO", 0),
+  cfC("city", "Desvío por obras", "Calle cerrada. Retrocede 3 casillas.", "MOVE_BACK", 3),
+  cfC("city", "Inspección sorpresa", "Los inspectores quieren revisar tus papeles. Ve directo al Centro de Detención.", "GO_DETENTION"),
+  cfC("city", "Salida anticipada", "Guárdala: te saca del Centro de Detención cuando la uses.", "KEEP", 0, { keep: "GET_OUT" }),
+  cfC("city", "Tarde en la costa", "Te antojas de brisa marina. Avanza hasta Marina Azul.", "MOVE_TO", 26),
+  cfC("city", "Metro exprés", "Avanza al transporte más cercano. Si tiene dueño, paga el doble de lo normal.", "MOVE_NEAREST", 2, { kind: "TRANSPORT" }),
+  cfC("city", "Vecino del año", "Tu barrio te premia: cada jugador te da $50.", "COLLECT_EACH", 50),
+  cfC("city", "Fiesta de inauguración", "Invitas a todos a tu nuevo local: pagas $25 a cada jugador.", "PAY_EACH", 25),
+  cfC("city", "Mantenimiento de fachadas", "La ciudad exige pintar tus edificios: pagas $30 por cada nivel construido y $80 extra por cada Complejo.", "PAY_PER_BUILDING", 30, { top: 80 }),
+  cfC("city", "Subsidio de vivienda", "Recibes $20 por cada propiedad que tengas.", "GAIN_PER_PROPERTY", 20),
+  cfC("city", "Día del patrimonio", "Recorrido cultural: avanza hasta el Callejón del Farol.", "MOVE_TO", 1),
+  cfC("city", "Noche en el mirador", "Cena con vista a la ciudad: avanza hasta Mirador Imperial.", "MOVE_TO", 39),
+  cfC("city", "Devolución de impuestos", "Hacienda se equivocó a tu favor. Recibes $100.", "GAIN", 100),
+  cfC("city", "Reciclaje premiado", "Tu edificio gana el concurso de reciclaje. Recibes $30.", "GAIN", 30),
+  cfC("city", "Seguro de renta", "Guárdala: la próxima vez que debas pagar alquiler, puedes usarla para no pagar.", "KEEP", 0, { keep: "RENT_PROTECTION" }),
+  cfC("city", "Cupón del ayuntamiento", "Guárdala: tu próximo impuesto cuesta la mitad.", "KEEP", 0, { keep: "TAX_DISCOUNT" }),
+  cfC("city", "Apagón en el barrio", "Avanza al servicio público más cercano. Si tiene dueño, tira los dados y paga 10 veces el resultado.", "MOVE_NEAREST", 10, { kind: "UTILITY" }),
+  cfC("city", "Licencia de conducir", "Te toca renovar la licencia. Pagas $60.", "PAY", 60),
+  cfC("city", "Hallazgo en el parque", "Devuelves una billetera perdida y te recompensan con $40.", "GAIN", 40),
+  cfC("city", "Excursión escolar", "Acompañas al grupo hasta la Terminal Norte. Avanza allí.", "MOVE_TO", 15),
+  cfC("city", "Turno extra", "Guárdala: úsala al terminar tu turno para volver a tirar los dados.", "KEEP", 0, { keep: "EXTRA_ROLL" }),
+  cfC("city", "Remodelación exprés", "Guárdala: construye un nivel gratis en una propiedad donde puedas construir.", "KEEP", 0, { keep: "FREE_BUILD", needs: "build" }),
+  // ---- EVENTOS DEL MERCADO ----
+  cfC("market", "Mercado en auge", "Las acciones de tu empresa se disparan. Recibes $150.", "GAIN", 150),
+  cfC("market", "Caída de la bolsa", "Un mal día en el mercado. Pagas $100.", "PAY", 100),
+  cfC("market", "Inversión inteligente", "Tus terrenos se valorizan: recibes $25 por cada propiedad que tengas.", "GAIN_PER_PROPERTY", 25),
+  cfC("market", "Dividendos", "Tus inversiones pagan dividendos. Recibes $60.", "GAIN", 60),
+  cfC("market", "Auditoría fiscal", "Revisan tus cuentas y encuentran un error. Pagas $75.", "PAY", 75),
+  cfC("market", "Reparación urgente", "Se rompió una tubería: pagas $40 por cada nivel construido y $100 extra por cada Complejo.", "PAY_PER_BUILDING", 40, { top: 100 }),
+  cfC("market", "Socio capitalista", "Todos quieren invertir en tu idea: cada jugador te da $30.", "COLLECT_EACH", 30),
+  cfC("market", "Ronda de inversión", "Te reúnes con inversionistas en Plaza Capital. Avanza hasta allí.", "MOVE_TO", 31),
+  cfC("market", "Viaje de negocios", "Avanza al transporte más cercano. Si tiene dueño, paga el doble de lo normal.", "MOVE_NEAREST", 2, { kind: "TRANSPORT" }),
+  cfC("market", "Startup del año", "Tu empresa gana un premio de innovación. Recibes $120.", "GAIN", 120),
+  cfC("market", "Comisión bancaria", "El banco te cobra por mantenimiento. Pagas $30.", "PAY", 30),
+  cfC("market", "Bono de fin de año", "Cerraste el año con buenas ventas. Recibes $100.", "GAIN", 100),
+  cfC("market", "Crédito vencido", "Se te pasó la fecha de pago. Pagas $50.", "PAY", 50),
+  cfC("market", "Venta de acciones", "Vendes a buen precio. Recibes $80.", "GAIN", 80),
+  cfC("market", "Consultoría", "Asesoras a todos los empresarios de la mesa: cada jugador te paga $20.", "COLLECT_EACH", 20),
+  cfC("market", "Patrocinio", "Patrocinas el torneo de la ciudad: pagas $20 a cada jugador.", "PAY_EACH", 20),
+  cfC("market", "Mercado nocturno", "Abres un puesto en el Mercado del Puente. Avanza hasta allí.", "MOVE_TO", 8),
+  cfC("market", "Investigación financiera", "Hay movimientos raros en tus cuentas. Ve directo al Centro de Detención.", "GO_DETENTION"),
+  cfC("market", "Salida a bolsa", "Tu empresa sale a bolsa: avanza a la Estación Central y cobra.", "MOVE_TO", 0),
+  cfC("market", "Documentos olvidados", "Dejaste el contrato en la oficina. Retrocede 3 casillas.", "MOVE_BACK", 3),
+  cfC("market", "Rescate financiero", "Guárdala: te saca del Centro de Detención cuando la uses.", "KEEP", 0, { keep: "GET_OUT" }),
+  cfC("market", "Póliza premium", "Guárdala: la próxima vez que debas pagar alquiler, puedes usarla para no pagar.", "KEEP", 0, { keep: "RENT_PROTECTION" }),
+  cfC("market", "Beneficio fiscal", "Guárdala: tu próximo impuesto cuesta la mitad.", "KEEP", 0, { keep: "TAX_DISCOUNT" }),
+  cfC("market", "Horas extra", "Guárdala: úsala al terminar tu turno para volver a tirar los dados.", "KEEP", 0, { keep: "EXTRA_ROLL" }),
+  cfC("market", "Crédito de construcción", "Guárdala: construye un nivel gratis en una propiedad donde puedas construir.", "KEEP", 0, { keep: "FREE_BUILD", needs: "build" }),
+];
+CF_CARDS.forEach((c, i) => c.id = i);
+const CF_KEEP = {
+  GET_OUT: { name: "Salida anticipada", text: "Sal del Centro de Detención sin pagar." },
+  RENT_PROTECTION: { name: "Seguro de renta", text: "No pagas un alquiler." },
+  TAX_DISCOUNT: { name: "Cupón de impuesto", text: "Tu próximo impuesto cuesta la mitad (se usa sola)." },
+  EXTRA_ROLL: { name: "Turno extra", text: "Vuelve a tirar al terminar tu turno." },
+  FREE_BUILD: { name: "Remodelación exprés", text: "Construye un nivel gratis." },
+};
+
+/* =====================================================================
+   CITY FORTUNE · MOTOR DE JUEGO (sin DOM, sin interfaz)
+   Solo el anfitrión (o el celular local) ejecuta CF.act(). Los demás
+   solo piden acciones: { t: "ROLL" | "BUY" | "DECLINE" | "END_TURN" |
+   "PAY_FINE" | "USE_CARD" | "PAY_RENT" | "USE_PROTECTION", aid }
+   Dados, dinero, dueños, rentas, posición y ganador los decide el motor.
+   Submódulos: estado · reglas/turnos · economía · propiedades · eventos
+               · detención · bancarrota · victoria · filtro de privacidad
+   ===================================================================== */
+const CF = (() => {
+  const T40 = CF_TILES.length;
+  const E = (s, k, o) => s.ev.push(Object.assign({ k }, o || {}));          // evento para la animación
+  const nm = (s, p) => (s.names && s.names[p]) || "Jugador " + (p + 1);
+  const money = n => "$" + n.toLocaleString("es");
+  function log(s, txt, p) { s.log.push({ n: s.n, txt, p: p ?? -1 }); if (s.log.length > s.r.logSize) s.log.splice(0, s.log.length - s.r.logSize); }
+
+  /* ---------- azar (solo en el estado del anfitrión; nunca se envía a los invitados) ---------- */
+  function rand(s) { let t = (s.rng = (s.rng + 0x6D2B79F5) >>> 0); t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+  const rollDie = s => 1 + Math.floor(rand(s) * 6);
+  function rollDice(s) { return [rollDie(s), rollDie(s)]; }
+  function shuffle(s, a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand(s) * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  const newSeed = () => { try { return crypto.getRandomValues(new Uint32Array(1))[0]; } catch { return (Math.random() * 4294967296) >>> 0; } };
+  const merge = (a, b) => { const o = JSON.parse(JSON.stringify(a)); for (const k in b || {}) o[k] = (b[k] && typeof b[k] === "object" && !Array.isArray(b[k]) && o[k] && typeof o[k] === "object") ? merge(o[k], b[k]) : b[k]; return o; };
+
+  /* =================== ESTADO =================== */
+  function newGame({ np, names, rules, seed }) {
+    np = Math.max(2, Math.min(6, np | 0));
+    const r = merge(CF_RULES, rules);
+    const s = {
+      v: 1, n: 0, np, names: (names || []).slice(0, np).map(String), r,
+      phase: "turn", turn: 0, round: 1, turnNo: 1, dc: 0, dice: null, again: false, pend: -1, rq: null,
+      players: Array.from({ length: np }, () => ({ cash: r.startingMoney, pos: 0, jail: false, jt: 0, cards: [], out: false })),
+      own: Array(T40).fill(-1), lvl: Array(T40).fill(0), mort: Array(T40).fill(false),
+      pot: 0, decks: {}, rng: (seed ?? newSeed()) >>> 0, log: [], tx: [], ev: [], evn: 0, aids: {}, acts: [], w: null, why: "",
+      st: Array.from({ length: np }, () => ({ rentPaid: 0, rentGot: 0, bought: 0, spent: 0, jailed: 0, laps: 0, taxes: 0, cards: 0 })),
+    };
+    s.seed0 = s.rng;
+    for (const d of ["city", "market"]) s.decks[d] = shuffle(s, CF_CARDS.filter(c => c.deck === d && (!c.needs || r.features[c.needs])).map(c => c.id));
+    log(s, `Empieza la partida. Cada jugador recibe ${money(r.startingMoney)}.`);
+    E(s, "TURN", { p: 0 });
+    return s;
+  }
+
+  /* =================== ECONOMÍA (toda operación de dinero pasa por aquí) =================== */
+  function transfer(s, from, to, amt, why) {
+    amt = Math.round(amt); if (!(amt > 0)) return;
+    if (typeof from === "number") s.players[from].cash -= amt; else if (from === "pot") s.pot -= amt;
+    if (typeof to === "number") s.players[to].cash += amt; else if (to === "pot") s.pot += amt;
+    s.tx.push({ n: s.n, from, to, amt, why }); if (s.tx.length > s.r.txSize) s.tx.splice(0, s.tx.length - s.r.txSize);
+    E(s, "$", { from, to, amt, why });
+  }
+  const sink = s => s.r.festivalPot ? "pot" : "bank";
+  /* cobra: si alcanza paga; si no, bancarrota (TODO_PHASE2: antes ofrecer vender/hipotecar) */
+  function pay(s, p, to, amt, why) {
+    amt = Math.round(amt); if (!(amt > 0)) return true;
+    const pl = s.players[p];
+    if (pl.cash >= amt) { transfer(s, p, to, amt, why); return true; }
+    bankrupt(s, p, typeof to === "number" ? to : "bank", amt); return false;
+  }
+  const gain = (s, p, amt, why) => transfer(s, "bank", p, amt, why);
+  function assets(s, p) {
+    const pl = s.players[p]; let prop = 0, build = 0, debt = 0, count = 0;
+    for (let i = 0; i < T40; i++) if (s.own[i] === p) { const t = CF_TILES[i]; count++; prop += t.price; build += s.lvl[i] * (t.cost || 0); if (s.mort[i]) debt += t.mortgage; }
+    return { cash: pl.cash, prop, build, debt, count, net: pl.out ? 0 : pl.cash + prop + build - debt };
+  }
+
+  /* =================== PROPIEDADES =================== */
+  const controls = (s, o, d) => o >= 0 && CF_DISTRICTS[d].tiles.every(i => s.own[i] === o);
+  const countType = (s, o, type) => CF_TILES.filter(t => t.type === type && s.own[t.pos] === o).length;
+  function rentFor(s, pos, ctx = {}) {
+    const t = CF_TILES[pos], o = s.own[pos], r = s.r; if (o < 0 || s.mort[pos]) return 0;
+    if (t.type === "PROPERTY") { const lv = s.lvl[pos]; return lv > 0 ? t.rent[lv] : t.base * (controls(s, o, t.d) ? r.districtControlMult : 1); }
+    if (t.type === "TRANSPORT") return r.transportRent[countType(s, o, "TRANSPORT") - 1] * (ctx.mult || 1);
+    if (t.type === "UTILITY") return (ctx.roll || 0) * (ctx.utilX || r.utilityMult[countType(s, o, "UTILITY") - 1]);
+    return 0;
+  }
+  function buyProperty(s, p, pos) {
+    const t = CF_TILES[pos];
+    transfer(s, p, "bank", t.price, "compra"); s.own[pos] = p; s.st[p].bought++; s.st[p].spent += t.price;
+    E(s, "BUY", { p, pos }); log(s, `${nm(s, p)} compró ${t.name} por ${money(t.price)}.`, p);
+    if (t.type === "PROPERTY" && controls(s, p, t.d)) { E(s, "DISTRICT", { p, d: t.d }); log(s, `¡${nm(s, p)} controla todo ${CF_DISTRICTS[t.d].name}! Sus rentas se duplican.`, p); }
+  }
+
+  /* =================== MOVIMIENTO =================== */
+  function moveBy(s, p, steps) {
+    const pl = s.players[p], from = pl.pos, to = ((from + steps) % T40 + T40) % T40;
+    pl.pos = to; E(s, "MOVE", { p, from, to, steps });
+    if (steps > 0 && from + steps >= T40) { s.st[p].laps++; gain(s, p, s.r.passStartReward, "salida"); E(s, "START", { p }); log(s, `${nm(s, p)} pasó por la Estación Central y cobró ${money(s.r.passStartReward)}.`, p); }
+  }
+  const moveTo = (s, p, target) => moveBy(s, p, ((target - s.players[p].pos) + T40) % T40 || T40);
+  function toDetention(s, p, why) {
+    const pl = s.players[p], from = pl.pos; pl.pos = 10; pl.jail = true; pl.jt = 0; s.dc = 0; s.st[p].jailed++;
+    E(s, "MOVE", { p, from, to: 10, jump: true }); E(s, "JAIL", { p }); log(s, `${nm(s, p)} va al Centro de Detención${why ? " (" + why + ")" : ""}.`, p);
+  }
+  const release = (s, p) => { const pl = s.players[p]; pl.jail = false; pl.jt = 0; E(s, "FREE", { p }); };
+
+  /* =================== CASILLAS =================== */
+  function resolveTile(s, p, ctx = {}, depth = 0) {
+    const pl = s.players[p]; if (pl.out || depth > 3) return;
+    const pos = pl.pos, t = CF_TILES[pos];
+    E(s, "LAND", { p, pos });
+    switch (t.type) {
+      case "PROPERTY": case "TRANSPORT": case "UTILITY": {
+        const o = s.own[pos];
+        if (o < 0) { s.phase = "buy"; s.pend = pos; return; }
+        if (o === p) return;
+        if (s.mort[pos]) { log(s, `${t.name} está hipotecada: no se paga alquiler.`, p); return; }
+        if (t.type === "UTILITY" && ctx.utilX) { const d = rollDice(s); ctx.roll = d[0] + d[1]; E(s, "ROLL", { p, d, card: true }); }
+        const amt = rentFor(s, pos, ctx); if (amt > 0) chargeRent(s, p, o, amt, pos);
+        return;
+      }
+      case "TAX": {
+        let amt = t.amount; const k = findCard(s, p, "TAX_DISCOUNT");
+        if (k >= 0) { amt = Math.ceil(amt / 2); useCard(s, p, k); log(s, `${nm(s, p)} usó un cupón: el impuesto le cuesta la mitad.`, p); }
+        s.st[p].taxes += Math.min(amt, pl.cash);
+        if (pay(s, p, sink(s), amt, "impuesto")) { E(s, "TAX", { p, amt }); log(s, `${nm(s, p)} pagó ${money(amt)} de ${t.name}.`, p); }
+        return;
+      }
+      case "EVENT": return drawCard(s, p, t.deck, depth);
+      case "GO_TO_DETENTION": return toDetention(s, p, "inspección");
+      case "BONUS": if (s.pot > 0) { const a = s.pot; transfer(s, "pot", p, a, "festival"); E(s, "POT", { p, amt: a }); log(s, `¡${nm(s, p)} se llevó el bote del Festival: ${money(a)}!`, p); } return;
+      default: return;
+    }
+  }
+  function chargeRent(s, p, o, amt, pos) {
+    if (findCard(s, p, "RENT_PROTECTION") >= 0) { s.phase = "rentq"; s.rq = { o, amt, pos }; return; }
+    payRent(s, p, o, amt, pos);
+  }
+  function payRent(s, p, o, amt, pos) {
+    const had = s.players[p].cash;
+    if (pay(s, p, o, amt, "alquiler")) { s.st[p].rentPaid += amt; s.st[o].rentGot += amt; E(s, "RENT", { p, o, amt, pos }); log(s, `${nm(s, p)} pagó ${money(amt)} de alquiler a ${nm(s, o)} por ${CF_TILES[pos].name}.`, p); }
+    else { s.st[p].rentPaid += had; s.st[o].rentGot += had; }
+  }
+
+  /* =================== EVENTOS (cartas) =================== */
+  const findCard = (s, p, kind) => s.players[p].cards.findIndex(id => CF_CARDS[id].keep === kind);
+  function useCard(s, p, k) { const id = s.players[p].cards.splice(k, 1)[0]; s.decks[CF_CARDS[id].deck].push(id); E(s, "USE", { p, id }); return id; }
+  function drawCard(s, p, deck, depth) {
+    const D = s.decks[deck]; if (!D.length) return;
+    const id = D.shift(), c = CF_CARDS[id], pl = s.players[p], others = s.players.map((q, i) => i).filter(i => i !== p && !s.players[i].out);
+    s.st[p].cards++;
+    E(s, "CARD", { p, id }); log(s, `${nm(s, p)}: «${c.title}»`, p);
+    if (c.type !== "KEEP") D.push(id);
+    switch (c.type) {
+      case "GAIN": gain(s, p, c.value, "evento"); break;
+      case "PAY": pay(s, p, sink(s), c.value, "evento"); break;
+      case "ALL_PAY_POT": for (const i of s.players.map((q, i) => i)) if (!s.players[i].out) pay(s, i, sink(s), c.value, "evento"); break;
+      case "COLLECT_EACH": for (const q of others) pay(s, q, p, c.value, "evento"); break;
+      case "PAY_EACH": { const tot = c.value * others.length; if (pl.cash >= tot) others.forEach(q => transfer(s, p, q, c.value, "evento")); else bankrupt(s, p, "bank", tot); break; }
+      case "GAIN_PER_PROPERTY": { const n = s.own.filter(o => o === p).length; if (n) gain(s, p, n * c.value, "evento"); else log(s, `${nm(s, p)} no tiene propiedades: no recibe nada.`, p); break; }
+      case "PAY_PER_BUILDING": { let tot = 0; s.own.forEach((o, i) => { if (o === p) tot += s.lvl[i] * c.value + (s.lvl[i] >= 4 ? c.top : 0); }); if (tot) pay(s, p, sink(s), tot, "evento"); else log(s, `${nm(s, p)} no tiene construcciones: no paga nada.`, p); break; }
+      case "MOVE_TO": moveTo(s, p, c.value); resolveTile(s, p, { roll: s.dice ? s.dice[0] + s.dice[1] : 7 }, depth + 1); break;
+      case "MOVE_BACK": moveBy(s, p, -c.value); resolveTile(s, p, { roll: s.dice ? s.dice[0] + s.dice[1] : 7 }, depth + 1); break;
+      case "MOVE_NEAREST": {
+        let i = pl.pos; do i = (i + 1) % T40; while (CF_TILES[i].type !== c.kind);
+        moveTo(s, p, i);
+        resolveTile(s, p, c.kind === "TRANSPORT" ? { mult: c.value } : { utilX: c.value }, depth + 1); break;
+      }
+      case "GO_DETENTION": toDetention(s, p, "evento"); break;
+      case "KEEP": pl.cards.push(id); log(s, `${nm(s, p)} guarda la tarjeta «${CF_KEEP[c.keep].name}».`, p); break;
+    }
+  }
+
+  /* =================== BANCARROTA (versión parte 1) ===================
+     TODO_PHASE2: antes de quebrar, el jugador podrá vender construcciones
+     e hipotecar para cubrir la deuda (liquidación). */
+  function bankrupt(s, p, creditor, owed) {
+    const pl = s.players[p]; if (pl.out) return;
+    const toP = typeof creditor === "number" && !s.players[creditor].out;
+    if (pl.cash > 0) transfer(s, p, toP ? creditor : "bank", pl.cash, "quiebra");
+    for (let i = 0; i < T40; i++) if (s.own[i] === p) { if (toP) s.own[i] = creditor; else { s.own[i] = -1; s.lvl[i] = 0; s.mort[i] = false; } }
+    while (pl.cards.length) useCard(s, p, 0);
+    pl.out = true; pl.cash = 0; pl.jail = false;
+    E(s, "BANKRUPT", { p, to: toP ? creditor : -1 });
+    log(s, `💥 ${nm(s, p)} quebró (debía ${money(owed)}). ${toP ? `Sus propiedades pasan a ${nm(s, creditor)}.` : "Sus propiedades vuelven al banco."}`, p);
+    checkVictory(s);
+  }
+
+  /* =================== VICTORIA =================== */
+  const alive = s => s.players.map((q, i) => i).filter(i => !s.players[i].out);
+  function checkVictory(s) {
+    const a = alive(s); if (s.phase === "over") return true;
+    if (a.length === 1) { finish(s, a[0], "last"); return true; }
+    return false;
+  }
+  function finish(s, w, why) {
+    s.w = w; s.why = why; s.phase = "over"; s.pend = -1; s.rq = null;
+    E(s, "WIN", { p: w, why }); log(s, why === "last" ? `🏆 ${nm(s, w)} es el último empresario en pie. ¡Gana la partida!` : `🏆 Se acabaron las rondas: ${nm(s, w)} tiene el mayor patrimonio. ¡Gana!`, w);
+  }
+  function richest(s) { let best = -1, bv = -1; for (const i of alive(s)) { const v = assets(s, i).net; if (v > bv) { bv = v; best = i; } } return best; }
+
+  /* =================== TURNOS =================== */
+  function afterMove(s, p, extra) {
+    const pl = s.players[p];
+    if (s.phase === "over" || pl.out) return;
+    if (s.phase === "buy" || s.phase === "rentq") { s.again = extra; return; }
+    if (pl.jail) { s.phase = "done"; return; }
+    s.phase = extra ? "turn" : "done";
+    if (extra) { E(s, "AGAIN", { p }); log(s, `¡Dobles! ${nm(s, p)} tira otra vez.`, p); }
+  }
+  function nextTurn(s) {
+    s.dc = 0; s.pend = -1; s.rq = null; s.again = false;
+    const a = alive(s); if (a.length < 2) return checkVictory(s);
+    let i = s.turn; do i = (i + 1) % s.np; while (s.players[i].out);
+    if (i <= s.turn) {
+      s.round++;
+      if (s.r.victory.mode === "rounds" && s.round > s.r.victory.maxRounds) { s.round = s.r.victory.maxRounds; finish(s, richest(s), "rounds"); return; }
+    }
+    s.turn = i; s.turnNo++; s.phase = "turn"; s.dice = null;
+    E(s, "TURN", { p: i });
+  }
+
+  /* =================== ACCIONES =================== */
+  const H = {
+    ROLL(s, p) {
+      if (s.phase !== "turn") return "phase";
+      const pl = s.players[p], d = rollDice(s), tot = d[0] + d[1], dbl = d[0] === d[1];
+      s.dice = d; E(s, "ROLL", { p, d }); log(s, `${nm(s, p)} sacó ${d[0]} y ${d[1]}.`, p);
+      if (pl.jail) {
+        if (dbl && s.r.detention.doublesRelease) { release(s, p); log(s, `¡Dobles! ${nm(s, p)} sale del Centro de Detención.`, p); }
+        else if (++pl.jt >= s.r.detention.maxTurns) {
+          if (!pay(s, p, sink(s), s.r.detention.fine, "fianza")) return;
+          release(s, p); log(s, `${nm(s, p)} cumplió ${s.r.detention.maxTurns} turnos: paga ${money(s.r.detention.fine)} y sale.`, p);
+        } else { log(s, `${nm(s, p)} sigue en el Centro de Detención (intento ${pl.jt} de ${s.r.detention.maxTurns}).`, p); s.phase = "done"; return; }
+        moveBy(s, p, tot); resolveTile(s, p, { roll: tot }); afterMove(s, p, false); return;
+      }
+      if (dbl) { s.dc++; if (s.dc >= s.r.maxDoubles) { toDetention(s, p, `${s.r.maxDoubles} dobles seguidos`); s.phase = "done"; return; } }
+      moveBy(s, p, tot); resolveTile(s, p, { roll: tot }); afterMove(s, p, dbl && s.r.doublesExtraRoll);
+    },
+    BUY(s, p) {
+      if (s.phase !== "buy" || s.pend < 0) return "phase";
+      const t = CF_TILES[s.pend];
+      if (s.players[p].pos !== s.pend || s.own[s.pend] !== -1) return "tile";
+      if (s.players[p].cash < t.price) return "cash";
+      buyProperty(s, p, s.pend); s.pend = -1; s.phase = "moving"; afterMove(s, p, s.again);
+    },
+    DECLINE(s, p) {
+      if (s.phase !== "buy" || s.pend < 0) return "phase";
+      log(s, `${nm(s, p)} no compró ${CF_TILES[s.pend].name}.`, p); E(s, "DECLINE", { p, pos: s.pend });
+      // TODO_PHASE2: si r.features.auction, aquí empieza la subasta
+      s.pend = -1; s.phase = "moving"; afterMove(s, p, s.again);
+    },
+    PAY_RENT(s, p) {
+      if (s.phase !== "rentq" || !s.rq) return "phase";
+      const q = s.rq; s.rq = null; s.phase = "moving"; payRent(s, p, q.o, q.amt, q.pos); afterMove(s, p, s.again);
+    },
+    USE_PROTECTION(s, p) {
+      if (s.phase !== "rentq" || !s.rq) return "phase";
+      const k = findCard(s, p, "RENT_PROTECTION"); if (k < 0) return "card";
+      const q = s.rq; s.rq = null; s.phase = "moving"; useCard(s, p, k);
+      E(s, "PROTECT", { p, o: q.o, amt: q.amt }); log(s, `${nm(s, p)} usó su seguro y no pagó ${money(q.amt)} a ${nm(s, q.o)}.`, p); afterMove(s, p, s.again);
+    },
+    PAY_FINE(s, p) {
+      const pl = s.players[p];
+      if (s.phase !== "turn" || !pl.jail) return "phase";
+      if (pl.cash < s.r.detention.fine) return "cash";
+      transfer(s, p, sink(s), s.r.detention.fine, "fianza"); release(s, p); log(s, `${nm(s, p)} pagó ${money(s.r.detention.fine)} y salió del Centro de Detención.`, p);
+    },
+    USE_CARD(s, p, a) {
+      const pl = s.players[p], kind = String(a.card || ""), k = findCard(s, p, kind);
+      if (k < 0) return "card";
+      if (kind === "GET_OUT") { if (s.phase !== "turn" || !pl.jail) return "phase"; useCard(s, p, k); release(s, p); log(s, `${nm(s, p)} usó «${CF_KEEP.GET_OUT.name}» y salió.`, p); return; }
+      if (kind === "EXTRA_ROLL") { if (s.phase !== "done" || pl.jail) return "phase"; useCard(s, p, k); s.dc = 0; s.phase = "turn"; E(s, "AGAIN", { p }); log(s, `${nm(s, p)} usó «${CF_KEEP.EXTRA_ROLL.name}»: tira otra vez.`, p); return; }
+      return "disabled";                                    // FREE_BUILD: TODO_PHASE2 · los demás se usan solos
+    },
+    END_TURN(s, p) { if (s.phase !== "done") return "phase"; nextTurn(s); },
+  };
+  /* qué puede hacer cada jugador ahora (la UI y la IA solo leen esto) */
+  function actions(s, p) {
+    const out = []; if (s.phase === "over" || p !== s.turn || s.players[p].out) return out;
+    const pl = s.players[p], has = k => findCard(s, p, k) >= 0;
+    if (s.phase === "turn") { out.push({ t: "ROLL" }); if (pl.jail) { out.push({ t: "PAY_FINE", ok: pl.cash >= s.r.detention.fine }); if (has("GET_OUT")) out.push({ t: "USE_CARD", card: "GET_OUT" }); } }
+    if (s.phase === "buy") { out.push({ t: "BUY", ok: pl.cash >= CF_TILES[s.pend].price }); out.push({ t: "DECLINE" }); }
+    if (s.phase === "rentq") { out.push({ t: "PAY_RENT" }); out.push({ t: "USE_PROTECTION" }); }
+    if (s.phase === "done") { out.push({ t: "END_TURN" }); if (!pl.jail && has("EXTRA_ROLL")) out.push({ t: "USE_CARD", card: "EXTRA_ROLL" }); }
+    return out;
+  }
+  /* punto único de entrada: valida, aplica, registra. Devuelve {ok, s} o {ok:false, err} */
+  function act(s, p, a) {
+    if (!s || s.phase === "over") return { ok: false, err: "over" };
+    if (!a || typeof a !== "object" || typeof a.t !== "string" || !H.hasOwnProperty(a.t)) return { ok: false, err: "unknown" };
+    if (!Number.isInteger(p) || p < 0 || p >= s.np) return { ok: false, err: "player" };
+    if (s.players[p].out) return { ok: false, err: "out" };
+    if (p !== s.turn) return { ok: false, err: "turn" };
+    const aid = a.aid !== undefined ? String(a.aid).slice(0, 40) : null;
+    if (aid && (s.aids[p] || []).includes(aid)) return { ok: false, err: "dup" };
+    s.ev = [];
+    const e = H[a.t](s, p, a); if (e) return { ok: false, err: e };
+    if (s.phase !== "over" && s.players[s.turn].out) nextTurn(s);
+    if (aid) { const L = s.aids[p] = s.aids[p] || []; L.push(aid); if (L.length > 40) L.shift(); }
+    s.n++; s.evn++;
+    s.acts.push({ n: s.n, p, t: a.t, c: a.card, aid, at: Date.now() });
+    return { ok: true, s };
+  }
+  /* lo que ve cada jugador: sin semilla, sin orden de mazos, sin cartas ajenas */
+  function redact(s, p) {
+    const o = Object.assign({}, s); delete o.rng; delete o.seed0; delete o.aids; delete o.acts;
+    o.decks = { city: s.decks.city.length, market: s.decks.market.length };
+    o.players = s.players.map((q, i) => i === p ? q : Object.assign({}, q, { cards: q.cards.map(() => -1) }));
+    return o;
+  }
+  return { newGame, act, actions, redact, assets, rentFor, controls, alive, money, H, _: { rand, rollDice, transfer, pay, moveBy, moveTo, resolveTile, drawCard, bankrupt, nextTurn, toDetention, findCard } };
+})();
+
+/* =====================================================================
+   CITY FORTUNE · INTERFAZ
+   Solo dibuja y anima: todas las reglas viven en CF (motor).
+   Estados separados: estado del juego (s) · estado mostrado (CFV.disp)
+   · animación (CFV.tok / CFV.cash) · interfaz (pestaña, zoom, hoja).
+   ===================================================================== */
+const CFV = { fresh: true, evn: -1, q: [], busy: false, disp: null, tok: [], cash: [], zoom: false, tab: "net", ctx: null, lock: false, sheet: -1 };
+const CF_K = 1.55;                                                   // esquina = 1.55 × casilla
+const cfMoney = n => "$" + Math.round(n).toLocaleString("es");
+const cfReduced = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; } };
+const cfWait = ms => new Promise(r => setTimeout(r, cfReduced() ? Math.min(ms, 60) : ms));
+function cfCell(i) { if (i <= 10) return [10 - i, 10]; if (i <= 20) return [0, 20 - i]; if (i <= 30) return [i - 20, 0]; return [10, i - 30]; }
+function cfEdge(k) { return k <= 0 ? 0 : k >= 11 ? 2 * CF_K + 9 : CF_K + (k - 1); }
+function cfCenter(i) { const [x, y] = cfCell(i), T = 2 * CF_K + 9; return [(cfEdge(x) + cfEdge(x + 1)) / 2 / T * 100, (cfEdge(y) + cfEdge(y + 1)) / 2 / T * 100]; }
+const CF_SHAPES = [
+  '<circle cx="10" cy="10" r="8"/>', '<path d="M10 1 19 10 10 19 1 10z"/>', '<path d="M10 1.5 19 17.5H1z"/>',
+  '<rect x="2.5" y="2.5" width="15" height="15" rx="3"/>', '<path d="M10 1 18 5.5v9L10 19 2 14.5v-9z"/>', '<path d="M10 1.2l2.6 5.5 6 .7-4.4 4.1 1.2 6L10 14.6 4.6 17.5l1.2-6L1.4 7.4l6-.7z"/>'];
+const cfTok = (i, cls = "") => `<svg class="cf-shape ${cls}" viewBox="0 0 20 20"><g fill="${COL[i % COL.length]}" stroke="#fff" stroke-width="2" stroke-linejoin="round">${CF_SHAPES[i % 6]}</g></svg>`;
+const CF_PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+const cfDie = v => Array.from({ length: 9 }, (_, k) => `<b class="${CF_PIPS[v].includes(k) ? "on" : ""}"></b>`).join("");
+const CF_TYPE = { START: "Salida", PROPERTY: "Propiedad", TRANSPORT: "Transporte", UTILITY: "Servicio público", TAX: "Impuesto", EVENT: "Evento", DETENTION: "Centro de Detención", GO_TO_DETENTION: "Inspección", BONUS: "Festival" };
+
+const CITY = {
+  id: "cityfortune", name: "City Fortune", kind: "turn", need: 1, minp: 2, maxp: 6, party: true, localOnly: true,
+  init(round, np, opts) {
+    CFV.fresh = true;
+    const names = Array.from({ length: np }, (_, i) => tname(i));
+    return CF.newGame({ np, names, rules: { victory: { mode: opts.mode || "rounds", maxRounds: opts.rounds || 20 } } });
+  },
+  move(s, p, a) { const r = CF.act(s, p, a); return r.ok ? r.s : null; },
+  winner(s) { return s.phase === "over" ? s.w : null; },
+  redact(s, p) { return CF.redact(s, p); },
+  scores(s) { return s.players.map((q, i) => CF.assets(s, i).net); },
+  fmt: n => cfMoney(n),
+  /* ---------------- dibujo ---------------- */
+  render(root, s, prev, ctx) {
+    CFV.ctx = ctx;
+    if (CFV.fresh || !root.querySelector(".cf") || s.n < (CFV.disp ? CFV.disp.n : 0)) {
+      CFV.fresh = false; CFV.q = []; CFV.busy = false; CFV.lock = false; CFV.disp = s; CFV.evn = s.evn; CFV.sheet = -1;
+      CFV.tok = s.players.map(q => q.pos); CFV.cash = s.players.map(q => q.cash);
+      cfBuild(root, s); cfPaint(s); return;
+    }
+    if (s.evn !== CFV.evn) { CFV.evn = s.evn; CFV.lock = false; CFV.q.push({ s, ev: (s.ev || []).slice() }); cfPlay(); }
+    else if (!CFV.busy) { CFV.disp = s; cfPaint(s); }
+  },
+};
+
+/* ---------------- estructura (una vez por partida) ---------------- */
+function cfBuild(root, s) {
+  const tiles = CF_TILES.map((t, i) => {
+    const [x, y] = cfCell(i), side = i % 10 === 0 ? "corner" : i < 10 ? "s-b" : i < 20 ? "s-l" : i < 30 ? "s-t" : "s-r";
+    return `<button class="cf-t ${side} ty-${t.type}" data-i="${i}" style="grid-column:${x + 1};grid-row:${y + 1};${t.color ? `--dc:${t.color}` : ""}" aria-label="${esc(t.name)}">
+      ${t.type === "PROPERTY" ? '<i class="band"></i>' : ""}<span class="ic">${t.icon || ""}</span><span class="nm ${t.short.length >= 8 ? "long" : ""}">${esc(t.short)}</span>${t.price ? `<span class="pr">$${t.price}</span>` : ""}<i class="own"></i></button>`;
+  }).join("");
+  root.innerHTML = `<div class="cf">
+    <div class="cf-pl"></div>
+    <div class="cf-bw"><div class="cf-board" style="grid-template-columns:${CF_K}fr repeat(9,1fr) ${CF_K}fr;grid-template-rows:${CF_K}fr repeat(9,1fr) ${CF_K}fr">${tiles}
+      <div class="cf-mid"><div class="cf-brand">CITY <b>FORTUNE</b></div><div class="cf-round"></div>
+        <div class="cf-panel"><div class="cf-dice"><i class="die">${cfDie(1)}</i><i class="die">${cfDie(1)}</i></div>
+        <div class="cf-stat" aria-live="polite"></div><div class="cf-offer"></div><div class="cf-acts"></div><div class="cf-tip"></div></div>
+        <div class="cf-cardv" hidden></div></div>
+      <div class="cf-toks">${s.players.map((q, i) => `<i class="cf-tok" data-p="${i}">${cfTok(i)}</i>`).join("")}</div></div></div>
+    <div class="cf-dock"></div>
+    <div class="cf-bar" role="tablist"><button data-tab="mine">Mis propiedades</button><button data-tab="net">Patrimonio</button><button data-tab="log">Historial</button><button class="cf-zb" aria-label="Acercar tablero">🔍</button></div>
+    <div class="cf-tab"></div>
+    <div class="cf-sheet" hidden><div class="cf-sh-bg"></div><div class="cf-sh"></div></div></div>`;
+  const cf = root.querySelector(".cf");
+  cf.querySelectorAll(".cf-t").forEach(b => b.onclick = () => cfSheet(+b.dataset.i));
+  cf.querySelectorAll(".cf-bar [data-tab]").forEach(b => b.onclick = () => { CFV.tab = b.dataset.tab; cfPaintTab(CFV.disp); });
+  $(".cf-zb", cf).onclick = () => { CFV.zoom = !CFV.zoom; cfZoom(cf); cfFocus(CFV.disp.turn); };
+  $(".cf-sh-bg", cf).onclick = () => cfSheet(-1);
+  $(".cf-cardv", cf).onclick = () => { CFV.skipCard && CFV.skipCard(); };
+  cfZoom(cf);
+}
+/* con zoom, los controles del centro pasan a un panel debajo del tablero para que siempre se vean */
+function cfZoom(cf) { cf.classList.toggle("zoom", CFV.zoom); const pn = $(".cf-panel", cf); (CFV.zoom ? $(".cf-dock", cf) : $(".cf-mid", cf)).appendChild(pn); }
+
+/* ---------------- pintar el estado mostrado ---------------- */
+function cfPaint(s) {
+  const cf = $(".cf"); if (!cf) return;
+  cfPaintPlayers(s); cfPaintTiles(s); cfPlace(s); cfPaintMid(s); cfPaintTab(s);
+  if (CFV.sheet >= 0) cfSheet(CFV.sheet, true);
+}
+function cfPaintPlayers(s) {
+  const el = $(".cf-pl"), ctx = CFV.ctx; if (!el) return;
+  el.style.gridTemplateColumns = `repeat(${s.np === 4 ? 2 : Math.min(s.np, 3)},minmax(0,1fr))`;
+  el.innerHTML = s.players.map((q, i) => `<div class="cf-pc ${i === s.turn && s.phase !== "over" ? "on" : ""} ${q.out ? "out" : ""}" data-p="${i}" style="--c:${COL[i % COL.length]}">
+    ${cfTok(i)}<b>${esc(ctx.name(i))}${ctx.online && i === ctx.me ? " (tú)" : ""}</b><span class="cash">${q.out ? "Quebró" : cfMoney(CFV.busy ? CFV.cash[i] : q.cash)}</span>${q.jail ? '<em title="En el Centro de Detención">🔒</em>' : ""}${q.cards.length ? `<em title="Tarjetas guardadas">🎴${q.cards.length}</em>` : ""}</div>`).join("");
+}
+function cfPaintTiles(s) {
+  document.querySelectorAll(".cf-t").forEach(el => {
+    const i = +el.dataset.i, o = s.own[i];
+    el.classList.toggle("owned", o >= 0); el.style.setProperty("--oc", o >= 0 ? COL[o % COL.length] : "transparent");
+    el.classList.toggle("mort", !!s.mort[i]);
+    const t = CF_TILES[i]; el.classList.toggle("dc", t.type === "PROPERTY" && o >= 0 && CF.controls(s, o, t.d));
+  });
+}
+function cfPlace(s) {
+  const at = {}; CFV.tok.forEach((pos, p) => { if (!s.players[p].out) (at[pos] = at[pos] || []).push(p); });
+  document.querySelectorAll(".cf-tok").forEach(el => {
+    const p = +el.dataset.p, pos = CFV.tok[p], grp = at[pos] || [], k = grp.indexOf(p), n = grp.length;
+    el.hidden = s.players[p].out; if (k < 0) return;
+    const [cx, cy] = cfCenter(pos), cols = Math.min(n, 3), rows = Math.ceil(n / 3), c = k % 3, r = Math.floor(k / 3);
+    el.style.left = (cx + (c - (cols - 1) / 2) * 2.6) + "%"; el.style.top = (cy + (r - (rows - 1) / 2) * 2.8 + (pos % 10 === 0 ? 0 : .6)) + "%";
+    el.classList.toggle("act", p === s.turn && s.phase !== "over");
+  });
+}
+function cfFocus(p) {
+  if (!CFV.zoom) return; const bw = $(".cf-bw"), tk = document.querySelector(`.cf-tok[data-p="${p}"]`); if (!bw || !tk) return;
+  const b = bw.getBoundingClientRect(), r = tk.getBoundingClientRect();
+  bw.scrollTo({ left: bw.scrollLeft + r.left - b.left - b.width / 2, top: bw.scrollTop + r.top - b.top - b.height / 2, behavior: cfReduced() ? "auto" : "smooth" });
+}
+/* texto de estado + acciones disponibles: nunca dejar al jugador sin saber qué hacer */
+function cfPaintMid(s) {
+  const ctx = CFV.ctx, p = s.turn, pl = s.players[p], N = i => esc(ctx.name(i)), mine = ctx.mine(p);
+  const who = ctx.online ? (mine ? "Tu turno" : `Turno de <b style="color:${COL[p]}">${N(p)}</b>`) : `Turno de <b style="color:${COL[p]}">${N(p)}</b>`;
+  const st = $(".cf-stat"), acts = $(".cf-acts"), off = $(".cf-offer"), tip = $(".cf-tip"), rd = $(".cf-round"); if (!st) return;
+  rd.textContent = s.r.victory.mode === "rounds" ? `Ronda ${s.round} de ${s.r.victory.maxRounds}` : `Ronda ${s.round}`;
+  if (s.dice) $(".cf-dice").innerHTML = s.dice.map(v => `<i class="die">${cfDie(v)}</i>`).join("");
+  $(".cf-dice").classList.toggle("dim", !s.dice);
+  let line = "", hint = "", offer = "";
+  const t = CF_TILES[pl.pos], sum = s.dice ? s.dice[0] + s.dice[1] : 0;
+  if (s.phase === "over") { line = `🏆 <b style="color:${COL[s.w]}">${N(s.w)}</b> gana la partida`; }
+  else if (CFV.busy) line = `${who}`;
+  else if (s.phase === "turn") {
+    if (pl.jail) { line = `${who} · Centro de Detención`; hint = `Intento ${pl.jt + 1} de ${s.r.detention.maxTurns}: saca dobles, paga ${cfMoney(s.r.detention.fine)} o usa una tarjeta.`; }
+    else { line = `${who}`; hint = s.dc > 0 ? "¡Sacaste dobles! Tira otra vez." : "Tira los dados para avanzar."; }
+  } else if (s.phase === "buy") {
+    const T2 = CF_TILES[s.pend]; line = `${who} · sacaste ${sum}`; hint = `Caíste en <b>${esc(T2.name)}</b>. ¿La compras?`;
+    offer = cfMiniCard(s, s.pend);
+  } else if (s.phase === "rentq") { line = `${who}`; hint = `Debes pagar ${cfMoney(s.rq.amt)} a ${N(s.rq.o)} por ${esc(CF_TILES[s.rq.pos].name)}. ¿Usas tu Seguro de renta?`; }
+  else if (s.phase === "done") {
+    line = `${who}${sum ? ` · sacaste ${sum}` : ""}`;
+    const last = s.log.filter(l => l.p === p).slice(-1)[0]; hint = (last ? esc(last.txt) + " " : "") + (mine ? "Termina tu turno." : "");
+  }
+  st.innerHTML = `<p class="l1">${line}</p>${hint ? `<p class="l2">${hint}</p>` : ""}`;
+  off.innerHTML = offer; $(".cf-mid").classList.toggle("has-offer", !!offer);
+  // botones: solo los que el motor dice que se pueden usar ahora
+  const list = (CFV.busy || !mine) ? [] : CF.actions(s, p);
+  const lab = a => ({
+    ROLL: "🎲 TIRAR DADOS", PAY_FINE: `Pagar ${cfMoney(s.r.detention.fine)}`, BUY: `COMPRAR ${cfMoney(s.pend >= 0 ? CF_TILES[s.pend].price : 0)}`, DECLINE: "No comprar",
+    PAY_RENT: `Pagar ${s.rq ? cfMoney(s.rq.amt) : ""}`, USE_PROTECTION: "🛡️ Usar seguro", END_TURN: "TERMINAR TURNO",
+  }[a.t] || (a.card === "GET_OUT" ? "🎴 Usar tarjeta" : a.card === "EXTRA_ROLL" ? "🎴 Turno extra" : a.t));
+  acts.innerHTML = list.map((a, k) => `<button class="cf-b ${k === 0 ? "pri" : ""} ${a.t === "DECLINE" || a.t === "PAY_FINE" && list.length > 1 ? "sec" : ""}" data-k="${k}" ${a.ok === false ? "disabled" : ""}>${lab(a)}</button>`).join("")
+    + (s.phase === "buy" && list[0] && list[0].ok === false ? `<p class="cf-no">No te alcanza el dinero.</p>` : "")
+    + (!CFV.busy && !mine && s.phase !== "over" ? `<p class="cf-wait">Esperando a ${N(p)}…</p>` : "");
+  acts.querySelectorAll(".cf-b").forEach(b => b.onclick = () => {
+    if (CFV.lock || CFV.busy) return; const a = list[+b.dataset.k]; if (!a || a.ok === false) return;
+    CFV.lock = true; sfx.tap(); ctx.act({ t: a.t, card: a.card, aid: Math.random().toString(36).slice(2, 12), p });
+    setTimeout(() => { CFV.lock = false; }, 1500);
+  });
+  // ayudas del tutorial
+  const tips = !S.cfNoTips && !CFV.busy && mine && s.phase !== "over" ? cfTipFor(s) : "";
+  tip.innerHTML = tips ? `<span>💡 ${tips}</span><button aria-label="Ocultar ayudas">✕</button>` : "";
+  const tb = $("button", tip); if (tb) tb.onclick = () => { S.cfNoTips = true; save(); tip.innerHTML = ""; toast("Ayudas ocultas. Puedes volver a activarlas en Historial."); };
+}
+function cfTipFor(s) {
+  const pl = s.players[s.turn];
+  if (s.phase === "turn" && pl.jail) return "Con dobles sales gratis. Si fallas 3 veces, pagas y sales.";
+  if (s.phase === "turn" && s.turnNo <= s.np) return "Al pasar por la Estación Central cobras $" + s.r.passStartReward + ".";
+  if (s.phase === "buy") return "Si completas un distrito, cobras el doble de alquiler en todas sus propiedades.";
+  if (s.phase === "rentq") return "El seguro se gasta al usarlo. Guárdalo para un alquiler caro.";
+  if (s.phase === "done" && pl.cards.length) return "Tus tarjetas guardadas están en «Mis propiedades».";
+  if (s.phase === "done") return "Toca cualquier casilla del tablero para ver su precio y sus alquileres.";
+  return "";
+}
+function cfMiniCard(s, pos) {
+  const t = CF_TILES[pos];
+  const rent = t.type === "PROPERTY" ? `Alquiler ${cfMoney(t.base)} · distrito completo ${cfMoney(t.base * s.r.districtControlMult)}` : t.type === "TRANSPORT" ? `Alquiler ${s.r.transportRent.map(cfMoney).join(" / ")} según cuántos tengas` : `Alquiler: dados × ${s.r.utilityMult.join(" / ")}`;
+  return `<div class="cf-mc" style="--dc:${t.color || "#39406e"}"><i class="band"></i><b>${t.icon || ""} ${esc(t.name)}</b><span>${t.type === "PROPERTY" ? esc(CF_DISTRICTS[t.d].name) : CF_TYPE[t.type]} · ${cfMoney(t.price)}</span><small>${rent}</small></div>`;
+}
+/* ---------------- pestañas ---------------- */
+function cfPaintTab(s) {
+  const el = $(".cf-tab"), ctx = CFV.ctx; if (!el || !s) return;
+  document.querySelectorAll(".cf-bar [data-tab]").forEach(b => { b.classList.toggle("on", b.dataset.tab === CFV.tab); b.setAttribute("aria-selected", b.dataset.tab === CFV.tab); });
+  const N = i => esc(ctx.name(i));
+  if (CFV.tab === "net") {
+    const rows = s.players.map((q, i) => ({ i, a: CF.assets(s, i) })).sort((a, b) => b.a.net - a.a.net), top = Math.max(1, ...rows.map(r => r.a.net));
+    el.innerHTML = `<div class="cf-net">${rows.map((r, k) => `<div class="cf-nr ${s.players[r.i].out ? "out" : ""}"><span class="rk">${k + 1}</span>${cfTok(r.i)}<div class="nm"><b>${N(r.i)}</b><small>Efectivo ${cfMoney(r.a.cash)} · Propiedades ${cfMoney(r.a.prop)}${r.a.build ? ` · Construcción ${cfMoney(r.a.build)}` : ""}${r.a.debt ? ` · Hipotecas −${cfMoney(r.a.debt)}` : ""}</small><i class="bar"><i style="width:${Math.max(2, r.a.net / top * 100)}%;background:${COL[r.i]}"></i></i></div><b class="v">${s.players[r.i].out ? "—" : cfMoney(r.a.net)}</b></div>`).join("")}</div>
+      <p class="cf-foot">Patrimonio = efectivo + valor de propiedades + construcciones − hipotecas. ${s.r.victory.mode === "rounds" ? `Al terminar la ronda ${s.r.victory.maxRounds}, gana el mayor patrimonio.` : ""}</p>`;
+  } else if (CFV.tab === "mine") {
+    const p = ctx.online ? ctx.me : s.turn, pl = s.players[p];
+    const groups = CF_DISTRICTS.map((d, k) => ({ d, k, tiles: d.tiles.filter(i => s.own[i] === p) })).filter(g => g.tiles.length);
+    const other = CF_TILES.filter(t => (t.type === "TRANSPORT" || t.type === "UTILITY") && s.own[t.pos] === p);
+    const cards = pl.cards.filter(id => id >= 0);
+    el.innerHTML = `<p class="cf-who">${cfTok(p)} ${ctx.online ? "Tus propiedades" : `Propiedades de <b>${N(p)}</b>`}</p>` +
+      (groups.length || other.length ? groups.map(g => `<div class="cf-grp" style="--dc:${g.d.color}"><p><i></i>${esc(g.d.name)} <small>${g.tiles.length}/${g.d.tiles.length}${CF.controls(s, p, g.k) ? " · ✅ Distrito completo" : ""}</small></p>
+        ${g.tiles.map(i => `<button class="cf-row" data-i="${i}"><span>${esc(CF_TILES[i].name)}</span><small>${s.mort[i] ? "Hipotecada" : "Cobra " + cfMoney(CF.rentFor(s, i, { roll: 7 }))}</small></button>`).join("")}</div>`).join("")
+        + (other.length ? `<div class="cf-grp" style="--dc:#8a93c9"><p><i></i>Transporte y servicios</p>${other.map(t => `<button class="cf-row" data-i="${t.pos}"><span>${t.icon} ${esc(t.name)}</span><small>${t.type === "UTILITY" ? "dados × " + s.r.utilityMult[CF_TILES.filter(u => u.type === "UTILITY" && s.own[u.pos] === p).length - 1] : "Cobra " + cfMoney(CF.rentFor(s, t.pos))}</small></button>`).join("")}</div>` : "")
+        : `<p class="cf-empty">Todavía no hay propiedades. Cae en una casilla libre y cómprala.</p>`)
+      + (cards.length ? `<p class="cf-who" style="margin-top:10px">🎴 Tarjetas guardadas</p>${cards.map(id => { const k = CF_KEEP[CF_CARDS[id].keep]; return `<div class="cf-kc"><b>${esc(k.name)}</b><small>${esc(k.text)}</small></div>`; }).join("")}` : "");
+    el.querySelectorAll(".cf-row").forEach(b => b.onclick = () => cfSheet(+b.dataset.i));
+  } else {
+    el.innerHTML = `<div class="cf-log">${s.log.slice().reverse().map(l => `<p style="--c:${l.p >= 0 ? COL[l.p % COL.length] : "#8a93c9"}">${esc(l.txt)}</p>`).join("")}</div>
+      ${S.cfNoTips ? `<button class="cf-row" id="cftips"><span>💡 Volver a mostrar las ayudas</span></button>` : ""}`;
+    const tb = $("#cftips", el); if (tb) tb.onclick = () => { S.cfNoTips = false; save(); cfPaint(CFV.disp); };
+  }
+}
+/* ---------------- hoja de detalle de una casilla ---------------- */
+function cfSheet(i, keep) {
+  const wrap = $(".cf-sheet"); if (!wrap) return; CFV.sheet = i;
+  if (i < 0) { wrap.hidden = true; return; }
+  const s = CFV.disp, t = CF_TILES[i], o = s.own[i], ctx = CFV.ctx, r = s.r;
+  let body = "";
+  if (t.type === "PROPERTY") {
+    const d = CF_DISTRICTS[t.d];
+    body = `<p class="cf-sub" style="color:${d.color}">${d.icon} ${esc(d.name)} · ${d.tiles.length} propiedades</p>
+      <table class="cf-rt"><tr><td>Alquiler</td><td>${cfMoney(t.base)}</td></tr><tr><td>Con el distrito completo</td><td>${cfMoney(t.base * r.districtControlMult)}</td></tr>
+      ${CF_LEVELS.slice(1).map((L, k) => `<tr class="${s.lvl[i] === k + 1 ? "cur" : ""}"><td>${L}</td><td>${cfMoney(t.rent[k + 1])}</td></tr>`).join("")}
+      <tr class="sep"><td>Costo por nivel</td><td>${cfMoney(t.cost)}</td></tr><tr><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>
+      <p class="cf-note">La construcción (Local → Edificio → Torre → Complejo) llega en la parte 2.</p>`;
+  } else if (t.type === "TRANSPORT") body = `<table class="cf-rt">${r.transportRent.map((v, k) => `<tr><td>Con ${k + 1} transporte${k ? "s" : ""}</td><td>${cfMoney(v)}</td></tr>`).join("")}<tr class="sep"><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>`;
+  else if (t.type === "UTILITY") body = `<table class="cf-rt">${r.utilityMult.map((v, k) => `<tr><td>Con ${k + 1} servicio${k ? "s" : ""}</td><td>dados × ${v}</td></tr>`).join("")}<tr class="sep"><td>Valor de hipoteca</td><td>${cfMoney(t.mortgage)}</td></tr></table>`;
+  else body = `<p class="cf-desc">${{
+    START: `Cada vez que pasas o caes aquí cobras ${cfMoney(r.passStartReward)}.`,
+    TAX: `Pagas ${cfMoney(t.amount)}${r.festivalPot ? ", que van al bote de la Plaza del Festival" : ""}.`,
+    EVENT: `Tomas una carta de ${t.deck === "city" ? "Eventos de la Ciudad" : "Eventos del Mercado"}: puede ser dinero, un pago, un viaje o una tarjeta para guardar.`,
+    DETENTION: `Si solo caes aquí, estás de visita. Si te mandan, para salir: saca dobles, paga ${cfMoney(r.detention.fine)} o usa una tarjeta. Al tercer intento pagas y sales.`,
+    GO_TO_DETENTION: "Vas directo al Centro de Detención, sin pasar por la Estación Central.",
+    BONUS: r.festivalPot ? `Te llevas todo el bote: impuestos, multas y fianzas. Ahora tiene ${cfMoney(s.pot)}.` : "Descanso: no pasa nada.",
+  }[t.type] || ""}</p>`;
+  const owner = CF_OWNABLE(t) ? `<p class="cf-owner">${o >= 0 ? `${cfTok(o)} Dueño: <b>${esc(ctx.name(o))}</b>${s.mort[i] ? " · hipotecada" : ""}${t.type === "PROPERTY" && s.lvl[i] ? ` · ${CF_LEVELS[s.lvl[i]]}` : ""}` : `Disponible · ${cfMoney(t.price)}`}</p>` : "";
+  $(".cf-sh", wrap).innerHTML = `<div class="cf-sh-top" style="--dc:${t.color || "#39406e"}"><span>${t.icon || CF_DISTRICTS[t.d]?.icon || ""}</span><div><small>${CF_TYPE[t.type]}</small><h3>${esc(t.name)}</h3></div><button class="cf-x" aria-label="Cerrar">✕</button></div>${owner}${body}`;
+  $(".cf-x", wrap).onclick = () => cfSheet(-1);
+  wrap.hidden = false; if (!keep) sfx.tap();
+}
+/* ---------------- animaciones (solo comunican lo que ya decidió el motor) ---------------- */
+async function cfPlay() {
+  if (CFV.busy) return; CFV.busy = true;
+  const cf = $(".cf"); if (cf) cfPaintMid(CFV.disp);
+  try {
+    while (CFV.q.length) {
+      const it = CFV.q.shift(); CFV.cash = CFV.disp.players.map(q => q.cash);
+      for (const e of it.ev) { if (!$(".cf")) { CFV.q = []; break; } await cfAnim(e, it.s); }
+      CFV.disp = it.s; CFV.tok = it.s.players.map(q => q.pos); CFV.cash = it.s.players.map(q => q.cash);
+    }
+  } finally { CFV.busy = false; if ($(".cf")) { cfPaint(CFV.disp); cfFocus(CFV.disp.turn); } }
+}
+function cfFloat(p, amt) {
+  const chip = document.querySelector(`.cf-pc[data-p="${p}"]`); if (!chip) return;
+  const r = chip.getBoundingClientRect(), f = h(`<div class="cf-float ${amt > 0 ? "up" : "down"}">${amt > 0 ? "+" : "−"}${cfMoney(Math.abs(amt))}</div>`);
+  f.style.left = (r.left + r.width / 2) + "px"; f.style.top = (r.top + 4) + "px"; document.body.appendChild(f); setTimeout(() => f.remove(), 1300);
+}
+function cfPulse(i, cls = "pulse") { const el = document.querySelector(`.cf-t[data-i="${i}"]`); if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 900); }
+async function cfAnim(e, s) {
+  const ctx = CFV.ctx, N = i => ctx.name(i);
+  switch (e.k) {
+    case "ROLL": {
+      const dice = $(".cf-dice"); dice.classList.remove("dim"); dice.classList.add("roll");
+      noise(.35, .3, 2400, 500); tone(300, .05, "square", .05, .1); tone(260, .05, "square", .05, .22);
+      for (let k = 0; k < (cfReduced() ? 1 : 8); k++) { dice.innerHTML = [0, 1].map(() => `<i class="die">${cfDie(1 + Math.floor(Math.random() * 6))}</i>`).join(""); await cfWait(70); }
+      dice.innerHTML = e.d.map(v => `<i class="die">${cfDie(v)}</i>`).join(""); dice.classList.remove("roll");
+      tone(e.d[0] === e.d[1] ? 880 : 520, .09, "triangle", .12); if (e.d[0] === e.d[1]) tone(1175, .12, "triangle", .1, .09);
+      $(".cf-stat").innerHTML = `<p class="l1">${esc(N(e.p))} sacó ${e.d[0] + e.d[1]}${e.d[0] === e.d[1] ? " · ¡dobles!" : ""}</p>`;
+      await cfWait(e.card ? 700 : 380); break;
+    }
+    case "MOVE": {
+      if (e.jump) { CFV.tok[e.p] = e.to; cfPlace(s); await cfWait(450); break; }
+      const dir = e.steps > 0 ? 1 : -1, n = Math.abs(e.steps), ms = n > 12 ? 85 : 130;
+      for (let k = 1; k <= n; k++) { CFV.tok[e.p] = ((e.from + dir * k) % 40 + 40) % 40; cfPlace(s); tone(k === n ? 520 : 760, .03, "sine", .05); await cfWait(ms); }
+      cfFocus(e.p); break;
+    }
+    case "LAND": cfPulse(e.pos); await cfWait(160); break;
+    case "$": {
+      if (typeof e.from === "number") { CFV.cash[e.from] -= e.amt; cfFloat(e.from, -e.amt); }
+      if (typeof e.to === "number") { CFV.cash[e.to] += e.amt; cfFloat(e.to, e.amt); }
+      cfPaintPlayers(CFV.disp);
+      tone(e.to === "bank" || e.to === "pot" ? 330 : 1320, .07, "triangle", .08); if (typeof e.to === "number") tone(1760, .08, "triangle", .07, .06);
+      await cfWait(260); break;
+    }
+    case "START": tone(660, .1, "triangle", .12); tone(990, .14, "triangle", .12, .08); break;
+    case "BUY": { const el = document.querySelector(`.cf-t[data-i="${e.pos}"]`); if (el) { el.classList.add("owned"); el.style.setProperty("--oc", COL[e.p % COL.length]); } cfPulse(e.pos, "bought"); [523, 659, 784].forEach((f, k) => tone(f, .12, "triangle", .12, k * .07)); vib(30); await cfWait(420); break; }
+    case "DISTRICT": { CF_DISTRICTS[e.d].tiles.forEach(i => cfPulse(i, "bought")); [523, 659, 784, 1046].forEach((f, k) => tone(f, .16, "triangle", .13, k * .09)); toast(`¡${N(e.p)} completó ${CF_DISTRICTS[e.d].name}! Alquiler doble.`); await cfWait(900); break; }
+    case "RENT": vib(20); await cfWait(120); break;
+    case "TAX": await cfWait(120); break;
+    case "POT": [784, 988, 1175, 1568].forEach((f, k) => tone(f, .14, "triangle", .12, k * .08)); toast(`🎪 ¡${N(e.p)} se lleva el bote del Festival!`); await cfWait(700); break;
+    case "CARD": await cfShowCard(e); break;
+    case "JAIL": tone(440, .18, "square", .08); tone(330, .25, "square", .08, .18); toast(`🚨 ${N(e.p)} va al Centro de Detención`); await cfWait(500); break;
+    case "FREE": tone(660, .1, "triangle", .1); tone(880, .12, "triangle", .1, .08); break;
+    case "AGAIN": toast("🎲 ¡Dobles! Tira otra vez"); break;
+    case "PROTECT": tone(880, .15, "sine", .1); toast(`🛡️ ${N(e.p)} usó su seguro`); await cfWait(400); break;
+    case "BANKRUPT": tone(200, .5, "sawtooth", .08, 0, 60); toast(`💥 ${N(e.p)} quebró`); await cfWait(900); break;
+    case "TURN": break;
+  }
+}
+function cfShowCard(e) {
+  const c = CF_CARDS[e.id], v = $(".cf-cardv"); if (!v) return Promise.resolve();
+  v.className = "cf-cardv " + c.deck; v.hidden = false;
+  v.innerHTML = `<div class="cf-card"><small>${c.deck === "city" ? "🏙️ EVENTO DE LA CIUDAD" : "📊 EVENTO DEL MERCADO"}</small><b>${esc(c.title)}</b><p>${esc(c.text)}</p><em>Toca para seguir</em></div>`;
+  tone(420, .18, "sine", .08, 0, 900); tone(1200, .1, "triangle", .06, .15);
+  return new Promise(res => { const done = () => { clearTimeout(tm); CFV.skipCard = null; v.hidden = true; res(); }; const tm = setTimeout(done, cfReduced() ? 1600 : 2600); CFV.skipCard = done; });
+}
+
+/* =====================================================================
    VOZ · hablar por micrófono en la sala (Botellita, Stop, Ludo, Ahorcado)
    - Llamadas de audio directas entre celulares (WebRTC / PeerJS)
    - El anfitrión lleva la lista de quién está en la voz y la reparte
@@ -3073,6 +3924,10 @@ document.body.appendChild(h(`<div id="vca" hidden></div>`));
    PANTALLAS (HTML): inicio · cómo se juega · nombres · resultado
    ===================================================================== */
 const ART = {
+  cityfortune: `<svg viewBox="0 0 120 120"><defs><linearGradient id="cfsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2658"/><stop offset="1" stop-color="#0c1230"/></linearGradient></defs><rect width="120" height="120" fill="url(#cfsky)"/>
+    <g fill="#2a3a7a"><rect x="8" y="58" width="16" height="50"/><rect x="28" y="40" width="18" height="68"/><rect x="50" y="24" width="20" height="84"/><rect x="74" y="46" width="16" height="62"/><rect x="94" y="34" width="18" height="74"/></g>
+    <g fill="#f3efe6" opacity=".75">${[[31, 46], [37, 46], [31, 56], [37, 56], [31, 66], [37, 66], [54, 32], [61, 32], [54, 42], [61, 42], [54, 52], [61, 52], [54, 62], [61, 62], [97, 42], [104, 42], [97, 52], [104, 52], [77, 54], [83, 54], [11, 66], [17, 66]].map(([x, y]) => `<rect x="${x}" y="${y}" width="4" height="5" rx="1"/>`).join("")}</g>
+    <rect y="104" width="120" height="16" fill="#c9a44c"/><circle cx="84" cy="86" r="22" fill="#d8b65a" stroke="#8a6a1e" stroke-width="3"/><circle cx="84" cy="86" r="15" fill="none" stroke="#8a6a1e" stroke-width="2" opacity=".6"/><text x="84" y="94" text-anchor="middle" font-size="22" font-weight="900" fill="#5a4410" font-family="Nunito,sans-serif">$</text></svg>`,
   bombas: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#1c2349"/>
     <g fill="#1f2753">${[0, 1, 2, 3, 4, 5].map(y => [0, 1, 2, 3, 4, 5].map(x => (x + y) % 2 ? `<rect x="${x * 20}" y="${y * 20}" width="20" height="20"/>` : "").join("")).join("")}</g>
     <g>${[[20, 20], [60, 20], [100, 20], [20, 60], [100, 60], [20, 100], [60, 100], [100, 100]].map(([x, y]) => `<rect x="${x + 1}" y="${y + 1}" width="18" height="18" fill="#2c3563"/><rect x="${x + 3}" y="${y + 3}" width="14" height="11" fill="#4a5796"/>`).join("")}</g>
@@ -3155,6 +4010,10 @@ const GAMES = [
       "Especiales: <b>⊘</b> salta al siguiente, <b>⇄</b> cambia el sentido, <b>+2</b> y <b>+4</b> hacen robar al siguiente y le quitan el turno. Si no tienes jugada, toca el mazo para robar.",
       "Cuando te quede <b>una sola carta</b>, toca <b>¡ÚLTIMA!</b> rápido. Si se te olvida, robas 2."],
     goal: "Gana el primero que se quede sin cartas.", setup: "En el mismo celular, cuando le toca a otro le pasas el celular: tus cartas se esconden solas." },
+  { g: CITY, cat: "mesa", c1: "#c9a44c", c2: "#1b2658", tag: "Compra la ciudad, cobra alquileres y conviértete en el empresario más rico.", tags: ["2 a 6 jugadores", "Beta · parte 1"], party: 1,
+    steps: ["Tira los dados y avanza por la ciudad. Cada vez que pasas por la <b>Estación Central</b> cobras $200.", "Si caes en una propiedad libre puedes <b>comprarla</b>. Si es de otro, le pagas <b>alquiler</b>. Con un <b>distrito completo</b>, cobras el doble.", "Cuidado con los <b>impuestos</b>, los <b>eventos</b> de la Ciudad y del Mercado, y el <b>Centro de Detención</b>. Toca cualquier casilla para ver sus datos."],
+    goal: "Al terminar las rondas gana quien tenga el mayor patrimonio (dinero + propiedades). Si alguien no puede pagar, quiebra.",
+    setup: "Juegan en este celular y se lo pasan en cada turno. <b>Versión beta, parte 1 de 5:</b> la construcción, las subastas, las hipotecas y la negociación llegan en la parte 2; el modo en línea, en la parte 3." },
   { g: DUO, cat: "aventura", c1: "#ff7a1a", c2: "#1f74bd", tag: "Fuego y Agua tienen que ayudarse para escapar del templo.", tags: ["Cooperativo", `${DUO_LEVELS.length} niveles`], lv: 1,
     steps: ["<b>Fuego</b> puede pisar lava y <b>Agua</b> puede pisar agua. El charco del otro color los elimina, y el <b>veneno verde</b> elimina a los dos.",
       "Muévete con <b>◀ ▶</b> y salta con <b>▲</b>. Pon el celular <b>de lado</b>: Fuego usa los botones de la izquierda y Agua los de la derecha. En línea, cada uno maneja a su personaje.",
@@ -3244,7 +4103,7 @@ function info(x, mode) {
   const multi = onl && (g.maxp || 2) > 2, me = onl ? NET.pi : 0;
   const opts = { np: 2 }; const maxLv = Math.min(S.duo || 1, DUO_LEVELS.length); if (g === DUO) opts.lv = maxLv - 1;
   if (!S.party || S.party.length < 2) S.party = ["Jugador 1", "Jugador 2", "Jugador 3"];
-  if (g === HANG) opts.mode = "rand"; if (g === STOP) { opts.cats = (S.stopCats && S.stopCats.length ? S.stopCats : STOP_CATS.slice(0, 6)).slice(); opts.rounds = 5; } if (g === BOTTLE) opts.shots = false;
+  if (g === HANG) opts.mode = "rand"; if (g === STOP) { opts.cats = (S.stopCats && S.stopCats.length ? S.stopCats : STOP_CATS.slice(0, 6)).slice(); opts.rounds = 5; } if (g === BOTTLE) opts.shots = false; if (g === CITY) { opts.rounds = 20; opts.mode = "rounds"; }
   const chipsRow = (id, arr, cur) => `<div class="row" id="${id}">${arr.map(([v, t]) => `<button class="chip ${v === cur ? "on" : ""}" data-v="${v}">${t}</button>`).join("")}</div>`;
   let optHtml = "";
   if (mode !== "guest") {
@@ -3252,6 +4111,7 @@ function info(x, mode) {
     if (g === DUO) optHtml += `<p class="label">Nivel</p><div class="row" id="lv">${DUO_LEVELS.map((L, k) => `<button class="chip ${k === opts.lv ? "on" : ""}" data-n="${k}" ${k >= maxLv ? "disabled" : ""} title="${esc(L.name)}">${k >= maxLv ? "🔒" : k + 1}</button>`).join("")}</div><p class="dim center" style="font-size:12px;font-weight:800;margin-top:-6px">Pasa un nivel para desbloquear el siguiente</p>`;
     if (g === HANG) optHtml += `<p class="label">¿De dónde salen las palabras?</p>${chipsRow("hm", [["rand", "Al azar"], ["player", "Las escribe un jugador"]], "rand")}`;
     if (g === STOP) optHtml += `<p class="label">Rondas</p>${chipsRow("sr", [[3, "3"], [5, "5"], [8, "8"]], 5)}<p class="label">Categorías (toca para cambiar)</p><div class="cats">${STOP_CATS.map(c => `<button class="chip sm ${opts.cats.includes(c) ? "on" : ""}" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div>`;
+    if (g === CITY) optHtml += `<p class="label">¿Cuántas rondas?</p>${chipsRow("cr", [[10, "10 · corta"], [20, "20 · normal"], [30, "30 · larga"]], 20)}<p class="dim" style="font-size:12px;font-weight:800;margin-top:-6px">Cada ronda es un turno de cada jugador. Con 4 jugadores, 20 rondas duran unos 30–40 minutos.</p>`;
     if (g === BOTTLE) optHtml += `<p class="label">Opciones</p><label class="tog"><input type="checkbox" id="shots"><span>Incluir <b>SHOT 🥃</b> (solo mayores de 18; agua también vale)</span></label>`;
     if (!onl && x.party) optHtml += `<p class="label">¿Quiénes juegan? (${g.minp}–${g.maxp})</p><div class="party">${S.party.map((n, i) => `<div class="pf" style="--c:${COL[i % COL.length]}"><i></i><input maxlength="10" value="${esc(n)}" data-i="${i}"><button class="rm" data-i="${i}" aria-label="Quitar">✕</button></div>`).join("")}</div>
       ${S.party.length < g.maxp ? `<button class="btn ghost" id="addp" style="font-size:16px;padding:10px">+ Agregar jugador</button>` : ""}`;
@@ -3269,7 +4129,7 @@ function info(x, mode) {
     <div class="setup"><span>${setupTxt}</span></div>
     <div class="stick">${mode === "guest" ? `<button class="btn ghost" id="go" disabled style="opacity:.85">Esperando que ${esc(NET.names[0] || "el anfitrión")} empiece…</button>` : `<button class="btn green" id="go">¡JUGAR!</button>`}</div>`);
   const chips = (sel, key, num = true) => v.querySelectorAll(sel + " .chip").forEach(b => b.onclick = () => { if (b.disabled) return; opts[key] = num ? +(b.dataset.n ?? b.dataset.v) : b.dataset.v; v.querySelectorAll(sel + " .chip").forEach(z => z.classList.toggle("on", z === b)); });
-  chips("#np", "np"); chips("#lv", "lv"); chips("#hm", "mode", false); chips("#sr", "rounds");
+  chips("#np", "np"); chips("#lv", "lv"); chips("#hm", "mode", false); chips("#sr", "rounds"); chips("#cr", "rounds");
   v.querySelectorAll(".cats .chip").forEach(b => b.onclick = () => { const c = b.dataset.c, i = opts.cats.indexOf(c); if (i >= 0) { if (opts.cats.length <= 3) { toast("Mínimo 3 categorías"); return; } opts.cats.splice(i, 1); } else { if (opts.cats.length >= 8) { toast("Máximo 8 categorías"); return; } opts.cats.push(c); } b.classList.toggle("on", i < 0); S.stopCats = opts.cats.slice(); save(); });
   const sh = $("#shots", v); if (sh) sh.onchange = () => opts.shots = sh.checked;
   const syncParty = () => { v.querySelectorAll(".party input").forEach(inp => S.party[+inp.dataset.i] = inp.value.trim() || `Jugador ${+inp.dataset.i + 1}`); save(); };
@@ -3390,14 +4250,14 @@ function lobby() {
     <p class="dim center" style="font-size:12px;font-weight:800" id="png">${via}</p>
     ${n < 2 ? `<div class="card center" style="display:grid;gap:10px"><div class="dots4"><i style="background:var(--p1)"></i><i style="background:var(--gold)"></i><i style="background:var(--p2)"></i></div><b>Esperando a tus amigos…</b><span class="dim" style="font-size:13px;font-weight:700">Deja esta pantalla abierta. Cuando entren, eligen el juego.</span></div>` : ""}
     <p class="label" style="margin-top:4px">${host ? "Elige un juego" : `${esc(NET.names[0] || "El anfitrión")} está eligiendo el juego… (toca uno para pedirlo)`}</p>
-    ${GAMES.map((x, k) => [x, k]).sort((a, b) => { const f = x => { const r = grange(x.g); return n >= r[0] && n <= r[1] ? 0 : 1; }; return f(a[0]) - f(b[0]); }).map(([x, k]) => { const r = grange(x.g), ok = n >= r[0] && n <= r[1];
-      return `<button class="gcard ${ok ? "" : "off"}" data-k="${k}" style="--c1:${x.c1};--c2:${x.c2}" ${ok ? "" : 'aria-disabled="true"'}>${ART[x.g.id]}<div><h3>${x.g.name}</h3><p>${ok ? x.tag : rangeTxt(r) + (n > r[1] ? ": hay demasiadas personas en la sala" : "")}</p><div class="tags"><span>${rangeTxt(r)}</span></div></div></button>`; }).join("")}`);
+    ${GAMES.map((x, k) => [x, k]).sort((a, b) => { const f = x => { const r = grange(x.g); return n >= r[0] && n <= r[1] && !x.g.localOnly ? 0 : 1; }; return f(a[0]) - f(b[0]); }).map(([x, k]) => { const r = grange(x.g), ok = n >= r[0] && n <= r[1] && !x.g.localOnly;
+      return `<button class="gcard ${ok ? "" : "off"}" data-k="${k}" style="--c1:${x.c1};--c2:${x.c2}" ${ok ? "" : 'aria-disabled="true"'}>${ART[x.g.id]}<div><h3>${x.g.name}</h3><p>${ok ? x.tag : x.g.localOnly ? "Por ahora solo en el mismo celular. El modo en línea llega pronto." : rangeTxt(r) + (n > r[1] ? ": hay demasiadas personas en la sala" : "")}</p><div class="tags"><span>${rangeTxt(r)}</span></div></div></button>`; }).join("")}`);
   $("#bk", v).onclick = () => { NET.leave(); history.replaceState(null, "", location.pathname + location.search); home(); };
   $("#wa", v).onclick = () => window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank");
   $("#cp", v).onclick = async () => { try { await navigator.clipboard.writeText(shareURL(code)); toast("Link copiado"); } catch { prompt("Copia este link:", shareURL(code)); } };
   v.querySelectorAll(".gcard[data-k]").forEach(b => b.onclick = () => {
     const x = GAMES[+b.dataset.k];
-    if (b.classList.contains("off")) { toast(rangeTxt(grange(x.g))); return; }
+    if (b.classList.contains("off")) { toast(x.g.localOnly ? "Este juego todavía es solo en el mismo celular" : rangeTxt(grange(x.g))); return; }
     if (host) { NET.game = x.g.id; NET.send({ k: "pick", game: x.g.id }); info(x, "host"); }
     else { NET.send({ k: "sug", game: x.g.id }); toast(`Le pediste ${x.g.name} a ${NET.names[0] || "el anfitrión"}`); }
   });
@@ -3461,7 +4321,7 @@ onNetMsg = function (m) {
   _onNetMsg(m);
 };
 
-window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, VOICE, tApply, tAct, launch, S };
+window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, VOICE, CITY, CF, CFV, tApply, tAct, launch, S };
 /* arranque: si el link trae #sala-XXXX, ir directo a unirse */
 (() => { const m = location.hash.match(/sala-([A-Z0-9]{4})/i); if (m) onlineMenu(m[1].toUpperCase()); else home(); })();
 function phoneOnline(id, me) {
