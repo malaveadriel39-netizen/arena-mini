@@ -691,6 +691,21 @@ const BROKERS = ["wss://broker.emqx.io:8084/mqtt", "wss://broker.hivemq.com:8884
 const LOCAL = /[?&]local=1/.test(location.search), RELAY = /[?&]relay=1/.test(location.search);
 const ICE = { iceServers: [{ urls: "stun:stun.l.google.com:19302" }, { urls: "stun:stun1.l.google.com:19302" }, { urls: "stun:stun.cloudflare.com:3478" }] };
 const MAXP = 10;
+/* WebRTC corta mensajes grandes: los partimos en tramos de 14 KB y los volvemos a unir */
+const FR = 14000, FRB = new Map(); let fid = 0;
+function p2pSend(c, o) {
+  if (!c || !c.open) return; const s = JSON.stringify(o);
+  if (s.length <= FR) return c.send(o);
+  const id = (++fid) + Math.random().toString(36).slice(2, 6), n = Math.ceil(s.length / FR);
+  for (let i = 0; i < n; i++) c.send({ k: "_p", id, i, n, d: s.slice(i * FR, (i + 1) * FR) });
+}
+function unframe(m) {
+  if (!m || m.k !== "_p") return m;
+  let b = FRB.get(m.id); if (!b) { b = { parts: [], got: 0, t: Date.now() }; FRB.set(m.id, b); }
+  if (b.parts[m.i] === undefined) { b.parts[m.i] = m.d; b.got++; }
+  if (b.got < m.n) return null; FRB.delete(m.id);
+  try { return JSON.parse(b.parts.join("")); } catch { return null; }
+}
 const loaded = {};
 function loadLib(name) {
   if (loaded[name]) return loaded[name];
@@ -737,18 +752,18 @@ const NET = {
   async peerHost() {
     await loadLib("peer");
     const peer = new Peer("arenamini-" + this.code.toLowerCase(), { debug: 0, config: ICE });
-    peer.on("connection", c => { c.on("data", d => { if (d && d.gid) this.hin(d, o => c.open && c.send(o), "p2p"); }); });
+    peer.on("connection", c => { c.on("data", d => { d = unframe(d); if (d && d.gid) this.hin(d, o => p2pSend(c, o), "p2p"); }); });
     peer.on("error", e => { if (e.type === "unavailable-id") this.ui("taken"); });
     this.tr.push({ kind: "p2p", close: () => peer.destroy() });
   },
   async peerGuest() {
     await loadLib("peer");
     const peer = new Peer({ debug: 0, config: ICE });
-    const t = { kind: "p2p", conn: null, send: o => t.conn && t.conn.open && t.conn.send(o), close: () => peer.destroy() };
+    const t = { kind: "p2p", conn: null, send: o => p2pSend(t.conn, o), close: () => peer.destroy() };
     peer.on("open", () => {
       const c = peer.connect("arenamini-" + this.code.toLowerCase(), { reliable: true, serialization: "json" }); t.conn = c;
       c.on("open", () => t.send({ k: "hello", gid: this.gid, name: S.me, v: 4 }));
-      c.on("data", d => this.gin(d, t));
+      c.on("data", d => { d = unframe(d); if (d) this.gin(d, t); });
       c.on("close", () => { if (this.up === t) this.lost(); });
     });
     this.tr.push(t); return t;
@@ -1789,7 +1804,7 @@ const CHESS = {
     if (r.cap) s.cap[p].push(r.cap);
     s.b = r.b; s.cr = r.cr; s.ep = r.ep; s.half = r.pawn || r.cap ? 0 : s.half + 1; s.last = [m.f, m.t]; s.n++;
     s.turn = 1 - p;
-    const key = s.b.join(",") + s.turn + s.cr + s.ep; s.rep[key] = (s.rep[key] || 0) + 1;
+    let hh = 2166136261; for (const ch of s.b.join(",") + s.turn + s.cr + s.ep) hh = Math.imul(hh ^ ch.charCodeAt(0), 16777619); const key = (hh >>> 0).toString(36); s.rep[key] = (s.rep[key] || 0) + 1;
     s.chk = this.attacked(s.b, this.kingSq(s.b, s.turn), p);
     s.snd = r.cap ? "cap" : m.cs ? "castle" : "move";
     const moves = this.legal(s);
@@ -3277,3 +3292,4 @@ function phoneOnline(id, me) {
 </script>
 </body>
 </html>
+
