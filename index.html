@@ -425,6 +425,15 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .cf-cash{display:flex;align-items:center;gap:3px}.cf-cash b{flex:1;text-align:center;font:900 14px var(--body);color:var(--goldc)}.cf-cash button{appearance:none;border:0;background:rgba(255,255,255,.1);color:#fff;border-radius:8px;padding:6px 5px;font:900 11px var(--body);cursor:pointer}
 .cf-tcol>small{display:block;font:700 10.5px var(--body);margin:3px 0 6px}
 .cf-tp{display:grid;gap:4px}.cf-tp button{appearance:none;border:0;text-align:left;background:rgba(255,255,255,.06);color:#fff;border-left:4px solid var(--dc,#d8b65a);border-radius:8px;padding:7px 8px;font:800 12px var(--body);cursor:pointer}.cf-tp button.on{background:rgba(216,182,90,.28);box-shadow:inset 0 0 0 1px var(--goldc)}.cf-tp button:disabled{opacity:.4}
+.cf-pc.away{opacity:.6}.cf-pc.away b{text-decoration:line-through dotted}
+.cf-emo{display:flex;justify-content:space-between;gap:4px;background:rgba(255,255,255,.04);border-radius:14px;padding:4px}.cf-emo button{appearance:none;border:0;background:none;font-size:22px;flex:1;padding:4px 0;border-radius:10px;cursor:pointer}.cf-emo button:active{background:rgba(255,255,255,.1);transform:scale(.9)}
+.cf-emof{position:fixed;z-index:72;transform:translateX(-50%);font-size:30px;pointer-events:none;animation:cfEmo 1.8s ease-out forwards}
+@keyframes cfEmo{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}15%{opacity:1;transform:translate(-50%,0) scale(1.15)}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+.cf-clock{margin:3px 0 0!important;font:900 clamp(10px,3vw,13px) var(--body);color:#f0dfae}.cf-clock.low{color:#ff7b7b}
+.cf-resume{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;background:linear-gradient(135deg,rgba(216,182,90,.18),rgba(27,38,88,.6));border:1px solid rgba(216,182,90,.45);border-radius:18px;padding:12px 14px}
+.cf-resume.alt{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+.cf-resume b{display:block;font:900 15px var(--body)}.cf-resume small{display:block;font:700 12px var(--body);color:#c8cbe8;margin-top:2px}
+.cf-resume .btn{font-size:16px;padding:11px 14px}.cf-del{grid-column:1/-1;appearance:none;border:0;background:none;color:#8a90c0;font:800 12px var(--body);text-decoration:underline;cursor:pointer;justify-self:start;padding:0}
 @media (prefers-reduced-motion:reduce){.cf *,.cf-float,.cf-sh{animation:none!important;transition:none!important}}
 #mute{position:fixed;right:14px;top:calc(env(safe-area-inset-top,0px) + 14px);z-index:50;width:40px;height:40px;border-radius:12px;border:0;background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer}
 body.playing #mute{display:none}
@@ -856,11 +865,19 @@ function loadLib(name) {
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const newCode = () => Array.from({ length: 4 }, () => CODE_ABC[Math.floor(Math.random() * CODE_ABC.length)]).join("");
 const NETIN = { tx: null, mx: null, my: null };
-const ALLG = () => [BOMB, DUEL, HOCKEY, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE];
+/* sesión del invitado: mismo id y ficha de reconexión si recarga o se le cae la señal */
+const SESS_K = "arena-mini-sess";
+const sessRead = st => { try { const o = JSON.parse(st.getItem(SESS_K) || "null"); return o && Date.now() - o.t < 12 * 3600e3 ? o : null; } catch { return null; } };
+const sessGet = () => sessRead(localStorage);                 // la última sala de este celular (para "Volver a la sala")
+const sessTab = () => { try { return sessRead(sessionStorage); } catch { return null; } };   // la de esta pestaña (sobrevive a recargar)
+const sessSet = o => { const v = o && JSON.stringify(Object.assign({ t: Date.now() }, o)); for (const st of [localStorage, sessionStorage]) try { v ? st.setItem(SESS_K, v) : st.removeItem(SESS_K); } catch {} };
+const rid = () => Math.random().toString(36).slice(2, 10);
+const ALLG = () => [BOMB, DUEL, HOCKEY, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, CITY];
 
 const NET = {
   role: null, me: 0, pi: 0, gid: "", code: "", names: [], gseats: [0], st: "off",   // off · wait · ok
   tr: [], up: null, peers: new Map(), last: 0, rtt: 0, timers: [], ui: () => {}, sent: 0, inAcc: 0, game: null,
+  tok: "", toks: new Map(), away: new Map(), awaySeats: [],          // reconexión: ficha por invitado y asientos guardados de quien se cayó
   seats() { return [0, ...[...this.peers.values()].map(p => p.idx)].sort((a, b) => a - b); },
   count() { return this.role === "host" ? 1 + this.peers.size : this.names.filter(Boolean).length; },
   pname(i) { return this.names[this.gseats[i]] || PNAMES[i] || "Amigo"; },
@@ -876,7 +893,7 @@ const NET = {
     else if (this.up) try { this.up.send(Object.assign({ gid: this.gid }, o)); } catch {}
   },
   sendTo(seat, o) { for (const p of this.peers.values()) if (p.idx === seat) try { p.send(o); } catch {} },
-  roster() { if (this.st === "off") return; if (this.role === "host" && !busyGame()) this.gseats = this.seats(); this.send({ k: "roster", names: this.names }); },
+  roster() { if (this.st === "off") return; if (this.role === "host" && !busyGame()) this.gseats = this.seats(); this.awaySeats = [...this.away.values()].map(a => a.idx); this.send({ k: "roster", names: this.names, away: this.awaySeats }); },
   /* ---------- transportes ---------- */
   bc() {
     const ch = new BroadcastChannel("arenamini4-" + this.code), host = this.role === "host";
@@ -887,18 +904,18 @@ const NET = {
   },
   async peerHost() {
     await loadLib("peer");
-    const peer = new Peer("arenamini-" + this.code.toLowerCase(), { debug: 0, config: ICE });
+    const peer = new Peer("arenamini-" + this.code.toLowerCase(), Object.assign({ debug: 0, config: ICE }, window.__PEEROPT || {}));
     peer.on("connection", c => { c.on("data", d => { d = unframe(d); if (d && d.gid) this.hin(d, o => p2pSend(c, o), "p2p"); }); });
     peer.on("error", e => { if (e.type === "unavailable-id") this.ui("taken"); });
     this.tr.push({ kind: "p2p", close: () => peer.destroy() });
   },
   async peerGuest() {
     await loadLib("peer");
-    const peer = new Peer({ debug: 0, config: ICE });
+    const peer = new Peer(Object.assign({ debug: 0, config: ICE }, window.__PEEROPT || {}));
     const t = { kind: "p2p", conn: null, send: o => p2pSend(t.conn, o), close: () => peer.destroy() };
     peer.on("open", () => {
       const c = peer.connect("arenamini-" + this.code.toLowerCase(), { reliable: true, serialization: "json" }); t.conn = c;
-      c.on("open", () => t.send({ k: "hello", gid: this.gid, name: S.me, v: 4 }));
+      c.on("open", () => t.send({ k: "hello", gid: this.gid, name: S.me, v: 4, tok: this.tok }));
       c.on("data", d => { d = unframe(d); if (d) this.gin(d, t); });
       c.on("close", () => { if (this.up === t) this.lost(); });
     });
@@ -917,7 +934,7 @@ const NET = {
   },
   /* ---------- crear / unirse ---------- */
   host(code) {
-    this.reset(); this.role = "host"; this.me = 0; this.pi = 0; this.code = code || newCode(); this.st = "ok"; this.names = [S.me]; this.gseats = [0];
+    this.reset(); this.role = "host"; this.me = 0; this.pi = 0; this.code = code || newCode(); this.st = "ok"; this.names = [S.me]; this.gseats = [0]; this.away = new Map(); this.toks = new Map(); this.awaySeats = [];
     if (LOCAL) this.bc();
     else { if (!RELAY) this.peerHost().catch(() => {}); BROKERS.forEach(b => this.mqtt(b).catch(() => {})); }
     this.timers.push(setInterval(() => {                       // latido: mide la señal y saca a quien se desconecta
@@ -925,9 +942,11 @@ const NET = {
       for (const [gid, p] of this.peers) { try { p.send({ k: "p", t: performance.now() }); } catch {} if (now - p.last > 12000) this.drop(gid, true); }
     }, 1000));
   },
-  join(code) {
-    this.reset(); this.role = "guest"; this.code = code.toUpperCase(); this.st = "wait"; this.names = []; this.gid = Math.random().toString(36).slice(2, 10);
-    const t0 = Date.now(), hello = t => t.send && t.send({ k: "hello", gid: this.gid, name: S.me, v: 4 });
+  join(code, useSaved) {
+    this.reset(); this.role = "guest"; this.code = code.toUpperCase(); this.st = "wait"; this.names = [];
+    const ss = [sessTab(), useSaved || this.reconn ? sessGet() : null].find(o => o && o.code === this.code);
+    if (ss) { this.gid = ss.gid; this.tok = ss.tok || ""; } else { this.gid = rid(); this.tok = ""; }
+    const t0 = Date.now(), hello = t => t.send && t.send({ k: "hello", gid: this.gid, name: S.me, v: 4, tok: this.tok });
     if (LOCAL) { const t = this.bc(); this.timers.push(setInterval(() => { if (this.st === "wait") hello(t); }, 500)); }
     else {
       if (!RELAY) this.peerGuest().catch(() => {});
@@ -945,6 +964,11 @@ const NET = {
   leave() { if (this.role === "host") this.send({ k: "bye" }); else this.send({ k: "bye" }); setTimeout(() => this.reset(), 200); },
   drop(gid, timeout) {
     const p = this.peers.get(gid); if (!p) return;
+    // en una partida larga (City Fortune) no se termina el juego: se guarda el asiento hasta que vuelva
+    if (T.g && T.online && T.g.resumable && (T.seats || []).includes(p.idx)) {
+      this.peers.delete(gid); this.away.set(gid, { idx: p.idx, name: this.names[p.idx], tok: this.toks.get(gid) || "" });
+      this.roster(); onNetAway(p.idx, this.names[p.idx], timeout); return;
+    }
     this.peers.delete(gid); const seat = p.idx, name = this.names[seat]; this.names[seat] = null;
     onNetRoster("left", seat, name, timeout); this.roster();
   },
@@ -953,14 +977,24 @@ const NET = {
     if (!m || !m.k || this.role !== "host") return;
     let p = this.peers.get(m.gid);
     if (m.k === "hello") {
+      const aw = !p && this.away.get(m.gid);
+      if (aw && aw.tok && aw.tok === m.tok) {                  // vuelve alguien que se había caído: recupera su asiento
+        p = { idx: aw.idx, send: reply, kind, last: Date.now(), rtt: 0 }; this.peers.set(m.gid, p); this.away.delete(m.gid); this.toks.set(m.gid, aw.tok);
+        this.names[aw.idx] = aw.name || this.names[aw.idx]; reply({ k: "welcome", me: aw.idx, names: this.names, tok: aw.tok }); this.roster(); onNetBack(aw.idx);
+        return;
+      }
+      if (!p && busyGame()) {                                 // sin ficha: si su nombre coincide con un único asiento vacío, se lo devolvemos
+        const nm = String(m.name || "").slice(0, 10), hit = [...this.away.entries()].filter(([, a]) => a.name === nm);
+        if (hit.length === 1) { const [ogid, a] = hit[0]; this.away.delete(ogid); this.away.set(m.gid, a); a.tok = a.tok || rid(); m.tok = a.tok; return this.hin(m, reply, kind); }
+      }
       if (!p) {
         if (busyGame()) { reply({ k: "busy" }); return; }
         if (this.peers.size >= MAXP - 1) { reply({ k: "full" }); return; }
-        let seat = 1; while (this.names[seat]) seat++;
-        p = { idx: seat, send: reply, kind, last: Date.now(), rtt: 0 }; this.peers.set(m.gid, p);
+        let seat = 1; while (this.names[seat] || [...this.away.values()].some(a => a.idx === seat)) seat++;
+        p = { idx: seat, send: reply, kind, last: Date.now(), rtt: 0 }; this.peers.set(m.gid, p); const tok = rid() + rid(); this.toks.set(m.gid, tok);
         this.names[seat] = String(m.name || "Amigo").slice(0, 10);
-        reply({ k: "welcome", me: seat, names: this.names }); this.roster(); onNetRoster("join", seat, this.names[seat]);
-      } else { p.send = reply; p.kind = kind; reply({ k: "welcome", me: p.idx, names: this.names }); }
+        reply({ k: "welcome", me: seat, names: this.names, tok }); this.roster(); onNetRoster("join", seat, this.names[seat]);
+      } else { p.send = reply; p.kind = kind; reply({ k: "welcome", me: p.idx, names: this.names, tok: this.toks.get(m.gid) }); if (T.g && T.online && (T.seats || []).includes(p.idx)) onNetBack(p.idx); }
       return;
     }
     if (!p) return;
@@ -979,10 +1013,11 @@ const NET = {
       case "welcome":
         if (this.st === "ok") return;
         this.up = t; this.st = "ok"; this.waitBusy = false; this.tr.filter(x => x !== t).forEach(x => { try { x.close(); } catch {} }); this.tr = [t];
-        this.me = m.me; this.names = m.names; this.gseats = [0, m.me]; onNetJoined(); break;
+        this.me = m.me; this.names = m.names; this.gseats = [0, m.me]; if (m.tok) this.tok = m.tok; sessSet({ code: this.code, gid: this.gid, tok: this.tok });
+        onNetJoined(); break;
       case "busy": this.waitBusy = true; this.ui("busy"); break;
       case "full": this.reset(); this.ui("full"); break;
-      case "roster": this.names = m.names; onNetRoster("update"); break;
+      case "roster": this.names = m.names; this.awaySeats = m.away || []; onNetRoster("update"); break;
       case "p": this.send({ k: "q", t: m.t }); break;
       case "q": this.rtt = Math.round(performance.now() - m.t); break;
       case "bye": this.reset(); onNetBye(); break;
@@ -1013,8 +1048,9 @@ function onNetMsg(m) {
   if (NET.role === "host") {
     if (m.k === "in") { if (m.from !== NET.gseats[1]) return; const p = Pads.p[1]; p.nx = clamp(+m.vx || 0, -1, 1); p.ny = clamp(+m.vy || 0, -1, 1); p.fire += (m.f | 0); p.nh = !!m.h; NETIN.tx = m.tx ?? null; NETIN.mx = m.mx ?? null; NETIN.my = m.my ?? null; }
     else if (m.k === "pause") m.on ? pause(true) : resume(true);
-    else if (m.k === "leave") { if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); toast(`${NET.names[m.from] || "Alguien"} salió de la partida`); }
-    else if (m.k === "tm") { if (T.g && T.online && T.s) { const pi = T.seats.indexOf(m.from); if (pi >= 0) tApply(pi, m.a || {}); } }
+    else if (m.k === "leave") { if (T.g && T.g.resumable) return; if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); toast(`${NET.names[m.from] || "Alguien"} salió de la partida`); }
+    else if (m.k === "tm") { if (T.g && T.online && T.s) { const pi = T.seats.indexOf(m.from); if (pi >= 0 && !tApply(pi, m.a || {}) && T.g.lastErr !== undefined) NET.sendTo(m.from, { k: "tno", e: T.g.lastErr }); } }
+    else if (m.k === "emo") { const e = String(m.e || "").slice(0, 4); NET.send({ k: "emo", e, from: m.from }); onEmote(m.from, e); }
     else if (m.k === "mc") mediaChunk(m, m.from);
     else if (m.k === "vj" || m.k === "vl" || m.k === "vm") VOICE.hostMsg(m);
     return;
@@ -1030,6 +1066,8 @@ function onNetMsg(m) {
   else if (m.k === "duo") { if (E.st !== "off") stopMatch(); duoResult(m.r, true); }
   else if (m.k === "mc") mediaChunk(m, 0);
   else if (m.k === "vr") VOICE.onMembers(m.mem);
+  else if (m.k === "tno") { if (T.g && T.g.errText) toast(T.g.errText(m.e)); }
+  else if (m.k === "emo") onEmote(m.from, m.e);
 }
 function startGuest(g, opt) {
   if (g.setOpt) g.setOpt(opt);
@@ -1717,10 +1755,19 @@ function startTurnGuest(g, opts, seats) {
   T.g = g; T.online = true; T.seats = seats; T.me = seats.indexOf(NET.me); T.opts = opts || {}; T.np = seats.length; T.wins = Array(T.np).fill(0); T.s = null; T.prev = null; T.rover = null; T.reveal = -1;
   tFrame(); $(".tg-main").innerHTML = `<div class="center dim" style="padding:40px;font-weight:800">Preparando la partida…</div>`;
 }
+/* continuar una partida guardada (City Fortune): mismo estado, mismos asientos */
+function tResume(g, s, opts, online, seats) {
+  clearTimeout(T.timer);
+  T.g = g; T.online = !!online; T.me = online ? 0 : null; T.opts = opts || {}; T.seats = online ? seats : null;
+  T.names = !online ? (T.opts.names || s.names || null) : null; T.np = s.np; T.wins = Array(T.np).fill(0); T.round = 1; T.reveal = -1; T.rover = null; T.prev = null; T.s = s;
+  if (online) { NET.gseats = seats; NET.pi = 0; NET.game = g.id; NET.send({ k: "tstart", game: g.id, opts: T.opts, seats }); }
+  tFrame(); tSync(); tRender(); tAuto();
+}
+const tPersist = () => { if (T.g && T.g.persist && (!T.online || T.me === 0)) T.g.persist(); };
 function tStop() { clearTimeout(T.timer); T.g = null; T.s = null; document.body.classList.remove("tplay"); }
 function tNewRound() {
   T.prev = null; T.s = T.g.init(T.round, T.np, T.opts); T.round++; T.rover = null;
-  tSync(); tRender(); tAuto();
+  tSync(); tRender(); tAuto(); tPersist();
 }
 /* una jugada desde la interfaz */
 function tAct(a) {
@@ -1743,7 +1790,7 @@ function tAfter() {
     clearTimeout(T.timer);
     T.timer = setTimeout(() => { if (!T.g) return; over ? tFinish(w) : tNewRound(); }, over ? 2600 : 2400);
   }
-  tSync(); tRender(); if (!T.rover) tAuto();
+  tSync(); tRender(); if (!T.rover) tAuto(); tPersist();
 }
 function tAuto() {
   clearTimeout(T.timer); if (!T.g || !T.s || T.rover) return;
@@ -1773,6 +1820,13 @@ function tFrame() {
     <div class="tg-main"></div><div class="tg-ov"></div></div>`);
   $("#app").replaceChildren(v); $("#app").scrollTop = 0;
   $("#tq", v).onclick = () => {
+    if (T.g && T.g.resumable) {                                  // partidas largas: se guardan; un invitado que sale, abandona
+      const guest = T.online && T.me !== 0;
+      if (!confirm(guest ? "¿Abandonar la partida? Quedas fuera y tus propiedades vuelven al banco. (Si solo se te cayó la señal, no toques nada: te reconectas solo.)" : "La partida queda guardada: puedes continuarla después desde el inicio. ¿Salir?")) return;
+      if (guest) { tAct({ t: "FORFEIT", aid: "ff" + Date.now() }); tStop(); lobby(); }
+      else { tPersist(); const on = T.online; tStop(); if (on) { NET.send({ k: "lobby" }); lobby(); } else home(); }
+      return;
+    }
     if (!confirm("¿Salir de la partida?")) return;
     if (T.online) { const host = T.me === 0; tStop(); NET.send({ k: host ? "lobby" : "leave" }); lobby(); } else { tStop(); home(); }
   };
@@ -3216,7 +3270,7 @@ const CF = (() => {
     np = Math.max(2, Math.min(6, np | 0));
     const r = merge(CF_RULES, rules);
     const s = {
-      v: 1, n: 0, np, names: (names || []).slice(0, np).map(String), r,
+      v: 1, gid: Math.random().toString(36).slice(2, 10), n: 0, np, names: (names || []).slice(0, np).map(String), r,
       phase: "turn", turn: 0, round: 1, turnNo: 1, dc: 0, dice: null, again: false, pend: -1, rq: null,
       players: Array.from({ length: np }, () => ({ cash: r.startingMoney, pos: 0, jail: false, jt: 0, cards: [], out: false })),
       own: Array(T40).fill(-1), lvl: Array(T40).fill(0), mort: Array(T40).fill(false),
@@ -3373,6 +3427,13 @@ const CF = (() => {
     const toP = typeof creditor === "number" && creditor !== p && !s.players[creditor].out;
     for (let i = 0; i < T40; i++) if (s.own[i] === p && s.lvl[i] > 0) { gain(s, p, Math.floor(s.lvl[i] * CF_TILES[i].cost * s.r.building.sellRate), "venta"); s.lvl[i] = 0; }
     s.debts = s.debts.filter(d => d.p !== p);
+    // si estaba en una subasta o en un trato pendiente, se limpia
+    if (s.auc) {
+      const A = s.auc;
+      if (p === s.turn) { s.auc = null; s.phase = "moving"; }
+      else { const k = A.act.indexOf(p); if (k >= 0) { A.act.splice(k, 1); if (k < A.i) A.i--; } if (A.lead === p) { A.lead = -1; A.bid = 0; } }
+    }
+    if (s.trade && (s.trade.from === p || s.trade.to === p)) { s.phase = s.tradeBack; s.trade = null; s.tradeBack = null; }
     if (pl.cash > 0) transfer(s, p, toP ? creditor : "bank", pl.cash, "quiebra");
     for (let i = 0; i < T40; i++) if (s.own[i] === p) { if (toP) s.own[i] = creditor; else { s.own[i] = -1; s.lvl[i] = 0; s.mort[i] = false; } }
     while (pl.cards.length) useCard(s, p, 0);
@@ -3627,6 +3688,8 @@ const CF = (() => {
       transfer(s, p, to, d.amt, d.why); s.debts.shift(); E(s, "DEBT_PAID", { p, amt: d.amt });
       log(s, `${nm(s, p)} pagó su deuda de ${money(d.amt)}.`, p); endDebt(s);
     },
+    /* abandonar (o que el anfitrión saque a alguien desconectado): se puede en cualquier momento */
+    FORFEIT(s, p) { log(s, `🚪 ${nm(s, p)} abandonó la partida.`, p); bankrupt(s, p, "bank", 0); endDebt(s); },
     DECLARE_BANKRUPTCY(s, p) {
       if (s.phase !== "debt") return "phase"; const d = s.debts[0]; bankrupt(s, p, d.to, d.amt); endDebt(s);
     },
@@ -3661,16 +3724,17 @@ const CF = (() => {
     if (!a || typeof a !== "object" || typeof a.t !== "string" || !H.hasOwnProperty(a.t)) return { ok: false, err: "unknown" };
     if (!Number.isInteger(p) || p < 0 || p >= s.np) return { ok: false, err: "player" };
     if (s.players[p].out) return { ok: false, err: "out" };
-    if (p !== actor(s)) return { ok: false, err: "turn" };
+    if (p !== actor(s) && a.t !== "FORFEIT") return { ok: false, err: "turn" };
     const aid = a.aid !== undefined ? String(a.aid).slice(0, 40) : null;
     if (aid && (s.aids[p] || []).includes(aid)) return { ok: false, err: "dup" };
     s.ev = [];
     const e = H[a.t](s, p, a); if (e) return { ok: false, err: e };
+    if (s.phase === "auction" && s.auc) { const A = s.auc; if (!A.act.length || (A.act.length === 1 && A.act[0] === A.lead)) aucEnd(s); else { A.i = ((A.i % A.act.length) + A.act.length) % A.act.length; if (A.act[A.i] === A.lead) A.i = (A.i + 1) % A.act.length; } }
     if (s.phase !== "over" && s.players[s.turn].out) nextTurn(s);
     if (s.phase !== "over") { s.debts = s.debts.filter(d => !s.players[d.p].out); if (s.debts.length && s.phase !== "debt") { s.resume = s.phase; s.phase = "debt"; } else endDebt(s); }
     if (aid) { const L = s.aids[p] = s.aids[p] || []; L.push(aid); if (L.length > 40) L.shift(); }
     s.n++; s.evn++;
-    s.acts.push({ n: s.n, p, t: a.t, c: a.card, aid, at: Date.now() });
+    s.acts.push({ n: s.n, p, t: a.t, c: a.card, aid, at: Date.now() }); if (s.acts.length > 400) s.acts.splice(0, s.acts.length - 400);
     return { ok: true, s };
   }
   /* lo que ve cada jugador: sin semilla, sin orden de mazos, sin cartas ajenas */
@@ -3689,6 +3753,18 @@ const CF = (() => {
    Estados separados: estado del juego (s) · estado mostrado (CFV.disp)
    · animación (CFV.tok / CFV.cash) · interfaz (pestaña, zoom, hoja).
    ===================================================================== */
+const CF_SAVE = "arena-mini-cf-save", CF_TIMERS = { auction: 25000, trade: 60000 };
+const cfSaved = () => { try { const o = JSON.parse(localStorage.getItem(CF_SAVE) || "null"); return o && o.s && o.s.phase !== "over" && Date.now() - o.t < 14 * 864e5 ? o : null; } catch { return null; } };
+/* continuar la partida guardada (en este celular, o abrir de nuevo la sala con el mismo código) */
+function cfResume() {
+  const o = cfSaved(); if (!o) return home();
+  CFV.fresh = true;
+  if (!o.online) return tResume(CITY, o.s, o.opts, false);
+  NET.host(o.code); NET.names = [S.me || "Anfitrión"];
+  for (const g of o.guests || []) { NET.away.set(g.gid, { idx: g.idx, name: g.name, tok: g.tok }); NET.names[g.idx] = g.name; }
+  NET.roster(); tResume(CITY, o.s, o.opts, true, o.seats);
+  toast(`Sala ${o.code} abierta de nuevo. Los demás vuelven solos al abrir Arena Mini.`);
+}
 const CFV = { fresh: true, evn: -1, q: [], busy: false, disp: null, tok: [], cash: [], zoom: false, tab: "net", ctx: null, lock: false, sheet: -1 };
 const CF_K = 1.55;                                                   // esquina = 1.55 × casilla
 const cfMoney = n => "$" + Math.round(n).toLocaleString("es");
@@ -3706,13 +3782,32 @@ const cfDie = v => Array.from({ length: 9 }, (_, k) => `<b class="${CF_PIPS[v].i
 const CF_TYPE = { START: "Salida", PROPERTY: "Propiedad", TRANSPORT: "Transporte", UTILITY: "Servicio público", TAX: "Impuesto", EVENT: "Evento", DETENTION: "Centro de Detención", GO_TO_DETENTION: "Inspección", BONUS: "Festival" };
 
 const CITY = {
-  id: "cityfortune", name: "City Fortune", kind: "turn", need: 1, minp: 2, maxp: 6, party: true, localOnly: true,
+  id: "cityfortune", name: "City Fortune", kind: "turn", need: 1, minp: 2, maxp: 6, party: true, resumable: true,
   init(round, np, opts) {
     CFV.fresh = true;
     const names = Array.from({ length: np }, (_, i) => tname(i));
     return CF.newGame({ np, names, rules: { victory: { mode: opts.mode || "rounds", maxRounds: opts.rounds || 20 } } });
   },
-  move(s, p, a) { const r = CF.act(s, p, a); return r.ok ? r.s : null; },
+  move(s, p, a) { const r = CF.act(s, p, a); this.lastErr = r.ok ? undefined : r.err; return r.ok ? r.s : null; },
+  errText: e => ({ turn: "No es tu turno", phase: "Eso ya no se puede hacer ahora", cash: "No te alcanza el dinero", dup: "Esa jugada ya se hizo", low: "Alguien ya ofreció más: sube tu oferta" }[e] || "Esa jugada ya no es válida"),
+  /* en línea: si alguien no responde en una subasta o un trato, el anfitrión lo resuelve solo */
+  auto(s) {
+    if (!T.online || s.phase === "over") return null;
+    const ap = CF.actor(s), away = (NET.awaySeats || []).includes(T.seats[ap]);
+    if (s.phase === "auction") return { d: away ? 4000 : CF_TIMERS.auction, a: { t: "AUC_PASS", aid: "auto" + s.n }, p: ap };
+    if (s.phase === "trade") return { d: away ? 4000 : CF_TIMERS.trade, a: { t: "TRADE_REJECT", aid: "auto" + s.n }, p: ap };
+    return null;
+  },
+  /* guardado automático después de cada jugada (solo el anfitrión o el celular local) */
+  persist() {
+    try {
+      const s = T.s; if (!s || s.phase === "over") { localStorage.removeItem(CF_SAVE); return; }
+      const guests = T.online ? [...NET.peers.entries()].map(([gid, p]) => ({ gid, idx: p.idx, name: NET.names[p.idx], tok: NET.toks.get(gid) || "" }))
+        .concat([...NET.away.entries()].map(([gid, a]) => ({ gid, idx: a.idx, name: a.name, tok: a.tok }))) : [];
+      localStorage.setItem(CF_SAVE, JSON.stringify({ v: 1, t: Date.now(), online: T.online, code: T.online ? NET.code : "", seats: T.seats, opts: T.opts, guests, s }));
+    } catch { }
+  },
+  onEmote(pi, e) { cfEmote(pi, e); },
   winner(s) { return s.phase === "over" ? s.w : null; },
   redact(s, p) { return CF.redact(s, p); },
   scores(s) { return s.players.map((q, i) => CF.assets(s, i).net); },
@@ -3720,7 +3815,7 @@ const CITY = {
   /* ---------------- dibujo ---------------- */
   render(root, s, prev, ctx) {
     CFV.ctx = ctx;
-    if (CFV.fresh || !root.querySelector(".cf") || s.n < (CFV.disp ? CFV.disp.n : 0)) {
+    if (CFV.fresh || !root.querySelector(".cf") || !CFV.disp || CFV.disp.gid !== s.gid || s.n < CFV.disp.n) {
       CFV.fresh = false; CFV.q = []; CFV.busy = false; CFV.lock = false; CFV.disp = s; CFV.evn = s.evn; CFV.sheet = -1;
       CFV.tok = s.players.map(q => q.pos); CFV.cash = s.players.map(q => q.cash);
       cfBuild(root, s); cfPaint(s); return;
@@ -3746,6 +3841,7 @@ function cfBuild(root, s) {
         <div class="cf-cardv" hidden></div></div>
       <div class="cf-toks">${s.players.map((q, i) => `<i class="cf-tok" data-p="${i}">${cfTok(i)}</i>`).join("")}</div></div></div>
     <div class="cf-dock"></div>
+    ${CFV.ctx && CFV.ctx.online ? `<div class="cf-emo" aria-label="Reacciones rápidas">${["😂", "😎", "😈", "🔥", "💰", "😱", "👍"].map(e => `<button data-e="${e}" aria-label="Enviar ${e}">${e}</button>`).join("")}</div>` : ""}
     <div class="cf-bar" role="tablist"><button data-tab="mine">Mis propiedades</button><button data-tab="net">Patrimonio</button><button data-tab="log">Historial</button><button class="cf-zb" aria-label="Acercar tablero">🔍</button></div>
     <div class="cf-tab"></div>
     <div class="cf-sheet" hidden><div class="cf-sh-bg"></div><div class="cf-sh"></div></div></div>`;
@@ -3754,6 +3850,7 @@ function cfBuild(root, s) {
   cf.querySelectorAll(".cf-bar [data-tab]").forEach(b => b.onclick = () => { CFV.tab = b.dataset.tab; cfPaintTab(CFV.disp); });
   $(".cf-zb", cf).onclick = () => { CFV.zoom = !CFV.zoom; cfZoom(cf); cfFocus(CFV.disp.turn); };
   $(".cf-sh-bg", cf).onclick = () => cfSheet(-1);
+  cf.querySelectorAll(".cf-emo button").forEach(b => b.onclick = () => { const n = Date.now(); if (n - (CFV.emoT || 0) < 1200) return; CFV.emoT = n; sendEmote(b.dataset.e); });
   $(".cf-cardv", cf).onclick = () => { CFV.skipCard && CFV.skipCard(); };
   cfZoom(cf);
 }
@@ -3775,12 +3872,18 @@ const CF_BLD = [
   '<path d="M4 11V6.5h5V11zM21 11V5h5v6z" opacity=".75"/><path d="M9.5 11V3h4v8zM16.5 11V1.5l2-1.3 2 1.3V11z"/><path d="M13.5 11V4.5h3V11z" opacity=".9"/>', // Complejo
 ];
 const cfBld = lv => lv > 0 ? `<svg viewBox="0 0 30 12" preserveAspectRatio="xMidYMax meet"><g fill="#fff" stroke="rgba(0,0,0,.35)" stroke-width=".5">${CF_BLD[lv]}</g></svg>` : "";
+const cfAway = i => !!(CFV.ctx && CFV.ctx.online && T.seats && (NET.awaySeats || []).includes(T.seats[i]));
+function cfEmote(pi, e) {
+  const chip = document.querySelector(`.cf-pc[data-p="${pi}"]`); if (!chip) return;
+  const r = chip.getBoundingClientRect(), f = h(`<div class="cf-emof">${esc(e)}</div>`);
+  f.style.left = (r.left + r.width / 2 + (Math.random() * 30 - 15)) + "px"; f.style.top = (r.top) + "px"; document.body.appendChild(f); setTimeout(() => f.remove(), 1800); tone(990, .06, "sine", .06);
+}
 function cfPaintPlayers(s) {
   const el = $(".cf-pl"), ctx = CFV.ctx; if (!el) return;
   const ap = s.phase === "over" ? -1 : CF.actor(s);
   el.style.gridTemplateColumns = `repeat(${s.np === 4 ? 2 : Math.min(s.np, 3)},minmax(0,1fr))`;
-  el.innerHTML = s.players.map((q, i) => `<div class="cf-pc ${i === s.turn && s.phase !== "over" ? "on" : ""} ${i === ap && ap !== s.turn ? "ap" : ""} ${q.out ? "out" : ""}" data-p="${i}" style="--c:${COL[i % COL.length]}">
-    ${cfTok(i)}<b>${esc(ctx.name(i))}${ctx.online && i === ctx.me ? " (tú)" : ""}</b><span class="cash">${q.out ? "Quebró" : cfMoney(CFV.busy ? CFV.cash[i] : q.cash)}</span>${q.jail ? '<em title="En el Centro de Detención">🔒</em>' : ""}${q.cards.length ? `<em title="Tarjetas guardadas">🎴${q.cards.length}</em>` : ""}</div>`).join("");
+  el.innerHTML = s.players.map((q, i) => `<div class="cf-pc ${i === s.turn && s.phase !== "over" ? "on" : ""} ${i === ap && ap !== s.turn ? "ap" : ""} ${q.out ? "out" : ""} ${cfAway(i) && !q.out ? "away" : ""}" data-p="${i}" style="--c:${COL[i % COL.length]}">
+    ${cfTok(i)}<b>${esc(ctx.name(i))}${ctx.online && i === ctx.me ? " (tú)" : ""}</b><span class="cash">${q.out ? "Quebró" : cfMoney(CFV.busy ? CFV.cash[i] : q.cash)}</span>${q.jail ? '<em title="En el Centro de Detención">🔒</em>' : ""}${cfAway(i) && !q.out ? '<em title="Desconectado">📵</em>' : ""}${q.cards.length ? `<em title="Tarjetas guardadas">🎴${q.cards.length}</em>` : ""}</div>`).join("");
 }
 function cfPaintTiles(s) {
   document.querySelectorAll(".cf-t").forEach(el => {
@@ -3907,7 +4010,16 @@ function cfPaintMid(s) {
     const d = s.debts[0]; line = `⚠️ ${C(d.p)} debe ${cfMoney(d.amt)}`;
     hint = `a ${typeof d.to === "number" ? C(d.to) : "el banco"} (${esc(d.why)}). Tiene ${cfMoney(s.players[d.p].cash)} en efectivo: vende construcciones o hipoteca para pagar.${pass}`;
   }
-  st.innerHTML = `<p class="l1">${line}</p>${hint ? `<p class="l2">${hint}</p>` : ""}`;
+  // en línea: si le toca a alguien desconectado, avisar (y el anfitrión puede sacarlo)
+  let awayHtml = "";
+  if (!CFV.busy && ap >= 0 && cfAway(ap) && s.phase !== "auction" && s.phase !== "trade") {
+    hint = `📵 ${C(ap)} se desconectó. Esperando a que vuelva…`;
+    if (ctx.me === 0) awayHtml = `<button class="cf-b sec" id="cfkick">Sacar a ${N(ap)} de la partida</button>`;
+  }
+  const timed = ctx.online && !CFV.busy && (s.phase === "auction" || s.phase === "trade");
+  if (timed && CFV.dlKey !== s.phase + s.n) { CFV.dlKey = s.phase + s.n; CFV.dl = Date.now() + (s.phase === "auction" ? CF_TIMERS.auction : CF_TIMERS.trade); }
+  st.innerHTML = `<p class="l1">${line}</p>${hint ? `<p class="l2">${hint}</p>` : ""}${timed ? `<p class="cf-clock" data-dl="${CFV.dl}"></p>` : ""}`;
+  cfClock();
   off.innerHTML = offer; const mid = $(".cf-mid"); mid.classList.toggle("has-offer", !!offer);
   mid.className = mid.className.replace(/\bph-\w+/g, "").trim() + " ph-" + s.phase;
   // botones: solo los que el motor dice que se pueden usar ahora
@@ -3923,7 +4035,8 @@ function cfPaintMid(s) {
   acts.innerHTML = list.map((a, k) => `<button class="cf-b ${k === 0 ? "pri" : ""} ${sec(a) ? "sec" : ""} ${tool(a) ? "tool" : ""}" data-k="${k}" ${a.ok === false ? "disabled" : ""}>${lab(a)}</button>`).join("")
     + (s.phase === "buy" && list[0] && list[0].ok === false ? `<p class="cf-no">No te alcanza el dinero: se va a subasta.</p>` : "")
     + (s.phase === "trade" && list[0] && list[0].ok === false ? `<p class="cf-no">El trato ya no es válido (cambiaron las propiedades o el dinero).</p>` : "")
-    + (!CFV.busy && !mine && s.phase !== "over" ? `<p class="cf-wait">Esperando a ${N(ap)}…</p>` : "");
+    + (!CFV.busy && !mine && s.phase !== "over" && !awayHtml ? `<p class="cf-wait">Esperando a ${N(ap)}…</p>` : "") + awayHtml;
+  const kb = $("#cfkick", acts); if (kb) kb.onclick = () => { if (confirm(`¿Sacar a ${ctx.name(ap)}? Queda en bancarrota y sus propiedades vuelven al banco.`)) tApply(ap, { t: "FORFEIT", aid: "kick" + s.n }); };
   acts.querySelectorAll(".cf-b").forEach(b => b.onclick = () => {
     if (CFV.lock || CFV.busy) return; const a = list[+b.dataset.k]; if (!a || a.ok === false) return;
     sfx.tap();
@@ -3936,6 +4049,11 @@ function cfPaintMid(s) {
   const tips = !S.cfNoTips && !CFV.busy && mine && s.phase !== "over" ? cfTipFor(s) : "";
   tip.innerHTML = tips ? `<span>💡 ${tips}</span><button aria-label="Ocultar ayudas">✕</button>` : "";
   const tb = $("button", tip); if (tb) tb.onclick = () => { S.cfNoTips = true; save(); tip.innerHTML = ""; toast("Ayudas ocultas. Puedes volver a activarlas en Historial."); };
+}
+/* cuenta regresiva de subastas y tratos en línea (el anfitrión decide al llegar a cero) */
+function cfClock() {
+  clearInterval(CFV.clk); const tick = () => { const el = $(".cf-clock"); if (!el) return clearInterval(CFV.clk); const s = Math.max(0, Math.ceil((+el.dataset.dl - Date.now()) / 1000)); el.textContent = `⏱ ${s} s para responder`; el.classList.toggle("low", s <= 5); };
+  tick(); CFV.clk = setInterval(tick, 500);
 }
 /* envía una acción al motor (el motor valida todo; aquí solo se evita el doble toque) */
 function cfAct(a) {
@@ -4120,7 +4238,7 @@ function cfShowCard(e) {
 const VOICE_ICE = { iceServers: [...ICE.iceServers,
   { urls: ["turn:eu-0.turn.peerjs.com:3478", "turn:us-0.turn.peerjs.com:3478"], username: "peerjs", credential: "peerjsp" }] };
 const VOICE = {
-  games: ["botellita", "stop", "ludo", "ahorcado"],
+  games: ["botellita", "stop", "ludo", "ahorcado", "cityfortune"],
   on: false, busy: false, muted: false, listen: false, peer: null, pid: "", stream: null, ctx: null,
   members: {}, calls: new Map(), lv: {}, needTap: false, timer: null, key: "",
   mySeat() { return NET.role === "host" ? 0 : NET.me; },
@@ -4371,17 +4489,16 @@ const GAMES = [
       "Especiales: <b>⊘</b> salta al siguiente, <b>⇄</b> cambia el sentido, <b>+2</b> y <b>+4</b> hacen robar al siguiente y le quitan el turno. Si no tienes jugada, toca el mazo para robar.",
       "Cuando te quede <b>una sola carta</b>, toca <b>¡ÚLTIMA!</b> rápido. Si se te olvida, robas 2."],
     goal: "Gana el primero que se quede sin cartas.", setup: "En el mismo celular, cuando le toca a otro le pasas el celular: tus cartas se esconden solas." },
-  { g: CITY, cat: "mesa", c1: "#c9a44c", c2: "#1b2658", tag: "Compra la ciudad, cobra alquileres y conviértete en el empresario más rico.", tags: ["2 a 6 jugadores", "Beta · parte 2"], party: 1,
+  { g: CITY, cat: "mesa", c1: "#c9a44c", c2: "#1b2658", tag: "Compra la ciudad, cobra alquileres y conviértete en el empresario más rico.", tags: ["2 a 6 jugadores", "En línea", "Beta · parte 3"], party: 1,
     steps: ["Tira los dados y avanza por la ciudad. Cada vez que pasas por la <b>Estación Central</b> cobras $200.", "Si caes en una propiedad libre puedes <b>comprarla</b> (si no, se <b>subasta</b>). Si es de otro, le pagas <b>alquiler</b>. Con un <b>distrito completo</b> cobras el doble y puedes <b>construir</b>: Local → Edificio → Torre → Complejo.", "<b>Negocia</b> con los demás para completar distritos. Si te falta dinero, <b>hipoteca</b> o vende. Cuidado con los impuestos, los eventos y el <b>Centro de Detención</b>."],
     goal: "Modo por rondas: gana el mayor patrimonio al terminar. Modo clásico: gana el último que no quiebre.",
-    setup: "Juegan en este celular y se lo pasan en cada turno. <b>Versión beta, parte 2 de 5:</b> el modo en línea llega en la parte 3 y jugar contra la máquina en la parte 4." },
+    setup: "En este celular se lo pasan en cada turno, o en línea cada uno juega desde el suyo. La partida se guarda sola: si alguien se desconecta, su lugar lo espera. <b>Beta, parte 3 de 5:</b> jugar contra la máquina llega en la parte 4." },
   { g: DUO, cat: "aventura", c1: "#ff7a1a", c2: "#1f74bd", tag: "Fuego y Agua tienen que ayudarse para escapar del templo.", tags: ["Cooperativo", `${DUO_LEVELS.length} niveles`], lv: 1,
     steps: ["<b>Fuego</b> puede pisar lava y <b>Agua</b> puede pisar agua. El charco del otro color los elimina, y el <b>veneno verde</b> elimina a los dos.",
       "Muévete con <b>◀ ▶</b> y salta con <b>▲</b>. Pon el celular <b>de lado</b>: Fuego usa los botones de la izquierda y Agua los de la derecha. En línea, cada uno maneja a su personaje.",
       "Los <b>botones morados</b> abren compuertas mientras alguien está encima, y los <b>elevadores</b> suben cuando te paras en ellos. ¡Tienen que ayudarse!"],
     goal: "Pasan el nivel cuando Fuego y Agua llegan a sus puertas. Junten todas las gemas y no se caigan para ganar 3 estrellas.",
     setup: "Pongan el celular de lado entre los dos. Con teclado: Fuego usa WASD y Agua las flechas." },
-,
   { g: HANG, cat: "fiesta", c1: "#5b6cff", c2: "#2a2f7a", tag: "Adivina la palabra letra por letra antes de que se complete el muñeco.", tags: ["2 a 8 jugadores", "Palabras"], party: 1,
     steps: ["La palabra sale <b>al azar</b> (con una pista de categoría) o la <b>escribe un jugador</b> en secreto, por turnos.", "En tu turno toca una letra. Si está, ganas un punto por cada vez que aparece y <b>sigues</b>. Si no está, se dibuja una parte del muñeco y le toca al siguiente.", "Si te sabes la palabra, toca <b>Adivinar la palabra completa</b>: si aciertas ganas puntos extra; si fallas, pierdes 2 vidas."],
     goal: "Gana quien tenga más puntos al final. Si el muñeco se completa, gana puntos quien escribió la palabra.", setup: "Se turnan en el mismo celular. Cuando alguien escribe la palabra, los demás no miran." },
@@ -4412,6 +4529,8 @@ function home() {
     <div style="height:8px"></div>
     <div class="logo"><span class="a">A</span><span class="b">R</span><span class="c">E</span><span class="d">N</span><span class="a">A</span><small>MINI</small></div>
     <p class="center dim" style="font-weight:800">${GAMES.length} juegos para jugar con amigos: cada uno en su celular o todos en el mismo.</p>
+    ${cfSaved() ? (() => { const o = cfSaved(), s = o.s; return `<div class="cf-resume"><div><b>♟️ Partida guardada de City Fortune</b><small>${o.online ? `En línea · sala ${esc(o.code)}` : "En este celular"} · ronda ${s.round} · ${s.names.map(esc).join(", ")}</small></div><button class="btn green" id="cfres">CONTINUAR</button><button class="cf-del" id="cfdel">Borrar</button></div>`; })() : ""}
+    ${sessGet() && !cfSaved() ? `<div class="cf-resume alt"><div><b>🔌 Volver a la sala ${esc(sessGet().code)}</b><small>Si estabas jugando y se cerró la app, entras con tu mismo lugar.</small></div><button class="btn ghost" id="rejoin">VOLVER</button></div>` : ""}
     <button class="gcard online" id="onl" style="--c1:#ffb627;--c2:#e8590c;grid-template-columns:64px 1fr">
       <svg viewBox="0 0 64 64" style="width:64px;height:64px;border-radius:14px"><rect width="64" height="64" fill="#0005"/><rect x="8" y="14" width="18" height="34" rx="4" fill="#ff5a5f"/><rect x="38" y="14" width="18" height="34" rx="4" fill="#3da9fc"/><path d="M28 24q4-5 8 0M26 20q6-8 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="32" cy="28" r="2.5" fill="#fff"/></svg>
       <div><h3>Jugar en línea</h3><p>Cada uno en su celular, estén donde estén. Crea una sala y pásale el código a tu amigo.</p>${S.onl[0] + S.onl[1] ? `<div class="tags"><span>Tu récord en línea: ${S.onl[0]} ganadas · ${S.onl[1]} perdidas</span></div>` : ""}</div></button>
@@ -4426,6 +4545,9 @@ function home() {
   v.querySelectorAll(".gcard[data-k]").forEach(b => b.onclick = () => info(GAMES[+b.dataset.k]));
   $("#onl", v).onclick = () => onlineMenu();
   $("#names", v).onclick = names;
+  const cr = $("#cfres", v); if (cr) cr.onclick = () => { sfx.pick(); cfResume(); };
+  const cd = $("#cfdel", v); if (cd) cd.onclick = () => { if (!confirm("¿Borrar la partida guardada? No se puede recuperar.")) return; try { localStorage.removeItem(CF_SAVE); } catch { } home(); };
+  const rj = $("#rejoin", v); if (rj) rj.onclick = () => { const ss = sessGet(); if (!ss) return home(); NET.join(ss.code, true); joining(ss.code); };
 }
 function names() {
   const v = show(`<div class="topbar"><button class="back" id="bk">‹ Volver</button></div>
@@ -4585,13 +4707,14 @@ function joining(code) {
 }
 NET.ui = ev => {
   const code = NET.code;
+  if (ev === "notfound" && NET.reconn && Date.now() < NET.reconn.until) { NET.join(NET.reconn.code); return; }
   if (ev === "notfound") {
     const v = show(`<div class="grow"></div><h2 class="center" style="font-size:30px">No encontramos la sala</h2>
       <div class="code center">${esc(code)}</div>
       <p class="center dim" style="font-weight:800">Revisa el código, y que tu amigo tenga la sala abierta en su pantalla.</p>
       <div class="grow"></div><button class="btn green" id="rt">INTENTAR OTRA VEZ</button><button class="btn ghost" id="bk">Volver</button>`);
     $("#rt", v).onclick = () => { NET.join(code); joining(code); }; $("#bk", v).onclick = () => onlineMenu();
-  } else if (ev === "taken") { NET.host(); lobby(); }
+  } else if (ev === "taken") { if (T.g && T.online) { setTimeout(() => { if (NET.role === "host") NET.peerHost().catch(() => {}); }, 30000); return; } NET.host(); lobby(); }
   else if (ev === "busy") { const el = $("#jst"); if (el) el.textContent = "Tus amigos están en medio de una partida. Entrarás apenas termine…"; }
   else if (ev === "full") { const v = show(`<div class="grow"></div><h2 class="center" style="font-size:30px">La sala está llena</h2><p class="center dim" style="font-weight:800">Caben hasta ${MAXP} personas.</p><div class="grow"></div><button class="btn ghost" id="bk">Volver</button>`); $("#bk", v).onclick = () => onlineMenu(); }
 };
@@ -4625,7 +4748,29 @@ function lobby() {
   });
   lobbyTimer = setInterval(() => { const el = $("#png"); if (!el) return clearInterval(lobbyTimer); if (NET.rtt) el.textContent = `${via} · ${NET.rtt} ms`; }, 1000);
 }
-function onNetJoined() { sfx.pick(); vib(60); lobby(); }
+function onNetJoined() { sfx.pick(); vib(60); const re = !!NET.reconn; NET.reconn = null; if (re) { const el = $("#jst"); if (el) el.textContent = "¡Conectado! Recuperando la partida…"; return; } lobby(); }
+/* alguien se cayó en medio de una partida larga: su asiento queda guardado */
+function onNetAway(seat, name, timeout) {
+  VOICE.seatLeft(seat); toast(`📵 ${name || "Alguien"} ${timeout ? "se desconectó" : "salió"}. Su lugar queda guardado hasta que vuelva.`);
+  if (T.g) tRender();
+}
+function onNetBack(seat) {
+  toast(`✅ ${NET.names[seat] || "Alguien"} volvió a la partida`); sfx.pick();
+  if (T.g && T.online) { NET.sendTo(seat, { k: "tstart", game: T.g.id, opts: T.opts, seats: T.seats }); tSync(); tRender(); }
+  if (Object.keys(VOICE.members).length) VOICE.bcast();
+}
+function onEmote(seat, e) { if (T.g && T.g.onEmote && T.online) T.g.onEmote(T.seats.indexOf(seat), e); }
+function sendEmote(e) { if (NET.role === "host") { NET.send({ k: "emo", e, from: 0 }); onEmote(0, e); } else NET.send({ k: "emo", e }); }
+/* se perdió el anfitrión en medio de una partida guardable: reintentar solo */
+function reconnecting(code) {
+  NET.reconn = { code, until: Date.now() + 5 * 60e3 };
+  const v = show(`<div class="grow"></div><div class="center"><div class="dots4"><i style="background:var(--p1)"></i><i style="background:var(--gold)"></i><i style="background:var(--p2)"></i></div></div>
+    <h2 class="center" style="font-size:28px">Reconectando a la partida…</h2><div class="code center">${esc(code)}</div>
+    <p class="center dim" style="font-weight:800" id="jst">Se perdió la conexión. Tu lugar y tu dinero siguen guardados; volverás en cuanto haya señal.</p>
+    <div class="grow"></div><button class="btn ghost" id="cn">Dejar de intentar</button>`);
+  $("#cn", v).onclick = () => { NET.reconn = null; NET.reset(); home(); };
+  NET.join(code);
+}
 function onNetRoster(ev, seat, name, timeout) {
   const inLobby = !!document.querySelector(".lobbyv");
   if (NET.role === "host") {
@@ -4637,10 +4782,12 @@ function onNetRoster(ev, seat, name, timeout) {
       if (inGame) { if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); return; }
     }
   }
-  if (inLobby) lobby();
+  if (inLobby) lobby(); else if (T.g && T.s && T.g.resumable) tRender();
 }
 function onNetLost() {
-  const wasHost = NET.role === "host", code = NET.code; if (E.st !== "off") stopMatch(); tStop();
+  const wasHost = NET.role === "host", code = NET.code;
+  if (!wasHost && ((T.g && T.g.resumable) || NET.reconn)) { tStop(); return reconnecting(code); }
+  if (E.st !== "off") stopMatch(); tStop();
   const v = show(`<div class="grow"></div><h2 class="center" style="font-size:30px">Se perdió la conexión</h2>
     <p class="center dim" style="font-weight:800">Puede ser la señal o que el anfitrión cerró la app. Puedes intentar entrar de nuevo.</p>
     <div class="code center">${esc(code)}</div><div class="grow"></div>
@@ -4662,7 +4809,7 @@ function resultOnline(w, sc) {
       <rect x="53" y="68" width="14" height="16" fill="${won ? "#e0b21f" : "#565c80"}"/><rect x="36" y="84" width="48" height="12" rx="4" fill="${wc}"/><rect x="30" y="96" width="60" height="10" rx="4" fill="${wc}"/></svg>
     <p class="label center">${g.name} · en línea</p>
     <h1 class="winner" style="color:${won ? "#ffd23f" : wc}">${g.noWinner ? "¡Gracias por jugar!" : w < 0 ? "¡EMPATE!" : won ? "¡GANASTE!" : `Ganó ${esc(N(w))}`}</h1>
-    ${sc && sc.length === 2 ? `<div class="score"><span>${sc[0]}</span><i>–</i><span>${sc[1]}</span></div>` : sc && sc.length > 2 ? `<div class="card" style="display:grid;gap:6px">${sc.map((x, i) => `<div style="display:flex;justify-content:space-between;font-weight:900"><span style="color:${COL[i % COL.length]}">${esc(N(i))}</span><span>${x}</span></div>`).join("")}</div>` : ""}
+    ${sc && sc.length === 2 ? `<div class="score"><span>${sc[0]}</span><i>–</i><span>${sc[1]}</span></div>` : sc && sc.length > 2 ? `<div class="card" style="display:grid;gap:6px">${sc.map((x, i) => `<div style="display:flex;justify-content:space-between;font-weight:900"><span style="color:${COL[i % COL.length]}">${esc(N(i))}</span><span>${g.fmt ? g.fmt(x) : x}</span></div>`).join("")}</div>` : ""}
     <p class="center dim" style="font-weight:800">Tu récord en línea: ${S.onl[0]} ganadas, ${S.onl[1]} perdidas</p>
     <div class="grow"></div>
     ${host ? `<button class="btn green" id="re">REVANCHA</button><button class="btn ghost" id="ot">Elegir otro juego</button>`
@@ -4678,12 +4825,12 @@ const _onNetMsg = onNetMsg;
 onNetMsg = function (m) {
   if (m.k === "pick" && NET.role === "guest") { const x = GAMES.find(q => q.g.id === m.game); if (x) { NET.game = m.game; if (E.st !== "off") stopMatch(); tStop(); info(x, "guest"); } return; }
   if (m.k === "start" && NET.role === "guest") NET.game = m.game;
-  if (m.k === "tstart" && NET.role === "guest") NET.game = m.game;
+  if (m.k === "tstart" && NET.role === "guest") { NET.game = m.game; NET.reconn = null; }
   if (m.k === "sug" && NET.role === "host") { const x = GAMES.find(q => q.g.id === m.game); if (x) { toast(`${NET.names[m.from] || "Alguien"} quiere jugar ${x.g.name}`); sfx.pick(); } return; }
   _onNetMsg(m);
 };
 
-window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, VOICE, CITY, CF, CFV, tApply, tAct, launch, S };
+window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, HANG, WHO, STOP, BOTTLE, MEDIA, VOICE, CITY, CF, CFV, CF_TIMERS, tApply, tAct, launch, S };
 /* arranque: si el link trae #sala-XXXX, ir directo a unirse */
 (() => { const m = location.hash.match(/sala-([A-Z0-9]{4})/i); if (m) onlineMenu(m[1].toUpperCase()); else home(); })();
 function phoneOnline(id, me) {
@@ -4707,3 +4854,4 @@ function phoneOnline(id, me) {
 </script>
 </body>
 </html>
+
