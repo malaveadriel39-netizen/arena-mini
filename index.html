@@ -81,6 +81,111 @@ p{margin:0;line-height:1.45}
 .toast{pointer-events:none}
 .btn small{display:block;font:800 12px var(--body);opacity:.85;letter-spacing:0}
 .topbar{padding-right:50px;gap:10px}.topbar .label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ===== tarjetas compactas y opciones ===== */
+.ggrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gcard.sm{grid-template-columns:1fr;text-align:center;padding:10px;gap:8px}
+.gcard.sm svg{width:100%;height:auto;aspect-ratio:1}
+.gcard.sm h3{font-size:22px}.gcard.sm .tags{justify-content:center}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.chip{appearance:none;border:2px solid var(--line);background:var(--bg2);color:#fff;border-radius:14px;padding:12px 0;font:400 22px var(--disp);cursor:pointer}
+.chip.on{border-color:#fff;background:var(--ac)}.chip[disabled]{opacity:.45;cursor:default}
+/* ===== marco de juegos por turnos ===== */
+body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 12px)}
+.tg{max-width:520px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:10px;position:relative}
+.tg-bar{display:flex;align-items:center;gap:10px;padding-right:50px}
+.tg-title{font:400 22px var(--disp);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg-score{font:400 22px var(--disp);display:flex;gap:6px;align-items:center}.tg-score i{font-style:normal;color:var(--dim);font-size:14px}
+.tg-main{flex:1;display:flex;flex-direction:column}
+.tg-ov{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);z-index:30;pointer-events:none;width:min(92vw,380px)}
+.tg-ban{background:rgba(9,11,28,.94);border:2px solid rgba(255,255,255,.15);border-radius:22px;padding:18px;text-align:center;display:grid;gap:6px;animation:pop .45s cubic-bezier(.2,1.5,.4,1)}
+.tg-ban b{font:400 34px var(--disp)}.tg-ban.big b{font-size:42px}.tg-ban span{font-weight:800;color:var(--dim)}
+.pass{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:30px 10px}
+.pass-dot{width:90px;height:90px;border-radius:50%;box-shadow:0 0 0 10px rgba(255,255,255,.08)}
+.pass h2{font-size:34px}.pass p{font-weight:800}.pass .btn{max-width:340px}
+/* ===== triki ===== */
+.tk{display:flex;flex-direction:column;gap:14px;align-items:center;padding-top:6px}
+.tk-players{display:flex;gap:10px;width:100%}
+.tk-p{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg2);border-radius:16px;padding:8px 12px;border:2px solid transparent;font-weight:900}
+.tk-p .mk{width:30px;height:30px}.tk-p small{margin-left:auto;color:var(--dim)}.tk-p.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--bg2))}
+.tk-turn{font:400 24px var(--disp);min-height:30px}
+.tk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(92vw,400px);aspect-ratio:1}
+.tk-c{appearance:none;border:0;border-radius:20px;background:var(--panel);box-shadow:inset 0 -5px 0 rgba(0,0,0,.25);cursor:pointer;padding:12%;display:grid;place-items:center}
+.tk-c:not([disabled]):active{transform:scale(.96)}.tk-c[disabled]{cursor:default}
+.tk-c.win{background:#3b3060;box-shadow:0 0 0 3px #ffd23f}
+.mk{width:100%;height:100%}.mk.draw path,.mk.draw circle{stroke-dasharray:100;stroke-dashoffset:100;animation:dr .35s ease-out forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+/* ===== ajedrez ===== */
+.ch{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.ch-row{display:flex;align-items:center;gap:8px;background:var(--bg2);border-radius:14px;padding:6px 10px;font-weight:900;min-height:44px;border-left:5px solid var(--c)}
+.ch-row small{color:var(--dim)}.ch-dot{width:16px;height:16px;border-radius:50%;border:2px solid #888}
+.ch-cap{display:flex;flex-wrap:wrap;align-items:center;flex:1;justify-content:flex-end;gap:0}.ch-cap .pc.mini{width:18px;height:18px}.ch-cap em{font-style:normal;color:var(--gold);margin-left:4px}
+.ch-turn{background:var(--gold);color:#2a2100;border-radius:8px;padding:3px 8px;font-size:12px}
+.ch-board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:min(96vw,62vh,500px);aspect-ratio:1;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.sq{appearance:none;border:0;padding:0;position:relative;display:grid;place-items:center;cursor:pointer;min-width:0;min-height:0;overflow:hidden}
+.sq.l{background:#dfe4fb}.sq.d{background:#7b85c4}
+.sq.last::before{content:"";position:absolute;inset:0;background:rgba(255,210,63,.45)}
+.sq.sel::before{content:"";position:absolute;inset:0;background:rgba(61,220,132,.55)}
+.sq.chk::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(255,40,60,.95) 0,rgba(255,40,60,.4) 55%,transparent 75%)}
+.sq.dst::after{content:"";position:absolute;width:28%;height:28%;border-radius:50%;background:rgba(20,24,60,.35)}
+.sq.cap::after{content:"";position:absolute;inset:6%;border-radius:50%;border:4px solid rgba(20,24,60,.4)}
+.pc{width:88%;height:88%;position:relative;z-index:1;filter:drop-shadow(0 2px 1px rgba(0,0,0,.3))}
+.sq .fl,.sq .rk{position:absolute;font:900 9px var(--body);color:rgba(20,24,60,.55);font-style:normal}.sq .fl{right:3px;bottom:1px}.sq .rk{left:3px;top:1px}
+.ch-status{text-align:center;font:400 20px var(--disp)}
+.ch-promo{position:fixed;inset:0;background:rgba(8,10,26,.8);display:grid;place-items:center;z-index:40}
+.ch-promo>div{background:var(--panel);border-radius:20px;padding:16px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:320px}
+.ch-promo p{width:100%;text-align:center;font:400 22px var(--disp);margin:0}.ch-promo button{width:64px;height:64px;border-radius:14px;border:0;background:#dfe4fb;cursor:pointer}
+/* ===== ludo ===== */
+.lu{display:flex;flex-direction:column;gap:10px;align-items:center}
+.lu-pl{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;width:100%}
+.lu-p{display:flex;align-items:center;gap:6px;background:var(--bg2);border-radius:12px;padding:6px 10px;font-weight:900;font-size:14px;border:2px solid transparent}
+.lu-p i{width:12px;height:12px;border-radius:50%;background:var(--c)}.lu-p span{color:var(--dim)}.lu-p.on{border-color:var(--c)}
+.lu-wrap{width:min(96vw,58vh,520px);aspect-ratio:1}
+.lu-board{width:100%;height:100%;display:block;filter:drop-shadow(0 8px 18px rgba(0,0,0,.4))}
+.tok{transition:transform .35s cubic-bezier(.3,1.4,.5,1);cursor:pointer}
+.tok .ring{opacity:0}.tok.can .ring{opacity:1;animation:pulse .8s ease-in-out infinite;transform-origin:center}
+@keyframes pulse{50%{stroke-width:2.6}}
+.lu-ctrl{display:flex;align-items:center;gap:14px;width:100%;max-width:420px}
+.lu-die{appearance:none;border:0;background:none;padding:0;width:84px;height:84px;cursor:pointer;flex:none}
+.lu-die .die{width:100%;height:100%}.lu-die.go{animation:bob2 1s ease-in-out infinite}.lu-die[disabled]{cursor:default}
+@keyframes bob2{50%{transform:translateY(-6px) rotate(-6deg)}}
+.lu-msg{display:flex;flex-direction:column;gap:2px}.lu-msg b{font:400 22px var(--disp)}.lu-msg span{font-weight:800;color:var(--dim)}
+/* ===== última carta ===== */
+.ucg{display:flex;flex-direction:column;gap:10px;flex:1}
+.uc-opps{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.uc-opp{background:var(--bg2);border-radius:14px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;border:2px solid transparent;min-width:96px;font-size:13px}
+.uc-opp.on{border-color:var(--c)}.uc-opp b{color:var(--c)}.uc-opp span{color:var(--dim);font-weight:800}
+.uc-fan{display:flex}.uc-fan .uc{margin-left:-14px}.uc-fan .uc:first-child{margin-left:0}
+.uc-table{display:flex;align-items:center;justify-content:center;gap:26px;padding:10px 0;position:relative}
+.uc-pile{appearance:none;border:0;background:none;padding:0;position:relative;cursor:pointer}.uc-pile[disabled]{cursor:default}
+.uc-pile small{position:absolute;bottom:-18px;left:0;right:0;text-align:center;color:var(--dim);font-weight:900}
+.uc-disc{position:relative;padding:8px;border-radius:22px;box-shadow:0 0 0 4px var(--k),0 0 28px var(--k)}
+.uc-col{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font:900 12px var(--body);text-transform:uppercase;letter-spacing:.1em;color:var(--k)}
+.uc-dir{position:absolute;right:6px;top:0;font-size:28px;color:var(--dim)}
+.uc-msg{text-align:center;display:flex;flex-direction:column;gap:2px;margin-top:10px}.uc-msg b{font:400 22px var(--disp)}.uc-msg span{color:var(--dim);font-weight:800;font-size:14px;min-height:18px}
+.uc-act{display:flex;gap:10px;justify-content:center;min-height:0}.uc-act .btn{width:auto;padding:12px 22px;font-size:20px}
+.uc .btn.uno,.btn.uno{animation:bob2 .7s ease-in-out infinite}
+.uc-hand{display:flex;gap:0;overflow-x:auto;padding:22px 10px 8px;scrollbar-width:none;justify-content:safe center}
+.uc-hand::-webkit-scrollbar{display:none}
+.uc-hand .uc{margin-left:-16px;transition:transform .15s;width:72px;height:108px}.uc-hand .uc .mid{font-size:42px}.uc-hand .uc:first-child{margin-left:0}
+.uc-hand.my .uc.ok{transform:translateY(-16px);cursor:pointer;box-shadow:0 0 0 3px #fff,0 8px 18px rgba(0,0,0,.4)}
+.uc-hand.my .uc.no{filter:brightness(.55)}.uc-hand .uc.new{outline:3px solid var(--gold)}
+.uc-you{text-align:center;font-weight:900;font-size:13px}
+.uc{--k:#444;width:64px;height:96px;flex:none;border-radius:12px;background:var(--k);border:3px solid #fff;position:relative;color:#fff;box-shadow:0 4px 10px rgba(0,0,0,.35);
+  background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 6px,transparent 6px 14px)}
+.uc .tl,.uc .br{position:absolute;font:400 15px var(--disp);line-height:1}.uc .tl{left:6px;top:5px}.uc .br{right:6px;bottom:5px;transform:rotate(180deg)}
+.uc .mid{position:absolute;inset:0;display:grid;place-items:center;font:400 38px var(--disp);text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.uc .sy{width:34px;height:34px;color:#fff}.uc .tl .sy,.uc .br .sy{width:14px;height:14px}
+.uc.wild{background:#23263f}.uc .wh{width:44px;height:44px}.uc .p4{position:absolute;font:400 22px var(--disp);text-shadow:0 2px 0 #000a}
+.uc.back{background:#23263f;background-image:repeating-linear-gradient(45deg,rgba(155,92,255,.25) 0 6px,transparent 6px 12px);display:grid;place-items:center}
+.uc.back span{font:400 11px var(--disp);letter-spacing:.08em;transform:rotate(-30deg);color:#ffd23f}
+.uc.tiny{width:22px;height:32px;border-width:2px;border-radius:5px}.uc.tiny span{display:none}
+.uc.big{width:88px;height:130px}.uc.big .mid{font-size:52px}.uc.big .sy{width:46px;height:46px}.uc.big .wh{width:60px;height:60px}
+.uc.land{animation:land .3s ease-out}@keyframes land{from{transform:translateY(-40px) rotate(-12deg);opacity:.3}}
+.uc.glow{box-shadow:0 0 0 3px var(--gold),0 0 18px var(--gold)}
+.uc-pick{position:fixed;inset:0;background:rgba(8,10,26,.85);display:grid;place-items:center;z-index:40}
+.uc-pick>div{background:var(--panel);border-radius:22px;padding:18px;display:grid;gap:14px;text-align:center}
+.uc-pick p{font:400 24px var(--disp)}.uc-cols{display:grid;grid-template-columns:repeat(2,90px);gap:12px}.uc-cols button{height:90px;border-radius:18px;border:3px solid #fff;cursor:pointer}
+
 /* nombres */
 .namef{display:flex;align-items:center;gap:12px;background:var(--bg2);border-radius:14px;padding:12px;border-left:6px solid var(--c)}
 .namef input{flex:1;min-width:0;background:transparent;border:0;color:#fff;font:800 20px var(--body);user-select:text;-webkit-user-select:text}
@@ -131,7 +236,7 @@ const rnd = (a, b) => a + Math.random() * (b - a), ri = (a, b) => Math.floor(rnd
 const clamp = (v, a, b) => v < a ? a : v > b ? b : v, TAU = Math.PI * 2;
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const COL = ["#ff5a5f", "#3da9fc"], COL_D = ["#c0353b", "#1f74bd"], COL_L = ["#ffc2c3", "#c3e4ff"];
+const COL = ["#ff5a5f", "#3da9fc", "#ffd23f", "#2ec4b6"], COL_D = ["#c0353b", "#1f74bd", "#c9a012", "#1d8c81"], COL_L = ["#ffc2c3", "#c3e4ff", "#fff0b3", "#b8f2ec"];
 const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${n >> 8 & 255},${n & 255},${a})`; };
 const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch {} };
 
@@ -140,7 +245,7 @@ let S = Object.assign({ names: ["Rojo", "Azul"], wins: {}, muted: false, me: "",
   (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })());
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
 const nm = i => (E.net && NET.names[i]) || S.names[i] || (i ? "Azul" : "Rojo");
-const ONL = () => !!E.net, ROT = () => !!E.net && E.net.me === 1;
+const ONL = () => !!E.net, ROT = () => !!E.net && E.net.me === 1 && !(E.game && E.game.noFlip);
 
 /* ---------------- sonido sintetizado ---------------- */
 let ac = null, master = null, noiseBuf = null;
@@ -369,7 +474,7 @@ function hintBubble(x, y, s) {
 const E = { st: "off", game: null, t: 0, wins: [0, 0], first: true, lw: -1, go: 0, shake: 0, prev: null, net: null };
 function startMatch(g, online) {
   E.net = online ? { role: "host", me: 0 } : null; NETIN.tx = NETIN.mx = NETIN.my = null; Pads.p.forEach(p => { p.nx = p.ny = 0; p.nh = false; });
-  if (online) { NET.game = g.id; NET.send({ k: "start", game: g.id }); }
+  if (online) { NET.game = g.id; NET.send({ k: "start", game: g.id, opt: g.getOpt ? g.getOpt() : null }); }
   E.game = g; E.wins = [0, 0]; E.first = true; document.body.classList.add("playing");
   $("#app").replaceChildren(); cv.classList.add("on"); resize(); newRound();
 }
@@ -457,7 +562,7 @@ function render() {
   cx.save(); if (E.shake > 0) { const a = E.shake * 22; cx.translate(rnd(-a, a), rnd(-a, a)); }
   g.draw(); drawParts(); cx.restore();
   if (g.pads) for (const i of [0, 1]) withZone(i, (w, hh) => g.hud(i, w, hh, !!E.net && i !== E.net.me));
-  for (const [x, y] of spots()) { circ(x, y, 15); cx.fillStyle = "rgba(0,0,0,.45)"; cx.fill(); cx.strokeStyle = "rgba(255,255,255,.35)"; cx.lineWidth = 1.5; cx.stroke(); cx.fillStyle = "#fff"; cx.fillRect(x - 5, y - 6, 3.5, 12); cx.fillRect(x + 1.5, y - 6, 3.5, 12); }
+  for (const [x, y] of spots()) { circ(x, y, 15); cx.fillStyle = "rgba(0,0,0,.45)"; cx.fill(); cx.strokeStyle = "rgba(255,255,255,.35)"; cx.lineWidth = 1.5; cx.stroke(); cx.fillStyle = "#fff"; if (g.rot) { cx.fillRect(x - 6, y - 5, 12, 3.5); cx.fillRect(x - 6, y + 1.5, 12, 3.5); } else { cx.fillRect(x - 5, y - 6, 3.5, 12); cx.fillRect(x + 1.5, y - 6, 3.5, 12); } }
   for (const i of E.net ? [E.net.me] : [0, 1]) g.view(i, (w, hh) => overlay(i, w, hh));
 }
 /* cuenta regresiva y carteles, cada uno orientado hacia su jugador */
@@ -511,6 +616,7 @@ function loadLib(name) {
 const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const newCode = () => Array.from({ length: 4 }, () => CODE_ABC[Math.floor(Math.random() * CODE_ABC.length)]).join("");
 const NETIN = { tx: null, mx: null, my: null };
+const ALLG = () => [BOMB, DUEL, HOCKEY, TRIKI, CHESS, LUDO, CARDS, DUO];
 
 const NET = {
   role: null, me: 0, code: "", names: ["", ""], tr: [], active: null, st: "off", // off · wait · ok · lost
@@ -633,17 +739,22 @@ function onNetMsg(m) {
   if (NET.role === "host") {
     if (m.k === "in") { const p = Pads.p[1]; p.nx = clamp(+m.vx || 0, -1, 1); p.ny = clamp(+m.vy || 0, -1, 1); p.fire += (m.f | 0); p.nh = !!m.h; NETIN.tx = m.tx ?? null; NETIN.mx = m.mx ?? null; NETIN.my = m.my ?? null; }
     else if (m.k === "pause") m.on ? pause(true) : resume(true);
-    else if (m.k === "leave") { if (E.st !== "off") stopMatch(); NET.send({ k: "lobby" }); lobby(); }
+    else if (m.k === "leave") { if (E.st !== "off") stopMatch(); tStop(); NET.send({ k: "lobby" }); lobby(); }
+    else if (m.k === "tm") { if (T.g && T.online && T.s) tApply(1, m.a || {}); }
     return;
   }
   // invitado
-  if (m.k === "start") { const g = [BOMB, DUEL, HOCKEY].find(x => x.id === m.game); if (g) startGuest(g); }
+  if (m.k === "start") { const g = ALLG().find(x => x.id === m.game); if (g) { tStop(); startGuest(g, m.opt); } }
   else if (m.k === "s") { if (E.game && E.st !== "off") applySnap(m); }
   else if (m.k === "pause") m.on ? pause(true) : resume(true);
-  else if (m.k === "result") { stopMatch(); resultOnline(m.w, m.sc); }
-  else if (m.k === "lobby") { if (E.st !== "off") stopMatch(); lobby(); }
+  else if (m.k === "result") { stopMatch(); tStop(); resultOnline(m.w, m.sc); }
+  else if (m.k === "lobby") { if (E.st !== "off") stopMatch(); tStop(); lobby(); }
+  else if (m.k === "tstart") { const g = ALLG().find(x => x.id === m.game); if (g) { if (E.st !== "off") stopMatch(); startTurnGuest(g, m.opts); } }
+  else if (m.k === "ts") tRecv(m);
+  else if (m.k === "duo") { if (E.st !== "off") stopMatch(); duoResult(m.r, true); }
 }
-function startGuest(g) {
+function startGuest(g, opt) {
+  if (g.setOpt) g.setOpt(opt);
   E.game = g; E.net = { role: "guest", me: 1 }; E.wins = [0, 0]; E.first = true; E.st = "count"; E.t = 0; E.go = 0; E.lw = -1;
   document.body.classList.add("playing"); $("#app").replaceChildren(); cv.classList.add("on"); resize();
   PS = []; Pads.reset(); g.lay(); g.newRound(true); g.lay(); NET.inAcc = 0;
@@ -1299,6 +1410,818 @@ const HOCKEY = {
 };
 
 /* =====================================================================
+   MOTOR POR TURNOS (Triki, Ajedrez, Ludo, Última Carta)
+   Cada juego: { id, name, kind:"turn", need, hidden?,
+                 init(round, np, opts) → estado (JSON)
+                 move(s, p, a) → estado nuevo o null si la jugada no vale
+                 winner(s) → índice | -1 (empate) | null (sigue)
+                 auto?(s) → { d: ms, a, p? } jugada automática (dados, penalidades)
+                 redact?(s, p) → estado sin la info secreta de los demás
+                 render(root, s, prev, ctx) }
+   Solo el anfitrión (o el celular local) aplica jugadas; el invitado las envía.
+   ===================================================================== */
+const PNAMES = ["Rojo", "Azul", "Amarillo", "Verde"];
+const clone = o => JSON.parse(JSON.stringify(o));
+const T = { g: null, s: null, prev: null, online: false, me: null, np: 2, wins: [], round: 0, rover: null, timer: null, opts: {}, reveal: -1, busy: false };
+const tname = i => T.online ? (NET.names[i] || PNAMES[i]) : (S.names[i] || PNAMES[i]);
+
+function startTurn(g, online, opts = {}) {
+  clearTimeout(T.timer);
+  T.g = g; T.online = !!online; T.me = online ? NET.me : null; T.opts = Object.assign({ np: 2 }, opts);
+  T.np = online ? 2 : clamp(T.opts.np | 0 || 2, 2, g.maxp || 2); T.wins = Array(T.np).fill(0); T.round = 0; T.reveal = -1;
+  if (online) { NET.game = g.id; NET.send({ k: "tstart", game: g.id, opts: T.opts }); }
+  tNewRound();
+}
+function startTurnGuest(g, opts) {
+  clearTimeout(T.timer);
+  T.g = g; T.online = true; T.me = NET.me; T.opts = opts || {}; T.np = 2; T.wins = [0, 0]; T.s = null; T.prev = null; T.rover = null;
+  tFrame(); $(".tg-main").innerHTML = `<div class="center dim" style="padding:40px;font-weight:800">Preparando la partida…</div>`;
+}
+function tStop() { clearTimeout(T.timer); T.g = null; T.s = null; document.body.classList.remove("tplay"); }
+function tNewRound() {
+  T.prev = null; T.s = T.g.init(T.round, T.np, T.opts); T.round++; T.rover = null;
+  tSync(); tRender(); tAuto();
+}
+/* una jugada desde la interfaz */
+function tAct(a) {
+  if (!T.g || !T.s || T.rover) return;
+  if (T.online && T.me === 1) { NET.send({ k: "tm", a }); return; }
+  const p = T.online ? 0 : (a.p ?? T.s.turn);
+  tApply(p, a);
+}
+function tApply(p, a) {
+  const ns = T.g.move(clone(T.s), p, a);
+  if (!ns) return false;
+  T.prev = T.s; T.s = ns; tAfter(); return true;
+}
+function tAfter() {
+  const w = T.g.winner(T.s);
+  if (w !== null && w !== undefined) {
+    T.rover = { w }; if (w >= 0) T.wins[w]++;
+    const over = w >= 0 && T.wins[w] >= T.g.need;
+    T.rover.over = over;
+    clearTimeout(T.timer);
+    T.timer = setTimeout(() => { if (!T.g) return; over ? tFinish(w) : tNewRound(); }, over ? 2600 : 2400);
+  }
+  tSync(); tRender(); if (!T.rover) tAuto();
+}
+function tAuto() {
+  clearTimeout(T.timer); if (!T.g || !T.s || T.rover) return;
+  if (T.online && T.me === 1) return;
+  const au = T.g.auto && T.g.auto(T.s);
+  if (au) T.timer = setTimeout(() => { if (T.g && T.s) tApply(au.p ?? T.s.turn, au.a); }, au.d);
+}
+function tSync() {
+  if (!T.online || T.me !== 0) return;
+  NET.send({ k: "ts", s: T.g.redact ? T.g.redact(T.s, 1) : T.s, w: T.wins, ro: T.rover, r: T.round });
+}
+function tRecv(m) {                                         // invitado recibe el estado
+  if (!T.g) return;
+  T.prev = T.s; T.s = m.s; T.wins = m.w; T.rover = m.ro; T.round = m.r; tRender();
+}
+function tFinish(w) {
+  const g = T.g, sc = T.wins.slice(), opts = T.opts, np = T.np;
+  if (T.online) { NET.send({ k: "result", w, sc }); tStop(); resultOnline(w, sc); return; }
+  S.wins[g.id] = S.wins[g.id] || [0, 0, 0, 0]; S.wins[g.id][w] = (S.wins[g.id][w] || 0) + 1; save();
+  tStop(); tResult(g, w, sc, opts, np);
+}
+/* marco común de la pantalla */
+function tFrame() {
+  document.body.classList.add("tplay");
+  const v = h(`<div class="tg">
+    <div class="tg-bar"><button class="back" id="tq">‹ Salir</button><span class="tg-title"></span><span class="tg-score"></span></div>
+    <div class="tg-main"></div><div class="tg-ov"></div></div>`);
+  $("#app").replaceChildren(v); $("#app").scrollTop = 0;
+  $("#tq", v).onclick = () => {
+    if (!confirm("¿Salir de la partida?")) return;
+    if (T.online) { const host = T.me === 0; tStop(); NET.send({ k: host ? "lobby" : "leave" }); lobby(); } else { tStop(); home(); }
+  };
+  return v;
+}
+function tRender() {
+  if (!T.g || !T.s) return;
+  let root = $(".tg"); if (!root) root = tFrame();
+  $(".tg-title", root).textContent = T.g.name;
+  $(".tg-score", root).innerHTML = T.g.need > 1 ? T.wins.map((w, i) => `<b style="color:${COL[i]}">${w}</b>`).join('<i>·</i>') : "";
+  const ctx = {
+    me: T.online ? T.me : null, online: T.online, np: T.np, act: tAct, name: tname,
+    mine: p => T.online ? p === T.me : true,                       // ¿este celular controla a p?
+    view: T.online ? T.me : (T.g.hidden ? T.reveal : null),        // de quién son las cartas visibles
+  };
+  // mismo celular + cartas ocultas: pantalla para pasar el celular
+  if (!T.online && T.g.hidden && !T.rover && T.reveal !== T.s.turn) {
+    const p = T.s.turn;
+    $(".tg-main", root).innerHTML = `<div class="pass"><div class="pass-dot" style="background:${COL[p]}"></div>
+      <h2>Turno de <span style="color:${COL[p]}">${esc(tname(p))}</span></h2>
+      <p class="dim">Pásale el celular. Los demás no miren 👀</p>
+      ${T.g.passExtra ? T.g.passExtra(T.s, ctx) : ""}
+      <button class="btn green" id="rv">VER MIS CARTAS</button></div>`;
+    $("#rv", root).onclick = () => { T.reveal = p; tRender(); };
+    T.g.passBind && T.g.passBind(root, T.s, ctx);
+  } else T.g.render($(".tg-main", root), T.s, T.prev, ctx);
+  // cartel de fin de ronda
+  const ov = $(".tg-ov", root);
+  if (T.rover) {
+    const w = T.rover.w, meW = T.online ? w === T.me : true;
+    ov.innerHTML = `<div class="tg-ban ${T.rover.over ? "big" : ""}"><b style="color:${w < 0 ? "#fff" : COL[w]}">${w < 0 ? "¡Empate!" : T.online ? (meW ? "¡Ganaste!" : `Ganó ${esc(tname(w))}`) : `¡Gana ${esc(tname(w))}!`}</b>
+      <span>${T.rover.over ? "Fin de la partida" : T.g.need > 1 ? `Marcador ${T.wins.join(" – ")} · primero a ${T.g.need}` : ""}</span></div>`;
+    if (!T.shown) { T.shown = true; (w < 0 ? sfx.lose : (!T.online || meW) ? sfx.win : sfx.lose)(); if (T.rover.over && (!T.online || meW)) setTimeout(() => confetti(140, innerWidth / 2, innerHeight * .3), 300); }
+  } else { ov.innerHTML = ""; T.shown = false; }
+}
+function tResult(g, w, sc, opts, np) {
+  const x = GAMES.find(q => q.g === g), rec = S.wins[g.id] || [];
+  const v = show(`<div style="height:10px"></div>
+    <svg class="trophy" viewBox="0 0 120 120"><path d="M30 18h60v22a30 30 0 0 1-60 0z" fill="#ffd23f"/><path d="M30 26H16a14 14 0 0 0 16 20M90 26h14a14 14 0 0 1-16 20" fill="none" stroke="#ffd23f" stroke-width="7"/>
+      <rect x="53" y="68" width="14" height="16" fill="#e0b21f"/><rect x="36" y="84" width="48" height="12" rx="4" fill="${COL[w]}"/><rect x="30" y="96" width="60" height="10" rx="4" fill="${COL_D[w]}"/></svg>
+    <p class="label center">${g.name}</p>
+    <h1 class="winner" style="color:${COL[w]}">¡GANA ${esc(tname(w).toUpperCase())}!</h1>
+    ${g.need > 1 ? `<div class="score">${sc.map((n, i) => `<span style="color:${COL[i]}">${n}</span>`).join("<i>–</i>")}</div>` : ""}
+    <div class="card" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">${Array.from({ length: np }, (_, i) => `<span style="font-weight:900;color:${COL[i]}">${esc(tname(i))}: ${rec[i] || 0}</span>`).join("")}<span class="dim" style="width:100%;text-align:center;font-size:12px;font-weight:800">victorias en ${g.name}</span></div>
+    <div class="grow"></div>
+    <button class="btn green" id="re">REVANCHA</button><button class="btn ghost" id="ot">Elegir otro juego</button>`);
+  $("#re", v).onclick = () => startTurn(g, false, opts); $("#ot", v).onclick = home;
+  setTimeout(() => confetti(150, innerWidth / 2, innerHeight * .25), 250);
+}
+
+/* =====================================================================
+   TRIKI (tres en raya) · al mejor de 5: gana quien llegue a 3
+   ===================================================================== */
+const TRIKI = {
+  id: "triki", name: "Triki", kind: "turn", need: 3, maxp: 2,
+  LINES: [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]],
+  init(round) { const st = round % 2; return { b: Array(9).fill(-1), turn: st, w: null, line: null, last: -1 }; },
+  move(s, p, a) {
+    if (s.w !== null || p !== s.turn || !(a.i >= 0 && a.i < 9) || s.b[a.i] !== -1) return null;
+    s.b[a.i] = p; s.last = a.i;
+    for (const L of this.LINES) if (L.every(k => s.b[k] === p)) { s.w = p; s.line = L; return s; }
+    if (s.b.every(v => v >= 0)) { s.w = -1; return s; }
+    s.turn = 1 - p; return s;
+  },
+  winner(s) { return s.w; },
+  mark(p, anim) {
+    return p === 0
+      ? `<svg viewBox="0 0 100 100" class="mk ${anim ? "draw" : ""}"><path d="M24 24L76 76M76 24L24 76" stroke="${COL[0]}" stroke-width="14" stroke-linecap="round" fill="none" pathLength="100"/></svg>`
+      : `<svg viewBox="0 0 100 100" class="mk ${anim ? "draw" : ""}"><circle cx="50" cy="50" r="28" stroke="${COL[1]}" stroke-width="13" fill="none" pathLength="100" transform="rotate(-90 50 50)"/></svg>`;
+  },
+  render(root, s, prev, ctx) {
+    const t = s.turn, myTurn = s.w === null && ctx.mine(t);
+    const who = s.w !== null ? "" : ctx.online ? (myTurn ? "¡Tu turno!" : `Turno de ${esc(ctx.name(t))}…`) : `Turno de ${esc(ctx.name(t))}`;
+    root.innerHTML = `<div class="tk">
+      <div class="tk-players">${[0, 1].map(i => `<div class="tk-p ${s.turn === i && s.w === null ? "on" : ""}" style="--c:${COL[i]}">${this.mark(i)}<b>${esc(ctx.name(i))}</b>${ctx.online && i === ctx.me ? "<small>Tú</small>" : ""}</div>`).join("")}</div>
+      <p class="tk-turn" style="color:${s.w === null ? COL[t] : "#fff"}">${who}</p>
+      <div class="tk-grid">${s.b.map((v, i) => `<button class="tk-c ${s.line && s.line.includes(i) ? "win" : ""}" data-i="${i}" ${v >= 0 || !myTurn ? "disabled" : ""} aria-label="Casilla ${i + 1}">${v >= 0 ? this.mark(v, i === s.last && prev && prev.b[i] === -1) : ""}</button>`).join("")}</div>
+    </div>`;
+    root.querySelectorAll(".tk-c:not([disabled])").forEach(b => b.onclick = () => ctx.act({ i: +b.dataset.i }));
+    if (prev && s.last >= 0 && prev.b[s.last] === -1) tone(s.b[s.last] ? 520 : 660, .1, "triangle", .2);
+  },
+};
+
+/* =====================================================================
+   AJEDREZ · reglas completas: enroque, al paso, coronación, jaque mate,
+   ahogado, tablas por material, 50 jugadas y triple repetición.
+   Tablero 0..63 (0 = a8). Mayúscula = blancas (jugador 0), minúscula = negras (1).
+   ===================================================================== */
+const CHESS = {
+  id: "ajedrez", name: "Ajedrez", kind: "turn", need: 1, maxp: 2, sel: -1, promo: null,
+  init() {
+    const b = [], rows = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR".split("/");
+    for (const r of rows) for (const ch of r) { if (/\d/.test(ch)) for (let k = 0; k < +ch; k++) b.push(""); else b.push(ch); }
+    this.sel = -1; this.promo = null;
+    return { b, turn: 0, cr: "KQkq", ep: -1, half: 0, last: null, rep: {}, w: null, why: "", cap: [[], []], chk: false, n: 0 };
+  },
+  side: c => !c ? -1 : c === c.toUpperCase() ? 0 : 1,
+  attacked(b, sq, by) {
+    const r = sq >> 3, c = sq & 7, at = (rr, cc) => rr >= 0 && rr < 8 && cc >= 0 && cc < 8 ? b[rr * 8 + cc] : null;
+    const is = (p, t) => p && this.side(p) === by && p.toLowerCase() === t;
+    const pr = by === 0 ? r + 1 : r - 1;                          // peones atacan "hacia adelante"
+    if (is(at(pr, c - 1), "p") || is(at(pr, c + 1), "p")) return true;
+    for (const [dr, dc] of [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]]) if (is(at(r + dr, c + dc), "n")) return true;
+    for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) if ((dr || dc) && is(at(r + dr, c + dc), "k")) return true;
+    const ray = (dr, dc, types) => { let rr = r + dr, cc = c + dc; while (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) { const p = b[rr * 8 + cc]; if (p) return this.side(p) === by && types.includes(p.toLowerCase()); rr += dr; cc += dc; } return false; };
+    for (const [dr, dc] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) if (ray(dr, dc, "rq")) return true;
+    for (const [dr, dc] of [[1, 1], [1, -1], [-1, 1], [-1, -1]]) if (ray(dr, dc, "bq")) return true;
+    return false;
+  },
+  kingSq(b, side) { return b.findIndex(p => p === (side === 0 ? "K" : "k")); },
+  pseudo(s, side) {
+    const b = s.b, out = [], en = 1 - side;
+    for (let f = 0; f < 64; f++) {
+      const p = b[f]; if (!p || this.side(p) !== side) continue;
+      const t = p.toLowerCase(), r = f >> 3, c = f & 7;
+      const add = (to, extra = {}) => out.push(Object.assign({ f, t: to }, extra));
+      const slide = dirs => { for (const [dr, dc] of dirs) { let rr = r + dr, cc = c + dc; while (rr >= 0 && rr < 8 && cc >= 0 && cc < 8) { const q = b[rr * 8 + cc]; if (q) { if (this.side(q) === en) add(rr * 8 + cc); break; } add(rr * 8 + cc); rr += dr; cc += dc; } } };
+      if (t === "p") {
+        const dr = side === 0 ? -1 : 1, start = side === 0 ? 6 : 1, last = side === 0 ? 0 : 7;
+        const push = to => { if ((to >> 3) === last) for (const pr of "qrbn") add(to, { pr }); else add(to); };
+        const one = (r + dr) * 8 + c;
+        if (r + dr >= 0 && r + dr < 8 && !b[one]) { push(one); const two = (r + 2 * dr) * 8 + c; if (r === start && !b[two]) add(two, { dbl: 1 }); }
+        for (const dc of [-1, 1]) {
+          const cc = c + dc, rr = r + dr; if (cc < 0 || cc > 7 || rr < 0 || rr > 7) continue;
+          const to = rr * 8 + cc;
+          if (b[to] && this.side(b[to]) === en) push(to); else if (to === s.ep) add(to, { ep: 1 });
+        }
+      } else if (t === "n") { for (const [dr, dc] of [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]]) { const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8 && this.side(b[rr * 8 + cc]) !== side) add(rr * 8 + cc); } }
+      else if (t === "b") slide([[1, 1], [1, -1], [-1, 1], [-1, -1]]);
+      else if (t === "r") slide([[1, 0], [-1, 0], [0, 1], [0, -1]]);
+      else if (t === "q") slide([[1, 1], [1, -1], [-1, 1], [-1, -1], [1, 0], [-1, 0], [0, 1], [0, -1]]);
+      else if (t === "k") {
+        for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { if (!dr && !dc) continue; const rr = r + dr, cc = c + dc; if (rr >= 0 && rr < 8 && cc >= 0 && cc < 8 && this.side(b[rr * 8 + cc]) !== side) add(rr * 8 + cc); }
+        const home = side === 0 ? 60 : 4, K = side === 0 ? "K" : "k", Q = side === 0 ? "Q" : "q";
+        if (f === home && !this.attacked(b, f, en)) {
+          if (s.cr.includes(K) && !b[f + 1] && !b[f + 2] && b[f + 3] === (side === 0 ? "R" : "r") && !this.attacked(b, f + 1, en) && !this.attacked(b, f + 2, en)) add(f + 2, { cs: "k" });
+          if (s.cr.includes(Q) && !b[f - 1] && !b[f - 2] && !b[f - 3] && b[f - 4] === (side === 0 ? "R" : "r") && !this.attacked(b, f - 1, en) && !this.attacked(b, f - 2, en)) add(f - 2, { cs: "q" });
+        }
+      }
+    }
+    return out;
+  },
+  make(s, m) {
+    const b = s.b.slice(), side = this.side(b[m.f]), p = b[m.f]; let cap = b[m.t];
+    if (m.ep) { const cs = m.t + (side === 0 ? 8 : -8); cap = b[cs]; b[cs] = ""; }
+    b[m.t] = m.pr ? (side === 0 ? m.pr.toUpperCase() : m.pr) : p; b[m.f] = "";
+    if (m.cs === "k") { b[m.f + 1] = b[m.f + 3]; b[m.f + 3] = ""; } else if (m.cs === "q") { b[m.f - 1] = b[m.f - 4]; b[m.f - 4] = ""; }
+    let cr = s.cr;
+    const strip = ch => cr = cr.replace(ch, "");
+    if (p === "K") { strip("K"); strip("Q"); } if (p === "k") { strip("k"); strip("q"); }
+    for (const [sq, ch] of [[63, "K"], [56, "Q"], [7, "k"], [0, "q"]]) if (m.f === sq || m.t === sq) strip(ch);
+    return { b, cap, cr, ep: m.dbl ? (m.f + m.t) / 2 : -1, pawn: p.toLowerCase() === "p" };
+  },
+  legal(s, side = s.turn) {
+    return this.pseudo(s, side).filter(m => { const r = this.make(s, m); return !this.attacked(r.b, this.kingSq(r.b, side), 1 - side); });
+  },
+  move(s, p, a) {
+    if (s.w !== null) return null;
+    if (a.resign) { s.w = 1 - p; s.why = `${tname(p)} se rindió`; return s; }
+    if (p !== s.turn) return null;
+    const m = this.legal(s).find(m => m.f === a.f && m.t === a.t && (!m.pr || m.pr === (a.pr || "q")));
+    if (!m) return null;
+    const r = this.make(s, m);
+    if (r.cap) s.cap[p].push(r.cap);
+    s.b = r.b; s.cr = r.cr; s.ep = r.ep; s.half = r.pawn || r.cap ? 0 : s.half + 1; s.last = [m.f, m.t]; s.n++;
+    s.turn = 1 - p;
+    const key = s.b.join(",") + s.turn + s.cr + s.ep; s.rep[key] = (s.rep[key] || 0) + 1;
+    s.chk = this.attacked(s.b, this.kingSq(s.b, s.turn), p);
+    s.snd = r.cap ? "cap" : m.cs ? "castle" : "move";
+    const moves = this.legal(s);
+    if (!moves.length) { if (s.chk) { s.w = p; s.why = "¡Jaque mate!"; } else { s.w = -1; s.why = "Ahogado: tablas"; } }
+    else if (s.half >= 100) { s.w = -1; s.why = "Tablas por la regla de 50 jugadas"; }
+    else if (s.rep[key] >= 3) { s.w = -1; s.why = "Tablas por triple repetición"; }
+    else { const left = s.b.filter(x => x && x.toLowerCase() !== "k").map(x => x.toLowerCase()); if (!left.length || (left.length === 1 && "bn".includes(left[0]))) { s.w = -1; s.why = "Tablas: no queda material para ganar"; } }
+    return s;
+  },
+  winner(s) { return s.w; },
+  SVG: {
+    p: '<circle cx="22.5" cy="14" r="6"/><path d="M15.5 34q1-10 7-13q6 3 7 13z"/><rect x="12" y="33" width="21" height="6" rx="2"/>',
+    r: '<path d="M12 9h4.5v4h4v-4h4v4h4v-4H33v9l-3.5 3v11l3.5 3v4H12v-4l3.5-3V21L12 18z"/>',
+    n: '<path d="M14 39h19v-3c0-10-3-15-3-22 0-3-2.5-6-6.5-6.5L21 4l-2 4.5c-4.5 2-8 6.5-9 12l3 2.5 5.5-3.5c1 2.5-4 5.5-4.5 10.5z"/>',
+    b: '<circle cx="22.5" cy="7.5" r="3"/><path d="M22.5 11c-6.5 4-8.5 10.5-6 15.5h12c2.5-5 .5-11.5-6-15.5z"/><path d="M15 28.5h15l2 4.5H13z"/><rect x="11" y="34" width="23" height="5" rx="2"/>',
+    q: '<path d="M9.5 15.5l4.5 17h17l4.5-17-7.5 8-5.5-12.5-5.5 12.5z"/><circle cx="9.5" cy="13.5" r="2.6"/><circle cx="35.5" cy="13.5" r="2.6"/><circle cx="22.5" cy="9" r="2.6"/><rect x="12" y="33" width="21" height="6" rx="2"/>',
+    k: '<path d="M21 3.5h3v4h4v3h-4v4h-3v-4h-4v-3h4z"/><path d="M22.5 16c-8.5 0-12.5 5-10.5 12.5l1 4h19l1-4c2-7.5-2-12.5-10.5-12.5z"/><rect x="11" y="33" width="23" height="6" rx="2"/>',
+  },
+  pc(ch, cls = "") { const w = ch === ch.toUpperCase(); return `<svg viewBox="0 0 45 45" class="pc ${cls}" fill="${w ? "#fbfbff" : "#23263f"}" stroke="${w ? "#23263f" : "#e9ebff"}" stroke-width="1.6" stroke-linejoin="round">${this.SVG[ch.toLowerCase()]}</svg>`; },
+  render(root, s, prev, ctx) {
+    const flip = ctx.online && ctx.me === 1, myTurn = s.w === null && ctx.mine(s.turn);
+    if (this.lastN !== s.n) { const fresh = this.lastN !== undefined && s.n > 0; this.lastN = s.n; this.sel = -1; this.promo = null; if (fresh) { s.snd === "cap" ? noise(.12, .35, 2500, 400) : tone(s.snd === "castle" ? 300 : 220, .08, "triangle", .3); if (s.chk) setTimeout(() => tone(880, .15, "square", .08), 90); } }
+    if (false) { this.sel = -1; this.promo = null; s.snd === "cap" ? noise(.12, .35, 2500, 400) : tone(s.snd === "castle" ? 300 : 220, .08, "triangle", .3); if (s.chk) setTimeout(() => tone(880, .15, "square", .08), 90); }
+    const moves = myTurn && this.sel >= 0 ? this.legal(s).filter(m => m.f === this.sel) : [];
+    const dests = new Set(moves.map(m => m.t)), ksq = s.chk ? this.kingSq(s.b, s.turn) : -1;
+    const order = [...Array(64).keys()]; if (flip) order.reverse();
+    const top = flip ? 0 : 1, bot = 1 - top;
+    const val = { p: 1, n: 3, b: 3, r: 5, q: 9 }, mat = i => s.cap[i].reduce((a, c) => a + (val[c.toLowerCase()] || 0), 0);
+    const row = i => `<div class="ch-row" style="--c:${COL[i]}"><span class="ch-dot" style="background:${i === 0 ? "#fbfbff" : "#23263f"}"></span><b>${esc(ctx.name(i))}</b>${ctx.online && i === ctx.me ? "<small>Tú</small>" : ""}
+      <span class="ch-cap">${s.cap[i].map(c => this.pc(c, "mini")).join("")}${mat(i) > mat(1 - i) ? `<em>+${mat(i) - mat(1 - i)}</em>` : ""}</span>${s.turn === i && s.w === null ? `<span class="ch-turn">${s.chk ? "¡JAQUE!" : "juega"}</span>` : ""}</div>`;
+    root.innerHTML = `<div class="ch">${row(top)}
+      <div class="ch-board ${flip ? "flip" : ""}">${order.map(i => {
+        const r = i >> 3, c = i & 7, light = (r + c) % 2 === 0, p = s.b[i];
+        const cls = [light ? "l" : "d", s.last && s.last.includes(i) ? "last" : "", i === this.sel ? "sel" : "", i === ksq ? "chk" : "", dests.has(i) ? (p || moves.some(m => m.t === i && m.ep) ? "cap" : "dst") : ""].join(" ");
+        const lblF = (flip ? r === 0 : r === 7) ? `<i class="fl">${"abcdefgh"[c]}</i>` : "", lblR = (flip ? c === 7 : c === 0) ? `<i class="rk">${8 - r}</i>` : "";
+        return `<button class="sq ${cls}" data-i="${i}">${p ? this.pc(p) : ""}${lblF}${lblR}</button>`;
+      }).join("")}</div>${row(bot)}
+      <p class="ch-status">${s.w !== null ? esc(s.why) : ctx.online ? (myTurn ? "¡Tu turno!" : `Esperando a ${esc(ctx.name(s.turn))}…`) : `Juegan las ${s.turn === 0 ? "blancas" : "negras"} (${esc(ctx.name(s.turn))})`}</p>
+      <div class="row"><button class="btn ghost" id="resign" style="font-size:16px;padding:12px">🏳️ Rendirse</button></div>
+      ${this.promo ? `<div class="ch-promo"><div><p>Coronar como:</p>${"qrbn".split("").map(k => `<button data-k="${k}">${this.pc(s.turn === 0 ? k.toUpperCase() : k)}</button>`).join("")}</div></div>` : ""}</div>`;
+    root.querySelectorAll(".sq").forEach(b => b.onclick = () => {
+      if (!myTurn) return; const i = +b.dataset.i;
+      if (dests.has(i)) { const m = moves.find(m => m.t === i); if (m.pr) { this.promo = { f: this.sel, t: i }; tRender(); return; } ctx.act({ f: this.sel, t: i }); return; }
+      this.sel = s.b[i] && this.side(s.b[i]) === s.turn && i !== this.sel ? i : -1; tRender();
+    });
+    root.querySelectorAll(".ch-promo button").forEach(b => b.onclick = () => { const pm = this.promo; this.promo = null; ctx.act({ f: pm.f, t: pm.t, pr: b.dataset.k }); });
+    $("#resign", root).onclick = () => { if (s.w !== null) return; const p = ctx.online ? ctx.me : s.turn; if (confirm(`¿${ctx.online ? "Te rindes" : tname(p) + " se rinde"}?`)) ctx.act({ resign: 1, p }); };
+  },
+};
+
+/* =====================================================================
+   LUDO · 2 a 4 jugadores. Recorrido de 52 casillas + carril final de 5 + meta.
+   Progreso de ficha q: -1 = base · 0..50 = recorrido · 51..55 = carril · 56 = meta
+   ===================================================================== */
+const LUDO = (() => {
+  const P = [];
+  const seg = (x0, y0, x1, y1) => { const dx = Math.sign(x1 - x0), dy = Math.sign(y1 - y0); let x = x0, y = y0; for (;;) { P.push([x, y]); if (x === x1 && y === y1) break; x += dx; y += dy; } };
+  seg(6, 13, 6, 9); seg(5, 8, 0, 8); P.push([0, 7]); seg(0, 6, 5, 6); seg(6, 5, 6, 0); P.push([7, 0]); seg(8, 0, 8, 5); seg(9, 6, 14, 6); P.push([14, 7]); seg(14, 8, 9, 8); seg(8, 9, 8, 14); P.push([7, 14]); P.push([6, 14]);
+  const HOME = [[[7, 13], [7, 12], [7, 11], [7, 10], [7, 9]], [[1, 7], [2, 7], [3, 7], [4, 7], [5, 7]], [[7, 1], [7, 2], [7, 3], [7, 4], [7, 5]], [[13, 7], [12, 7], [11, 7], [10, 7], [9, 7]]];
+  const BASE = [[0, 9], [0, 0], [9, 0], [9, 9]], FIN = [[7, 8.1], [6.9, 7], [7, 5.9], [8.1, 7]];
+  const SAFE = new Set([0, 13, 26, 39, 8, 21, 34, 47]);
+  const seatsFor = np => np === 2 ? [0, 2] : np === 3 ? [0, 1, 2] : [0, 1, 2, 3];
+  return {
+    id: "ludo", name: "Ludo", kind: "turn", need: 1, maxp: 4, P, HOME,
+    init(round, np) { return { np, seats: seatsFor(np), tok: Array.from({ length: np }, () => [-1, -1, -1, -1]), turn: round % np, dice: 0, rolled: false, six: 0, w: null, last: null, n: 0, rolls: 0, msg: "" }; },
+    abs(s, p, q) { return (s.seats[p] * 13 + q) % 52; },
+    legal(s, p = s.turn) { if (!s.rolled) return []; return s.tok[p].map((q, k) => ({ q, k })).filter(({ q }) => q === -1 ? s.dice === 6 : q < 56 && q + s.dice <= 56).map(o => o.k); },
+    next(s) { s.turn = (s.turn + 1) % s.np; s.rolled = false; s.six = 0; },
+    move(s, p, a) {
+      if (s.w !== null || p !== s.turn) return null;
+      if (a.roll) {
+        if (s.rolled) return null;
+        s.dice = 1 + Math.floor(Math.random() * 6); s.dp = p; s.rolled = true; s.rolls++; s.msg = "";
+        if (s.dice === 6) { s.six++; if (s.six === 3) { s.msg = "Tres 6 seguidos: pierdes el turno"; this.next(s); } }
+        return s;
+      }
+      if (a.pass) { if (!s.rolled || this.legal(s).length) return null; this.next(s); return s; }
+      const k = a.k; if (!this.legal(s).includes(k)) return null;
+      const from = s.tok[p][k], to = from === -1 ? 0 : from + s.dice; s.tok[p][k] = to;
+      const cap = [];
+      if (to <= 50) { const A = this.abs(s, p, to); if (!SAFE.has(A)) s.tok.forEach((arr, o) => { if (o !== p) arr.forEach((q, j) => { if (q >= 0 && q <= 50 && this.abs(s, o, q) === A) { arr[j] = -1; cap.push([o, j]); } }); }); }
+      s.last = { p, k, from, to, cap }; s.n++;
+      if (s.tok[p].every(q => q === 56)) { s.w = p; return s; }
+      s.msg = cap.length ? "¡Capturaste! Tira otra vez" : to === 56 ? "¡Ficha en la meta! Tira otra vez" : s.dice === 6 ? "¡Sacaste 6! Tira otra vez" : "";
+      if (cap.length || to === 56 || s.dice === 6) s.rolled = false; else this.next(s);
+      return s;
+    },
+    winner(s) { return s.w; },
+    auto(s) {
+      if (!s.rolled || s.w !== null) return null;
+      const L = this.legal(s);
+      if (!L.length) return { d: 1100, a: { pass: 1 } };
+      if (new Set(L.map(k => s.tok[s.turn][k])).size === 1) return { d: 700, a: { k: L[0] } };
+      return null;
+    },
+    pos(s, p, k) {
+      const q = s.tok[p][k], seat = s.seats[p];
+      if (q === -1) { const [bx, by] = BASE[seat]; return [bx + 2 + (k % 2) * 2, by + 2 + (k >> 1) * 2]; }
+      if (q <= 50) { const [x, y] = P[this.abs(s, p, q)]; return [x + .5, y + .5]; }
+      if (q < 56) { const [x, y] = HOME[seat][q - 51]; return [x + .5, y + .5]; }
+      const [fx, fy] = FIN[seat]; return [fx + (k % 2 - .5) * .7, fy + ((k >> 1) - .5) * .7];
+    },
+    board(s) {
+      const cell = (x, y, fill, extra = "") => `<rect x="${x * 10}" y="${y * 10}" width="10" height="10" fill="${fill}" stroke="#c9cdea" stroke-width=".5" ${extra}/>`;
+      const seatCol = seat => { const p = s.seats.indexOf(seat); return p >= 0 ? COL[p] : "#8a8fb5"; };
+      let g = `<rect x="0" y="0" width="150" height="150" rx="6" fill="#f5f6ff"/>`;
+      P.forEach(([x, y], i) => { const st = i % 13 === 0 ? seatCol(i / 13) : null; g += cell(x, y, st || "#ffffff"); if (SAFE.has(i) && i % 13) g += `<path d="${this.star(x * 10 + 5, y * 10 + 5, 3.6)}" fill="#c3c7e8"/>`; });
+      HOME.forEach((arr, seat) => arr.forEach(([x, y]) => g += cell(x, y, seatCol(seat), 'opacity=".85"')));
+      BASE.forEach(([bx, by], seat) => { const c = seatCol(seat); g += `<rect x="${bx * 10}" y="${by * 10}" width="60" height="60" fill="${c}"/><rect x="${bx * 10 + 8}" y="${by * 10 + 8}" width="44" height="44" rx="6" fill="#fff"/>`;
+        for (let k = 0; k < 4; k++) g += `<circle cx="${(bx + 2 + (k % 2) * 2) * 10}" cy="${(by + 2 + (k >> 1) * 2) * 10}" r="5.5" fill="${c}" opacity=".25"/>`; });
+      const cx0 = 60, cy0 = 60, cx1 = 90, cy1 = 90, mc = 75;
+      g += `<polygon points="${cx0},${cy1} ${cx1},${cy1} ${mc},${mc}" fill="${seatCol(0)}"/><polygon points="${cx0},${cy0} ${cx0},${cy1} ${mc},${mc}" fill="${seatCol(1)}"/>
+        <polygon points="${cx0},${cy0} ${cx1},${cy0} ${mc},${mc}" fill="${seatCol(2)}"/><polygon points="${cx1},${cy0} ${cx1},${cy1} ${mc},${mc}" fill="${seatCol(3)}"/>`;
+      // flechas de salida
+      [0, 1, 2, 3].forEach(seat => { const [x, y] = P[seat * 13]; g += `<circle cx="${x * 10 + 5}" cy="${y * 10 + 5}" r="2" fill="#fff" opacity=".8"/>`; });
+      return g;
+    },
+    star(cx, cy, r) { let d = ""; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r * .45 : r; d += (i ? "L" : "M") + (cx + Math.cos(a) * rr).toFixed(2) + " " + (cy + Math.sin(a) * rr).toFixed(2); } return d + "Z"; },
+    DOTS: { 1: [[1, 1]], 2: [[0, 0], [2, 2]], 3: [[0, 0], [1, 1], [2, 2]], 4: [[0, 0], [2, 0], [0, 2], [2, 2]], 5: [[0, 0], [2, 0], [1, 1], [0, 2], [2, 2]], 6: [[0, 0], [2, 0], [0, 1], [2, 1], [0, 2], [2, 2]] },
+    die(n, col) { return `<svg viewBox="0 0 60 60" class="die"><rect x="3" y="3" width="54" height="54" rx="14" fill="#fff" stroke="${col}" stroke-width="4"/>${(this.DOTS[n] || []).map(([x, y]) => `<circle cx="${16 + x * 14}" cy="${16 + y * 14}" r="5.4" fill="#23263f"/>`).join("")}</svg>`; },
+    render(root, s, prev, ctx) {
+      const key = s.np + ":" + s.seats.join();
+      if (!root.querySelector(".lu") || this.key !== key) {
+        this.key = key;
+        root.innerHTML = `<div class="lu"><div class="lu-pl"></div><div class="lu-wrap"><svg viewBox="-2 -2 154 154" class="lu-board">${this.board(s)}<g class="lu-toks"></g></svg></div>
+          <div class="lu-ctrl"><button class="lu-die" id="die" aria-label="Tirar el dado"></button><div class="lu-msg"></div></div></div>`;
+        const G = root.querySelector(".lu-toks");
+        for (let p = 0; p < s.np; p++) for (let k = 0; k < 4; k++) G.insertAdjacentHTML("beforeend", `<g class="tok" data-p="${p}" data-k="${k}"><circle r="5.4" class="ring" fill="none" stroke="#fff" stroke-width="1.2"/><circle r="3.9" fill="${COL[p]}" stroke="#fff" stroke-width="1.1"/><circle r="1.4" cy="-.6" cx="-.6" fill="#fff" opacity=".7"/></g>`);
+        G.querySelectorAll(".tok").forEach(t => t.onclick = () => { const p = +t.dataset.p, k = +t.dataset.k; if (p === s.turn && ctx.mine(p)) ctx.act({ k }); });
+        $("#die", root).onclick = () => ctx.act({ roll: 1 });
+        this.lastN = -1; this.lastR = -1; clearInterval(this.anim); this.anim = null;
+      }
+      const L = ctx.mine(s.turn) ? this.legal(s) : [], stackCount = {};
+      root.querySelectorAll(".tok").forEach(t => {
+        const p = +t.dataset.p, k = +t.dataset.k; let [x, y] = this.pos(s, p, k);
+        const key2 = x.toFixed(2) + "," + y.toFixed(2), n = stackCount[key2] = (stackCount[key2] || 0) + 1;
+        if (n > 1 && s.tok[p][k] >= 0 && s.tok[p][k] < 56) { x += (n - 1) * .28; y -= (n - 1) * .28; }
+        t.setAttribute("transform", `translate(${x * 10} ${y * 10})`);
+        t.classList.toggle("can", p === s.turn && L.includes(k) && s.w === null);
+      });
+      // jugadores
+      root.querySelector(".lu-pl").innerHTML = Array.from({ length: s.np }, (_, p) => `<div class="lu-p ${p === s.turn && s.w === null ? "on" : ""}" style="--c:${COL[p]}"><i></i><b>${esc(ctx.name(p))}</b><span>${s.tok[p].filter(q => q === 56).length}/4</span></div>`).join("");
+      const die = $("#die", root), me = ctx.mine(s.turn), canRoll = me && !s.rolled && s.w === null;
+      die.disabled = !canRoll; die.classList.toggle("go", canRoll); die.style.setProperty("--c", COL[s.turn]);
+      const fresh = this.lastR !== s.rolls; this.lastR = s.rolls; const dc = COL[s.dp ?? s.turn];
+      if (fresh && s.dice && prev) {                          // animación del dado
+        let k = 0; clearInterval(this.anim); this.anim = setInterval(() => { die.innerHTML = this.die(1 + Math.floor(Math.random() * 6), dc); tone(700 + Math.random() * 300, .03, "square", .05); if (++k > 7) { clearInterval(this.anim); this.anim = null; die.innerHTML = this.die(s.dice, dc); tone(s.dice === 6 ? 1046 : 660, .12, "triangle", .2); } }, 55);
+      } else if (!this.anim) die.innerHTML = this.die(s.dice || 6, s.dice ? dc : COL[s.turn]);
+      if (this.lastN !== s.n) { this.lastN = s.n; if (s.last && prev) { tone(520, .06, "triangle", .15); if (s.last.cap.length) { noise(.25, .4, 3000, 300); vib(80); } if (s.last.to === 56) sfx.pick(); } }
+      const who = ctx.online ? (me ? "¡Tu turno!" : `Turno de ${ctx.name(s.turn)}`) : `Turno de ${ctx.name(s.turn)}`;
+      root.querySelector(".lu-msg").innerHTML = s.w !== null ? "" : `<b style="color:${COL[s.turn]}">${esc(who)}</b><span>${esc(s.msg || (canRoll ? "Toca el dado" : s.rolled && me ? (L.length ? "Elige una ficha" : "No puedes mover…") : ""))}</span>`;
+    },
+  };
+})();
+
+/* =====================================================================
+   ÚLTIMA CARTA · juego de cartas de colores (reglas clásicas, diseño propio)
+   Cartas: color (r,y,g,b) + valor (0-9, S salta, R reversa, D +2) · W comodín · F comodín +4
+   ===================================================================== */
+const CARDS = {
+  id: "cartas", name: "Última Carta", kind: "turn", need: 1, maxp: 4, hidden: true, pick: null,
+  CN: { r: "rojo", y: "amarillo", g: "verde", b: "azul" }, CC: { r: "#ff5a5f", y: "#ffc93c", g: "#22b8a7", b: "#3d8bfc" },
+  deck() {
+    const d = [];
+    for (const c of "rygb") { d.push(c + "0"); for (const v of "123456789SRD") d.push(c + v, c + v); }
+    for (let k = 0; k < 4; k++) d.push("W", "F");
+    for (let i = d.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [d[i], d[j]] = [d[j], d[i]]; }
+    return d;
+  },
+  init(round, np) {
+    const pile = this.deck(), hands = Array.from({ length: np }, () => pile.splice(0, 7));
+    let top; for (;;) { top = pile.shift(); if (/^[rygb]\d$/.test(top)) break; pile.push(top); }
+    this.pick = null;
+    return { np, hands, pile, disc: [top], col: top[0], turn: round % np, dir: 1, drew: null, called: Array(np).fill(false), unoP: null, unoAt: 0, w: null, n: 0, msg: "", last: null };
+  },
+  wild: c => c === "W" || c === "F",
+  top(s) { return s.disc[s.disc.length - 1]; },
+  ok(s, c) { if (this.wild(c)) return true; const t = this.top(s); return c[0] === s.col || (!this.wild(t) && c.slice(1) === t.slice(1)); },
+  step(s, p, k = 1) { return ((p + s.dir * k) % s.np + s.np) % s.np; },
+  draw1(s) {
+    if (!s.pile.length) { const t = s.disc.pop(); s.pile = s.disc; s.disc = [t]; for (let i = s.pile.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [s.pile[i], s.pile[j]] = [s.pile[j], s.pile[i]]; } }
+    return s.pile.shift();
+  },
+  give(s, p, n) { for (let k = 0; k < n; k++) { const c = this.draw1(s); if (c) s.hands[p].push(c); } },
+  move(s, p, a) {
+    if (s.w !== null) return null;
+    if (a.uno) {
+      if (s.unoP === p) { s.unoP = null; s.msg = `¡${tname(p)} dijo ÚLTIMA!`; s.n++; return s; }
+      if (s.turn === p && s.hands[p].length === 2 && !s.called[p]) { s.called[p] = true; s.msg = `¡${tname(p)} dijo ÚLTIMA!`; s.n++; return s; }
+      return null;
+    }
+    if (a.unopen) { if (s.unoP === null) return null; this.give(s, s.unoP, 2); s.msg = `${tname(s.unoP)} no dijo ÚLTIMA: roba 2`; s.last = { pen: s.unoP }; s.unoP = null; s.n++; return s; }
+    if (p !== s.turn) return null;
+    if (a.draw) {
+      if (s.drew !== null) return null;
+      const c = this.draw1(s); if (!c) { s.turn = this.step(s, p); s.n++; return s; }
+      s.hands[p].push(c); s.last = { drew: p };
+      if (this.ok(s, c)) { s.drew = s.hands[p].length - 1; s.msg = "Puedes jugar la carta que robaste o pasar"; }
+      else { s.turn = this.step(s, p); s.drew = null; s.msg = `${tname(p)} robó y pasó`; }
+      s.called[p] = false; s.n++; return s;
+    }
+    if (a.pass) { if (s.drew === null) return null; s.turn = this.step(s, p); s.drew = null; s.msg = `${tname(p)} pasó`; s.n++; return s; }
+    const h = s.hands[p], i = a.play;
+    if (!(i >= 0 && i < h.length) || (s.drew !== null && i !== s.drew)) return null;
+    const c = h[i]; if (!this.ok(s, c)) return null;
+    if (this.wild(c) && !"rygb".includes(a.col || "-")) return null;
+    h.splice(i, 1); s.disc.push(c); s.col = this.wild(c) ? a.col : c[0]; s.drew = null; s.last = { p, c };
+    if (s.disc.length > 30) s.disc.splice(0, s.disc.length - 30).forEach(x => s.pile.push(x));
+    if (!h.length) { s.w = p; s.n++; return s; }
+    if (h.length === 1 && !s.called[p]) { s.unoP = p; s.unoAt = Date.now() + 2600; } s.called[p] = false;
+    const v = this.wild(c) ? c : c[1]; let next = this.step(s, p); s.msg = "";
+    if (v === "S") { s.msg = `${tname(next)} pierde el turno`; next = this.step(s, p, 2); }
+    else if (v === "R") { if (s.np === 2) { s.msg = `${tname(next)} pierde el turno`; next = p; } else { s.dir *= -1; next = this.step(s, p); s.msg = "¡Cambio de sentido!"; } }
+    else if (v === "D") { this.give(s, next, 2); s.msg = `${tname(next)} roba 2 y pierde el turno`; next = this.step(s, p, 2); }
+    else if (v === "F") { this.give(s, next, 4); s.msg = `${tname(next)} roba 4 y pierde el turno`; next = this.step(s, p, 2); }
+    if (this.wild(c)) s.msg = (s.msg ? s.msg + " · " : "") + `ahora va ${this.CN[s.col]}`;
+    s.turn = next; s.n++; return s;
+  },
+  winner(s) { return s.w; },
+  auto(s) { return s.unoP !== null ? { d: Math.max(200, s.unoAt - Date.now()), a: { unopen: 1 } } : null; },
+  redact(s, p) { const r = clone(s); r.hands = r.hands.map((h, i) => i === p ? h : h.map(() => "x")); r.pile = r.pile.length; return r; },
+  /* ---------- dibujo de cartas ---------- */
+  sym(v) {
+    if (v === "S") return `<svg viewBox="0 0 40 40" class="sy"><circle cx="20" cy="20" r="13" fill="none" stroke="currentColor" stroke-width="5"/><path d="M11 29L29 11" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>`;
+    if (v === "R") return `<svg viewBox="0 0 40 40" class="sy"><path d="M8 16h20l-6-6M32 24H12l6 6" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    if (v === "D") return "+2";
+    return v;
+  },
+  wheel: `<svg viewBox="0 0 40 40" class="wh"><path d="M20 20V4a16 16 0 0 1 16 16z" fill="#ff5a5f"/><path d="M20 20h16a16 16 0 0 1-16 16z" fill="#3d8bfc"/><path d="M20 20v16A16 16 0 0 1 4 20z" fill="#22b8a7"/><path d="M20 20H4A16 16 0 0 1 20 4z" fill="#ffc93c"/><circle cx="20" cy="20" r="16" fill="none" stroke="#fff" stroke-width="2.5"/></svg>`,
+  card(c, cls = "", attr = "") {
+    if (c === "x") return `<div class="uc back ${cls}" ${attr}><span>ÚLTIMA</span></div>`;
+    if (this.wild(c)) return `<div class="uc wild ${cls}" ${attr}><span class="tl">${c === "F" ? "+4" : "★"}</span><span class="mid">${this.wheel}${c === "F" ? '<b class="p4">+4</b>' : ""}</span><span class="br">${c === "F" ? "+4" : "★"}</span></div>`;
+    const v = this.sym(c[1]);
+    return `<div class="uc ${cls}" style="--k:${this.CC[c[0]]}" ${attr}><span class="tl">${v}</span><span class="mid">${v}</span><span class="br">${v}</span></div>`;
+  },
+  passExtra(s) { return s.unoP !== null ? `<button class="btn gold" id="unoP">¡ÚLTIMA! (${esc(tname(s.unoP))})</button>` : ""; },
+  passBind(root, s, ctx) { const b = $("#unoP", root); if (b) b.onclick = () => ctx.act({ uno: 1, p: s.unoP }); },
+  render(root, s, prev, ctx) {
+    const me = ctx.view, hand = me >= 0 && me !== null ? s.hands[me] : [], myTurn = s.w === null && me === s.turn && ctx.mine(me);
+    if (this.lastN !== s.n) {
+      const fresh = this.lastN !== undefined && prev; this.lastN = s.n; this.pick = null;
+      if (fresh && s.last) { if (s.last.c) noise(.12, .3, 5000, 1200); else if (s.last.drew !== undefined) tone(420, .08, "triangle", .15); else if (s.last.pen !== undefined) sfx.lose(); }
+      if (fresh && /ÚLTIMA!/.test(s.msg)) sfx.pick();
+    }
+    const others = []; for (let k = 1; k < s.np; k++) others.push((me === null || me < 0 ? 0 : me) + k * 1);
+    const opp = others.map(i => i % s.np);
+    const pileN = typeof s.pile === "number" ? s.pile : s.pile.length;
+    const canUno = (myTurn && hand.length === 2 && !s.called[me]) || s.unoP === me;
+    root.innerHTML = `<div class="ucg">
+      <div class="uc-opps">${opp.map(i => `<div class="uc-opp ${s.turn === i && s.w === null ? "on" : ""}" style="--c:${COL[i]}"><b>${esc(ctx.name(i))}</b>
+        <div class="uc-fan">${s.hands[i].slice(0, 10).map(() => this.card("x", "tiny")).join("")}</div><span>${s.hands[i].length} carta${s.hands[i].length === 1 ? "" : "s"}${s.hands[i].length === 1 ? " · ¡ÚLTIMA!" : ""}</span></div>`).join("")}</div>
+      <div class="uc-table">
+        <button class="uc-pile" id="draw" ${myTurn && s.drew === null ? "" : "disabled"} aria-label="Robar carta">${this.card("x", myTurn && s.drew === null ? "glow" : "")}<small>${pileN}</small></button>
+        <div class="uc-disc" style="--k:${this.CC[s.col]}">${this.card(this.top(s), "big" + (prev && prev.disc && this.top(prev) !== this.top(s) ? " land" : ""))}<span class="uc-col">${this.CN[s.col]}</span></div>
+        <div class="uc-dir" title="Sentido">${s.np > 2 ? (s.dir > 0 ? "↻" : "↺") : ""}</div>
+      </div>
+      <p class="uc-msg">${s.w !== null ? "" : `<b style="color:${COL[s.turn]}">${myTurn ? "¡Tu turno!" : `Turno de ${esc(ctx.name(s.turn))}`}</b>`}<span>${esc(s.msg)}</span></p>
+      <div class="uc-act">${canUno ? `<button class="btn gold uno" id="uno">¡ÚLTIMA!</button>` : ""}${myTurn && s.drew !== null ? `<button class="btn ghost" id="pass">Pasar</button>` : ""}</div>
+      <div class="uc-hand ${myTurn ? "my" : ""}">${hand.map((c, i) => { const ok = myTurn && this.ok(s, c) && (s.drew === null || s.drew === i); return this.card(c, (ok ? "ok" : myTurn ? "no" : "") + (s.drew === i ? " new" : ""), `data-i="${i}" role="button" tabindex="0"`); }).join("")}</div>
+      <p class="uc-you" style="color:${COL[me] || "#fff"}">${me !== null && me >= 0 ? `Cartas de ${esc(ctx.name(me))} · ${hand.length}` : ""}</p>
+      ${this.pick !== null ? `<div class="uc-pick"><div><p>Elige el color</p><div class="uc-cols">${"rygb".split("").map(k => `<button data-k="${k}" style="background:${this.CC[k]}" aria-label="${this.CN[k]}"></button>`).join("")}</div><button class="back" id="pk-x">Cancelar</button></div></div>` : ""}
+    </div>`;
+    root.querySelectorAll(".uc-hand .uc.ok").forEach(el => el.onclick = () => { const i = +el.dataset.i, c = hand[i]; if (this.wild(c)) { this.pick = i; tRender(); } else ctx.act({ play: i }); });
+    const d = $("#draw", root); if (d) d.onclick = () => ctx.act({ draw: 1 });
+    const pb = $("#pass", root); if (pb) pb.onclick = () => ctx.act({ pass: 1 });
+    const ub = $("#uno", root); if (ub) ub.onclick = () => ctx.act({ uno: 1, p: me });
+    root.querySelectorAll(".uc-cols button").forEach(b => b.onclick = () => { const i = this.pick; this.pick = null; ctx.act({ play: i, col: b.dataset.k }); });
+    const px = $("#pk-x", root); if (px) px.onclick = () => { this.pick = null; tRender(); };
+  },
+};
+
+/* =====================================================================
+   FUEGO Y AGUA · plataformas cooperativo (personajes y niveles propios)
+   - Fuego camina sobre lava, Agua sobre agua. El veneno verde elimina a los dos.
+   - Botones que abren compuertas, elevadores, gemas y una puerta para cada uno.
+   Mundo en casillas: 32 × 18. Se juega con el celular de lado (se gira solo).
+   ===================================================================== */
+const DUO_LEVELS = [
+  { name: "Primeros pasos",
+    walls: [[26, 30, 15], [18, 24, 12], [9, 15, 9], [2, 6, 6], [10, 30, 4]],
+    pools: [[8, 10, 17, "L"], [13, 15, 17, "W"], [19, 20, 17, "G"]],
+    gems: [[9, 16, "r"], [14, 16, "b"], [11, 8, "r"], [13, 8, "b"], [4, 5, "r"], [5, 5, "b"], [20, 11, "r"], [22, 11, "b"]],
+    doors: { F: [26, 3], A: [28, 3] }, spawn: [[2, 16], [4, 16]], gates: [], lifts: [] },
+  { name: "Caminos separados",
+    walls: [[5, 11, 14], [16, 24, 14], [27, 30, 14], [20, 25, 11], [26, 30, 8], [12, 24, 5]],
+    pools: [[6, 10, 17, "L"], [19, 23, 17, "W"]],
+    gems: [[8, 16, "r"], [8, 13, "b"], [21, 13, "r"], [21, 16, "b"], [22, 10, "r"], [23, 10, "b"], [15, 4, "r"], [19, 4, "b"]],
+    doors: { F: [14, 4], A: [17, 4] }, spawn: [[2, 16], [3, 16]],
+    gates: [{ cells: [[17, 6], [17, 7], [17, 8], [17, 9], [17, 10], [17, 11], [17, 12], [17, 13]], plates: [[13, 16]] }], lifts: [] },
+  { name: "El elevador",
+    walls: [[13, 14, 6], [13, 14, 7], [13, 14, 8], [13, 14, 9], [13, 14, 10], [13, 14, 11], [13, 14, 12], [13, 14, 13], [13, 14, 14], [13, 14, 15], [13, 14, 16], [15, 21, 6]],
+    pools: [[6, 8, 17, "G"], [17, 19, 17, "L"]],
+    gems: [[7, 14, "r"], [7, 13, "b"], [11, 11, "r"], [11, 8, "b"], [18, 5, "r"], [21, 5, "b"], [27, 16, "r"], [30, 16, "b"]],
+    doors: { F: [28, 16], A: [30, 16] }, spawn: [[2, 16], [3, 16]],
+    gates: [{ cells: Array.from({ length: 16 }, (_, k) => [24, k + 1]), plates: [[20, 5], [26, 16]] }],
+    lifts: [{ x: 10, w: 3, y0: 16.5, y1: 6 }] },
+  { name: "Juntos hasta el final",
+    walls: [[1, 8, 4], [9, 9, 9], [12, 21, 9], [24, 30, 9], [1, 12, 13], [20, 26, 13], [29, 30, 13], [6, 7, 11]],
+    pools: [[13, 19, 9, "L"], [13, 19, 13, "W"], [29, 30, 17, "G"]],
+    gems: [[16, 8, "r"], [16, 12, "b"], [3, 3, "r"], [6, 3, "b"], [24, 8, "r"], [23, 12, "b"], [22, 16, "r"], [26, 16, "b"]],
+    doors: { F: [22, 16], A: [25, 16] }, spawn: [[2, 3], [4, 3]],
+    gates: [{ cells: [[27, 13], [28, 13]], plates: [[25, 8], [24, 16]], floor: true }], lifts: [] },
+];
+const DUO = {
+  id: "duo", name: "Fuego y Agua", need: 99, pads: false, noFlip: true, coop: true, lv: 0,
+  CW: 32, CH: 18, SPEED: 6.4, JV: 18.3, G: 48,
+  getOpt() { return { lv: this.lv }; }, setOpt(o) { if (o && o.lv >= 0) this.lv = o.lv; },
+  /* ---------- geometría de pantalla (siempre horizontal) ---------- */
+  lay() {
+    this.rot = H > W; this.LW = this.rot ? H : W; this.LH = this.rot ? W : H;
+    const LW = this.LW, LH = this.LH;
+    this.T = Math.max(8, Math.floor(Math.min((LW - 2 * 118) / this.CW, (LH - 4) / this.CH)));   // deja espacio a los lados para los botones
+    this.ox = Math.round((LW - this.CW * this.T) / 2); this.oy = Math.round((LH - this.CH * this.T) / 2);
+    const M = this.ox, R = this.R = clamp((M - 14) / 4.2, 22, 46), m = 8, on = !!E.net, me = on ? E.net.me : 0;
+    const L = (p, k, x, y, big) => ({ p, k, x, y, big });
+    this.btns = on
+      ? [L(me, "l", m + R, LH - m - R), L(me, "r", m + 3.2 * R, LH - m - R), L(me, "j", LW - m - R * 1.3, LH - m - R * 1.3, 1)]
+      : [L(0, "l", m + R, LH - m - R), L(0, "r", m + 3.2 * R, LH - m - R), L(0, "j", m + 2.1 * R, LH - m - 3.3 * R),
+         L(1, "r", LW - m - R, LH - m - R), L(1, "l", LW - m - 3.2 * R, LH - m - R), L(1, "j", LW - m - 2.1 * R, LH - m - 3.3 * R)];
+  },
+  toL(x, y) { return this.rot ? [y, W - x] : [x, y]; },
+  toS(lx, ly) { return this.rot ? [W - ly, lx] : [lx, ly]; },
+  pauseSpots() { return [this.toS(Math.max(24, this.ox / 2), 26)]; },
+  view(i, f) {
+    if (i !== (E.net ? E.net.me : 0)) return;
+    cx.save(); if (this.rot) { cx.translate(W, 0); cx.rotate(Math.PI / 2); } f(this.LW, this.LH); cx.restore();
+  },
+  /* ---------- nivel ---------- */
+  newRound() { this.lay(); this.load(); this.time = 0; this.deaths = 0; this.won = 0; this.touch = new Map(); this.fx = []; },
+  load() {
+    const L = DUO_LEVELS[this.lv], C = this.CW, R = this.CH, g = Array.from({ length: R }, () => Array(C).fill(" "));
+    for (let x = 0; x < C; x++) { g[0][x] = "#"; g[R - 1][x] = "#"; } for (let y = 0; y < R; y++) { g[y][0] = "#"; g[y][C - 1] = "#"; }
+    for (const [x0, x1, y] of L.walls) for (let x = x0; x <= x1; x++) g[y][x] = "#";
+    for (const [x0, x1, y, t] of L.pools) for (let x = x0; x <= x1; x++) g[y][x] = t;
+    this.g = g; this.L = L;
+    this.gems = L.gems.map(([x, y, t]) => ({ x: x + .5, y: y + .5, t, got: 0 }));
+    this.gates = L.gates.map(q => ({ cells: q.cells, plates: q.plates, open: 0, floor: !!q.floor }));
+    this.lifts = L.lifts.map(q => ({ x: q.x, w: q.w, y0: q.y0, y1: q.y1, y: q.y0, v: 0 }));
+    this.pl = [0, 1].map(i => ({ i, x: L.spawn[i][0] + .15, y: L.spawn[i][1] + .05, w: .7, h: .95, vx: 0, vy: 0, on: false, face: 1, alive: true, door: 0, walk: 0 }));
+    this.dead = 0; this.inDoor = 0;
+  },
+  tile(x, y) { return x < 0 || y < 0 || x >= this.CW || y >= this.CH ? "#" : this.g[y][x]; },
+  gateAt(x, y) { for (const q of this.gates) if (q.open < .5 && q.cells.some(([a, b]) => a === x && b === y)) return true; return false; },
+  solidT(x, y) { const t = this.tile(x, y); return t === "#" || t === "L" || t === "W" || t === "G" || this.gateAt(x, y); },
+  rects(p, x, y) {
+    const out = [], x0 = Math.floor(x), x1 = Math.floor(x + p.w - 1e-6), y0 = Math.floor(y), y1 = Math.floor(y + p.h - 1e-6);
+    for (let ty = y0; ty <= y1; ty++) for (let tx = x0; tx <= x1; tx++) if (this.solidT(tx, ty)) out.push([tx, ty, 1, 1]);
+    for (const l of this.lifts) if (x < l.x + l.w && x + p.w > l.x && y < l.y + .5 && y + p.h > l.y) out.push([l.x, l.y, l.w, .5]);
+    return out;
+  },
+  input(i) {
+    const b = { l: 0, r: 0, j: 0 };
+    for (const t of this.touch.values()) if (t.p === i) b[t.k] = 1;
+    const k = Pads.p[i];
+    return { x: Math.sign(b.r - b.l + k.kx + k.nx), j: !!(b.j || k.ky < 0 || k.kf || k.nh), b };
+  },
+  kill(p, why) {
+    if (!p.alive || this.dead > 0) return; p.alive = false; this.dead = 1.3; this.deaths++;
+    this.spark(p.x + p.w / 2, p.y + p.h / 2, 30, p.i ? ["#7fd1ff", "#2f8cff", "#fff"] : ["#ffb13b", "#ff5a1a", "#fff"]);
+    sfx.die(); vib(150); this.msg = { s: why, t: 1.3 };
+  },
+  spark(x, y, n, cols) { for (let k = 0; k < n; k++) { const a = Math.random() * TAU, s = rnd(2, 9); this.fx.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 3, l: rnd(.4, .9), c: cols[k % cols.length] }); } },
+  step(dt) {
+    // botones y compuertas
+    const pressed = pl => this.pl.some(p => p.alive && p.on && p.x + p.w > pl[0] + .1 && p.x < pl[0] + .9 && Math.abs(p.y + p.h - (pl[1] + 1)) < .12);
+    for (const q of this.gates) { const tgt = q.force ?? (q.plates.some(pressed) ? 1 : 0); q.open = clamp(q.open + (tgt ? 1 : -1) * dt * 3.2, 0, 1); }
+    // elevadores: suben mientras alguien está encima
+    for (const l of this.lifts) {
+      const riders = this.pl.filter(p => p.alive && p.on && p.x + p.w > l.x && p.x < l.x + l.w && Math.abs(p.y + p.h - l.y) < .08);
+      const dir = riders.length ? -1 : 1, ny = clamp(l.y + dir * 3.2 * dt, l.y1, l.y0);
+      let dy = ny - l.y;
+      if (dy > 0 && this.pl.some(p => p.alive && p.x + p.w > l.x && p.x < l.x + l.w && p.y >= l.y + .4 && p.y < l.y + .5 + dy + .02)) dy = 0;   // no aplastar
+      l.y += dy; for (const p of riders) p.y += dy;
+    }
+    for (const p of this.pl) {
+      if (!p.alive) continue;
+      const inp = this.input(p.i), acc = p.on ? 70 : 40, tv = inp.x * this.SPEED;
+      p.vx += clamp(tv - p.vx, -acc * dt, acc * dt);
+      if (inp.j && p.on) { p.vy = -this.JV; p.on = false; tone(p.i ? 700 : 520, .07, "triangle", .08, 0, p.i ? 1100 : 820); }
+      p.vy = Math.min(p.vy + this.G * dt, 22);
+      if (inp.x) p.face = inp.x;
+      // eje X
+      let nx = p.x + p.vx * dt; let hit = this.rects(p, nx, p.y);
+      if (hit.length) { nx = p.vx > 0 ? Math.min(...hit.map(r => r[0])) - p.w - 1e-4 : Math.max(...hit.map(r => r[0] + r[2])) + 1e-4; p.vx = 0; }
+      p.x = nx;
+      // eje Y
+      let ny = p.y + p.vy * dt; hit = this.rects(p, p.x, ny); p.on = false;
+      if (hit.length) { if (p.vy > 0) { ny = Math.min(...hit.map(r => r[1])) - p.h; p.on = true; } else ny = Math.max(...hit.map(r => r[1] + r[3])) + 1e-4; p.vy = 0; }
+      p.y = ny; p.walk = p.on && Math.abs(p.vx) > .5 ? p.walk + dt : 0;
+      // ¿qué hay bajo los pies?
+      if (p.on) {
+        const fy = Math.floor(p.y + p.h + .05);
+        for (const fxp of [p.x + .15, p.x + p.w / 2, p.x + p.w - .15]) {
+          const t = this.tile(Math.floor(fxp), fy);
+          if (t === "G") { this.kill(p, "¡El veneno verde elimina a los dos!"); break; }
+          if (t === "W" && p.i === 0) { this.kill(p, "Fuego no puede tocar el agua"); break; }
+          if (t === "L" && p.i === 1) { this.kill(p, "Agua no puede tocar la lava"); break; }
+        }
+      }
+      // gemas
+      for (const gm of this.gems) if (!gm.got && (gm.t === "r") === (p.i === 0) && Math.abs(p.x + p.w / 2 - gm.x) < .6 && Math.abs(p.y + p.h / 2 - gm.y) < .7) { gm.got = 1; this.spark(gm.x, gm.y, 12, [gm.t === "r" ? "#ff7a45" : "#5ab8ff", "#fff"]); sfx.pick(); }
+      const [dx, dy] = this.L.doors[p.i ? "A" : "F"]; p.door = p.on && Math.abs(p.x + p.w / 2 - (dx + .5)) < .55 && Math.abs(p.y + p.h - (dy + 1)) < .2 ? 1 : 0;
+    }
+    if (this.pl.every(p => p.alive && p.door)) { this.inDoor += dt; if (this.inDoor > .6 && !this.won) { this.won = 1; sfx.fan(); setTimeout(() => duoWin(), 900); } } else this.inDoor = 0;
+  },
+  update(dt, live) {
+    this.stepFx(dt);
+    if (this.msg) { this.msg.t -= dt; if (this.msg.t <= 0) this.msg = null; }
+    if (!live || this.won) return;
+    this.time += dt;
+    if (this.dead > 0) { this.dead -= dt; if (this.dead <= 0) { const t = this.time, d = this.deaths; this.load(); this.time = t; this.deaths = d; } return; }
+    const n = Math.ceil(dt / .008); for (let k = 0; k < n; k++) this.step(dt / n);
+  },
+  stepFx(dt) { for (const f of this.fx) { f.x += f.vx * dt; f.y += f.vy * dt; f.vy += 14 * dt; f.l -= dt; } this.fx = this.fx.filter(f => f.l > 0); },
+  /* ---------- toques: cada dedo se engancha al botón más cercano ---------- */
+  hitBtn(lx, ly) { let best = null, bd = 1e9; for (const b of this.btns) { const d = Math.hypot(lx - b.x, ly - b.y); if (d < this.R * (b.big ? 1.9 : 1.6) && d < bd) { bd = d; best = b; } } return best; },
+  down(id, x, y) { const [lx, ly] = this.toL(x, y), b = this.hitBtn(lx, ly); if (b) this.touch.set(id, { p: b.p, k: b.k }); },
+  move(id, x, y) { if (!this.touch.has(id)) return; const [lx, ly] = this.toL(x, y), b = this.hitBtn(lx, ly); if (b && b.k !== "j" && this.touch.get(id).k !== "j") this.touch.set(id, { p: b.p, k: b.k }); },
+  up(id) { this.touch.delete(id); },
+  /* ---------- en línea ---------- */
+  snap() {
+    return { lv: this.lv, p: this.pl.map(p => [r2(p.x), r2(p.y), p.face, p.alive ? 1 : 0, p.door, p.on ? 1 : 0, r2(p.walk)]), g: this.gems.map(g => g.got).join(""),
+      q: this.gates.map(q => r2(q.open)), l: this.lifts.map(l => r2(l.y)), t: r1(this.time), d: this.deaths, dd: r2(this.dead), m: this.msg ? this.msg.s : "" };
+  },
+  apply(s) {
+    if (s.lv !== this.lv || !this.pl) { this.lv = s.lv; this.load(); }
+    s.p.forEach((a, i) => { const p = this.pl[i];
+      if (p.alive && !a[3]) { this.spark(p.x + p.w / 2, p.y + p.h / 2, 30, i ? ["#7fd1ff", "#2f8cff", "#fff"] : ["#ffb13b", "#ff5a1a", "#fff"]); sfx.die(); }
+      p.tx = a[0]; p.ty = a[1]; if (Math.hypot(p.tx - p.x, p.ty - p.y) > 3) { p.x = p.tx; p.y = p.ty; }
+      p.face = a[2]; p.alive = !!a[3]; p.door = a[4]; p.on = !!a[5]; p.walk = a[6]; });
+    [...s.g].forEach((c, k) => { const g = this.gems[k]; if (g && !g.got && c === "1") { this.spark(g.x, g.y, 12, [g.t === "r" ? "#ff7a45" : "#5ab8ff", "#fff"]); sfx.pick(); } if (g) g.got = +c; });
+    s.q.forEach((o, k) => this.gates[k] && (this.gates[k].open = o)); s.l.forEach((y, k) => this.lifts[k] && (this.lifts[k].y = y));
+    this.time = s.t; this.deaths = s.d; this.dead = s.dd; if (s.m && (!this.msg || this.msg.s !== s.m)) this.msg = { s: s.m, t: 1.3 };
+  },
+  guestTick(dt) {
+    this.stepFx(dt); if (this.msg) { this.msg.t -= dt; if (this.msg.t <= 0) this.msg = null; }
+    for (const p of this.pl) if (p.tx != null) { const k = Math.min(1, dt * 18); p.x += (p.tx - p.x) * k; p.y += (p.ty - p.y) * k; }
+    const me = E.net.me, inp = this.input(me); Pads.p[me].nx = inp.b.r - inp.b.l; Pads.p[me].nh = !!inp.b.j || Pads.p[me].ky < 0;
+  },
+  /* ---------- dibujo ---------- */
+  draw() {
+    this.lay();
+    cx.save(); if (this.rot) { cx.translate(W, 0); cx.rotate(Math.PI / 2); }
+    const { T, ox, oy, CW, CH } = this, now = performance.now() / 1000, X = x => ox + x * T, Y = y => oy + y * T;
+    cx.fillStyle = "#07060f"; cx.fillRect(0, 0, this.LW, this.LH);
+    const bg = cx.createLinearGradient(0, oy, 0, oy + CH * T); bg.addColorStop(0, "#1c1936"); bg.addColorStop(1, "#110f22");
+    cx.fillStyle = bg; cx.fillRect(ox, oy, CW * T, CH * T);
+    cx.fillStyle = "rgba(255,255,255,.025)"; for (let y = 1; y < CH; y += 2) for (let x = (y % 4) ? 1 : 2; x < CW; x += 4) cx.fillRect(X(x), Y(y), T * 2 - 2, T - 2);
+    // puertas
+    for (const [k, i] of [["F", 0], ["A", 1]]) {
+      const [dx, dy] = this.L.doors[k], x = X(dx) - T * .15, y = Y(dy - 1), w = T * 1.3, hh = T * 2, open = this.pl[i].door ? 1 : 0;
+      cx.fillStyle = i ? "#123a66" : "#5a1e12"; rr(x, y, w, hh, [w / 2, w / 2, 3, 3]); cx.fill();
+      cx.strokeStyle = i ? "#5ab8ff" : "#ff8a4c"; cx.lineWidth = 3; cx.stroke();
+      if (open) { cx.fillStyle = i ? "rgba(90,184,255,.35)" : "rgba(255,138,76,.35)"; rr(x, y, w, hh, [w / 2, w / 2, 3, 3]); cx.fill(); }
+      cx.save(); cx.translate(x + w / 2, y + hh * .45); cx.scale(T / 22, T / 22);
+      if (i) { cx.fillStyle = "#5ab8ff"; cx.beginPath(); cx.moveTo(0, -8); cx.quadraticCurveTo(7, 2, 0, 7); cx.quadraticCurveTo(-7, 2, 0, -8); cx.fill(); }
+      else { cx.fillStyle = "#ff8a4c"; cx.beginPath(); cx.moveTo(0, -9); cx.quadraticCurveTo(8, 0, 0, 7); cx.quadraticCurveTo(-8, 0, 0, -9); cx.fill(); cx.fillStyle = "#ffd23f"; cx.beginPath(); cx.moveTo(0, -2); cx.quadraticCurveTo(4, 3, 0, 6); cx.quadraticCurveTo(-4, 3, 0, -2); cx.fill(); }
+      cx.restore();
+    }
+    // bloques y charcos
+    for (let y = 0; y < CH; y++) for (let x = 0; x < CW; x++) {
+      const t = this.g[y][x]; if (t === " ") continue;
+      const px = X(x), py = Y(y);
+      cx.fillStyle = "#3b3558"; cx.fillRect(px, py, T, T);
+      cx.fillStyle = "#4b4470"; cx.fillRect(px + 1, py + 1, T - 2, T * .45 - 1); cx.fillRect(px + (y % 2 ? T * .5 : 0), py + T * .5, T * .5 - 1, T * .5 - 1);
+      if (t !== "#") {
+        const c = t === "L" ? ["#ff5a1a", "#ffb13b"] : t === "W" ? ["#2f8cff", "#8fd8ff"] : ["#1fae5a", "#7dff9c"];
+        const gr = cx.createLinearGradient(0, py, 0, py + T * .6); gr.addColorStop(0, c[1]); gr.addColorStop(1, c[0]);
+        cx.fillStyle = gr; cx.beginPath(); cx.moveTo(px, py + T * .6);
+        for (let k = 0; k <= 8; k++) { const xx = px + k * T / 8; cx.lineTo(xx, py + T * .12 + Math.sin(now * 4 + (x * 8 + k) * .8) * T * .05); }
+        cx.lineTo(px + T, py + T * .6); cx.closePath(); cx.fill();
+      }
+    }
+    // compuertas y botones
+    for (const q of this.gates) {
+      for (const [x, y] of q.cells) { const f = 1 - q.open; if (f <= .02) continue; cx.fillStyle = "#9b5cff"; if (q.floor) cx.fillRect(X(x), Y(y), T * f, T * .6); else cx.fillRect(X(x) + T * .2, Y(y), T * .6, T * f); cx.fillStyle = "rgba(255,255,255,.25)"; if (q.floor) cx.fillRect(X(x), Y(y), T * f, 3); else cx.fillRect(X(x) + T * .2, Y(y), 3, T * f); }
+      for (const [x, y] of q.plates) { const dn = q.open > .5 ? .12 : 0; cx.fillStyle = "#6f3fd0"; cx.fillRect(X(x) + T * .1, Y(y + 1) - T * .12, T * .8, T * .12); cx.fillStyle = "#c29bff"; rr(X(x) + T * .18, Y(y + 1) - T * (.28 - dn), T * .64, T * (.18 - dn * .5), 3); cx.fill(); }
+    }
+    for (const l of this.lifts) { cx.fillStyle = "#8a93c7"; rr(X(l.x), Y(l.y), l.w * T, T * .5, 4); cx.fill(); cx.fillStyle = "#c9cff2"; cx.fillRect(X(l.x) + 4, Y(l.y) + 3, l.w * T - 8, 3);
+      cx.strokeStyle = "rgba(138,147,199,.25)"; cx.setLineDash([4, 6]); cx.beginPath(); cx.moveTo(X(l.x + l.w / 2), Y(l.y1)); cx.lineTo(X(l.x + l.w / 2), Y(l.y)); cx.stroke(); cx.setLineDash([]); }
+    // gemas
+    for (const gm of this.gems) if (!gm.got) {
+      const x = X(gm.x), y = Y(gm.y) + Math.sin(now * 3 + gm.x) * T * .06, s = T * .32;
+      cx.fillStyle = gm.t === "r" ? "#ff6b3d" : "#3da9fc"; cx.beginPath(); cx.moveTo(x, y - s); cx.lineTo(x + s * .8, y - s * .2); cx.lineTo(x, y + s); cx.lineTo(x - s * .8, y - s * .2); cx.closePath(); cx.fill();
+      cx.fillStyle = "rgba(255,255,255,.55)"; cx.beginPath(); cx.moveTo(x, y - s); cx.lineTo(x + s * .35, y - s * .2); cx.lineTo(x, y + s * .2); cx.closePath(); cx.fill();
+    }
+    for (const p of this.pl) if (p.alive) this.hero(p, X(p.x + p.w / 2), Y(p.y + p.h), T, now);
+    for (const f of this.fx) { cx.globalAlpha = clamp(f.l * 2, 0, 1); cx.fillStyle = f.c; cx.fillRect(X(f.x) - 2, Y(f.y) - 2, 4, 4); } cx.globalAlpha = 1;
+    // barra superior
+    const gr = this.gems.filter(g => g.t === "r"), gb = this.gems.filter(g => g.t === "b");
+    txt(`Nivel ${this.lv + 1} · ${this.L.name}`, this.LW / 2, oy + T * .5, Math.max(12, T * .55), "rgba(255,255,255,.85)", "center", FB);
+    txt(`🔥 ${gr.filter(g => g.got).length}/${gr.length}   💧 ${gb.filter(g => g.got).length}/${gb.length}   ⏱ ${Math.floor(this.time)} s`, this.LW / 2 + 150, oy + T * .5, Math.max(11, T * .5), "rgba(255,255,255,.7)", "left", FB);
+    if (this.msg) { cx.globalAlpha = clamp(this.msg.t * 2, 0, 1); rr(this.LW / 2 - 190, this.LH / 2 - 26, 380, 52, 16); cx.fillStyle = "rgba(160,20,40,.9)"; cx.fill(); txt(this.msg.s, this.LW / 2, this.LH / 2 + 1, 18, "#fff"); cx.globalAlpha = 1; }
+    if (this.won) { rr(this.LW / 2 - 150, this.LH / 2 - 30, 300, 60, 18); cx.fillStyle = "rgba(20,120,70,.92)"; cx.fill(); txt("¡Nivel superado!", this.LW / 2, this.LH / 2 + 1, 26, "#fff"); }
+    // controles
+    for (const b of this.btns) {
+      const on = [...this.touch.values()].some(t => t.p === b.p && t.k === b.k), r = this.R * (b.big ? 1.2 : 1), c = b.p ? "#3da9fc" : "#ff7a45";
+      circ(b.x, b.y, r); cx.fillStyle = on ? rgba(c, .75) : "rgba(255,255,255,.12)"; cx.fill(); cx.strokeStyle = rgba(c, .9); cx.lineWidth = 3; cx.stroke();
+      cx.fillStyle = "#fff"; cx.beginPath(); const s = r * .38;
+      if (b.k === "l") { cx.moveTo(b.x - s, b.y); cx.lineTo(b.x + s * .7, b.y - s); cx.lineTo(b.x + s * .7, b.y + s); }
+      else if (b.k === "r") { cx.moveTo(b.x + s, b.y); cx.lineTo(b.x - s * .7, b.y - s); cx.lineTo(b.x - s * .7, b.y + s); }
+      else { cx.moveTo(b.x, b.y - s); cx.lineTo(b.x + s, b.y + s * .7); cx.lineTo(b.x - s, b.y + s * .7); }
+      cx.closePath(); cx.fill();
+    }
+    if (E.st === "count" && E.first) {
+      const help = E.net ? [[this.LW / 2, this.LH * .32, "Llega con tu personaje a tu puerta. ¡Los dos tienen que entrar!"]] : [[this.LW * .25, this.LH * .32, "Fuego: botones naranjas"], [this.LW * .75, this.LH * .32, "Agua: botones azules"]];
+      for (const [x, y, s] of help) hintBubble(x, y, s);
+    }
+    cx.restore();
+  },
+  hero(p, x, y, T, now) {
+    const w = T * .72, h = T * .95, bob = p.walk ? Math.abs(Math.sin(p.walk * 14)) * T * .06 : 0, fire = p.i === 0;
+    cx.save(); cx.translate(x, y - bob);
+    cx.fillStyle = "rgba(0,0,0,.35)"; cx.beginPath(); cx.ellipse(0, bob + 1, w * .45, T * .08, 0, 0, TAU); cx.fill();
+    // cuerpo
+    cx.fillStyle = fire ? "#b8321a" : "#1f5fb8"; rr(-w * .32, -h * .5, w * .64, h * .5, 5); cx.fill();
+    cx.fillStyle = "#23263f"; cx.fillRect(-w * .26, -h * .08, w * .18, h * .08); cx.fillRect(w * .08, -h * .08, w * .18, h * .08);
+    // cabeza: llama o gota
+    const hy = -h * .62, hr = w * .42, fl = Math.sin(now * 18 + p.i) * .06;
+    const g = cx.createRadialGradient(0, hy, 1, 0, hy, hr * 1.4);
+    if (fire) { g.addColorStop(0, "#ffe27a"); g.addColorStop(.6, "#ff8a2b"); g.addColorStop(1, "#ff4d1a"); } else { g.addColorStop(0, "#d6f3ff"); g.addColorStop(.6, "#5ab8ff"); g.addColorStop(1, "#2f7ff0"); }
+    cx.fillStyle = g; cx.beginPath();
+    if (fire) { cx.moveTo(-hr, hy + hr * .3); cx.quadraticCurveTo(-hr * 1.1, hy - hr * .6, -hr * .2, hy - hr * (1.5 + fl)); cx.quadraticCurveTo(hr * .1, hy - hr * .8, hr * .3, hy - hr * (1.9 - fl)); cx.quadraticCurveTo(hr * 1.2, hy - hr * .4, hr, hy + hr * .3); cx.quadraticCurveTo(0, hy + hr * 1.1, -hr, hy + hr * .3); }
+    else { cx.moveTo(0, hy - hr * 1.8); cx.quadraticCurveTo(hr * 1.3, hy - hr * .1, hr * .9, hy + hr * .5); cx.quadraticCurveTo(0, hy + hr * 1.3, -hr * .9, hy + hr * .5); cx.quadraticCurveTo(-hr * 1.3, hy - hr * .1, 0, hy - hr * 1.8); }
+    cx.fill();
+    const f = p.face * hr * .18;
+    for (const s of [-1, 1]) { cx.fillStyle = "#fff"; cx.beginPath(); cx.ellipse(s * hr * .36 + f, hy + hr * .1, hr * .2, hr * .26, 0, 0, TAU); cx.fill(); cx.fillStyle = "#1b1b2b"; circ(s * hr * .36 + f * 1.4, hy + hr * .14, hr * .11); cx.fill(); }
+    cx.restore();
+  },
+};
+/* nivel superado: pantalla de resultado (el anfitrión decide el siguiente) */
+function duoWin() {
+  if (E.st === "off" || E.game !== DUO) return;
+  const r = { lv: DUO.lv, t: Math.round(DUO.time), d: DUO.deaths, gr: DUO.gems.filter(g => g.t === "r" && g.got).length, gb: DUO.gems.filter(g => g.t === "b" && g.got).length, tr: DUO.gems.filter(g => g.t === "r").length, tb: DUO.gems.filter(g => g.t === "b").length };
+  const online = !!E.net; if (online) NET.send({ k: "duo", r });
+  stopMatch(); duoResult(r, online);
+}
+function duoResult(r, online) {
+  S.duo = Math.max(S.duo || 1, r.lv + 2); const key = "duo" + r.lv; if (!S[key] || r.t < S[key]) S[key] = r.t; save();
+  const host = !online || NET.role === "host", last = r.lv + 1 >= DUO_LEVELS.length, stars = 1 + (r.gr === r.tr && r.gb === r.tb ? 1 : 0) + (r.d === 0 ? 1 : 0);
+  const v = show(`<div style="height:14px"></div>
+    <div class="center" style="font-size:54px;letter-spacing:6px">${"★".repeat(stars)}<span style="opacity:.2">${"★".repeat(3 - stars)}</span></div>
+    <p class="label center">Fuego y Agua · nivel ${r.lv + 1}</p>
+    <h1 class="winner" style="color:#3ddc84">¡Nivel superado!</h1>
+    <div class="card" style="display:grid;gap:8px;font-weight:800">
+      <div>🔥 Gemas de Fuego: ${r.gr}/${r.tr}</div><div>💧 Gemas de Agua: ${r.gb}/${r.tb}</div>
+      <div>⏱ Tiempo: ${r.t} s ${S[key] === r.t ? "· ¡récord!" : `· récord ${S[key]} s`}</div><div>💀 Caídas: ${r.d}</div>
+      <div class="dim" style="font-size:12px">⭐ 1 por pasar el nivel · ⭐ todas las gemas · ⭐ sin caídas</div></div>
+    <div class="grow"></div>
+    ${host ? `${last ? `<p class="center" style="font:400 22px var(--disp);color:#ffd23f">¡Terminaron todos los niveles!</p>` : `<button class="btn green" id="nx">SIGUIENTE NIVEL</button>`}
+      <button class="btn ghost" id="rp">Repetir nivel</button><button class="btn ghost" id="mn">${online ? "Volver a la sala" : "Menú"}</button>`
+      : `<p class="center dim" style="font-weight:800">Esperando que ${esc(NET.names[0])} elija…</p><button class="btn ghost" id="lv">Salir de la sala</button>`}`);
+  const go = lv => { DUO.lv = lv; startMatch(DUO, online); };
+  if (host) {
+    if (!last) $("#nx", v).onclick = () => go(r.lv + 1);
+    $("#rp", v).onclick = () => go(r.lv);
+    $("#mn", v).onclick = () => { if (online) { NET.send({ k: "lobby" }); lobby(); } else home(); };
+  } else $("#lv", v).onclick = () => { NET.leave(); home(); };
+  setTimeout(() => confetti(120, innerWidth / 2, innerHeight * .25), 250);
+}
+
+/* =====================================================================
    PANTALLAS (HTML): inicio · cómo se juega · nombres · resultado
    ===================================================================== */
 const ART = {
@@ -1328,42 +2251,95 @@ const ART = {
     <g transform="translate(52 92)"><circle r="12" fill="#c0353b"/><circle r="9.3" fill="#ff5a5f"/><circle r="5" fill="#c0353b"/><circle r="12" fill="none" stroke="#fffc" stroke-width="1.5"/></g>
     <g transform="translate(66 24)"><circle r="12" fill="#1f74bd"/><circle r="9.3" fill="#3da9fc"/><circle r="5" fill="#1f74bd"/><circle r="12" fill="none" stroke="#fffc" stroke-width="1.5"/></g></svg>`,
 };
+Object.assign(ART, {
+  triki: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#2a1240"/><path d="M45 18v84M75 18v84M18 45h84M18 75h84" stroke="#ffffff55" stroke-width="5" stroke-linecap="round"/>
+    <path d="M24 24l14 14M38 24L24 38M84 54l14 14M98 54L84 68M54 84l14 14M68 84L54 98" stroke="#ff5a5f" stroke-width="7" stroke-linecap="round"/><circle cx="91" cy="31" r="9" fill="none" stroke="#3da9fc" stroke-width="7"/><circle cx="31" cy="91" r="9" fill="none" stroke="#3da9fc" stroke-width="7"/><path d="M22 22L98 98" stroke="#ffd23f" stroke-width="4" stroke-linecap="round" opacity=".8"/></svg>`,
+  ajedrez: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#6a74b8"/>${[0, 1, 2, 3].map(y => [0, 1, 2, 3].map(x => (x + y) % 2 ? "" : `<rect x="${x * 30}" y="${y * 30}" width="30" height="30" fill="#cfd6f5"/>`).join("")).join("")}
+    <g transform="translate(20 18) scale(1.8)" fill="#fbfbff" stroke="#23263f" stroke-width="1.6" stroke-linejoin="round"><path d="M14 39h19v-3c0-10-3-15-3-22 0-3-2.5-6-6.5-6.5L21 4l-2 4.5c-4.5 2-8 6.5-9 12l3 2.5 5.5-3.5c1 2.5-4 5.5-4.5 10.5z"/></g>
+    <g transform="translate(66 60) scale(1.05)" fill="#23263f" stroke="#e9ebff" stroke-width="1.6"><path d="M21 3.5h3v4h4v3h-4v4h-3v-4h-4v-3h4z"/><path d="M22.5 16c-8.5 0-12.5 5-10.5 12.5l1 4h19l1-4c2-7.5-2-12.5-10.5-12.5z"/><rect x="11" y="33" width="23" height="6" rx="2"/></g></svg>`,
+  ludo: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#f5f6ff"/><rect width="48" height="48" y="72" fill="#ff5a5f"/><rect width="48" height="48" fill="#ffd23f"/><rect width="48" height="48" x="72" fill="#3da9fc"/><rect width="48" height="48" x="72" y="72" fill="#2ec4b6"/>
+    ${[[0, 72], [0, 0], [72, 0], [72, 72]].map(([x, y]) => `<rect x="${x + 8}" y="${y + 8}" width="32" height="32" rx="6" fill="#fff"/>`).join("")}
+    <polygon points="48,72 72,72 60,60" fill="#ff5a5f"/><polygon points="48,48 48,72 60,60" fill="#ffd23f"/><polygon points="48,48 72,48 60,60" fill="#3da9fc"/><polygon points="72,48 72,72 60,60" fill="#2ec4b6"/>
+    <circle cx="18" cy="90" r="6" fill="#ff5a5f" stroke="#fff" stroke-width="2"/><circle cx="30" cy="102" r="6" fill="#ff5a5f" stroke="#fff" stroke-width="2"/><circle cx="90" cy="18" r="6" fill="#3da9fc" stroke="#fff" stroke-width="2"/>
+    <g transform="translate(78 78) rotate(12)"><rect width="30" height="30" rx="7" fill="#fff" stroke="#23263f" stroke-width="2.5"/><circle cx="8" cy="8" r="3" fill="#23263f"/><circle cx="15" cy="15" r="3" fill="#23263f"/><circle cx="22" cy="22" r="3" fill="#23263f"/></g></svg>`,
+  cartas: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#1b1f42"/>
+    <g transform="translate(26 30) rotate(-16)"><rect width="44" height="64" rx="7" fill="#3d8bfc" stroke="#fff" stroke-width="3"/><text x="22" y="42" font-size="26" font-family="Lilita One,sans-serif" fill="#fff" text-anchor="middle">7</text></g>
+    <g transform="translate(46 24)"><rect width="44" height="64" rx="7" fill="#ffc93c" stroke="#fff" stroke-width="3"/><text x="22" y="42" font-size="22" font-family="Lilita One,sans-serif" fill="#fff" text-anchor="middle" stroke="#0003" stroke-width="1">+2</text></g>
+    <g transform="translate(66 30) rotate(16)"><rect width="44" height="64" rx="7" fill="#23263f" stroke="#fff" stroke-width="3"/><path d="M22 32V18a14 14 0 0 1 14 14z" fill="#ff5a5f"/><path d="M22 32h14a14 14 0 0 1-14 14z" fill="#3d8bfc"/><path d="M22 32v14A14 14 0 0 1 8 32z" fill="#22b8a7"/><path d="M22 32H8a14 14 0 0 1 14-14z" fill="#ffc93c"/></g></svg>`,
+  duo: `<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#141226"/><rect y="92" width="120" height="28" fill="#3b3558"/><rect x="18" y="92" width="30" height="8" fill="#ff7a1a"/><rect x="70" y="92" width="30" height="8" fill="#2f8cff"/>
+    <rect x="86" y="30" width="22" height="34" rx="11" fill="#123a66" stroke="#5ab8ff" stroke-width="3"/><rect x="60" y="64" width="60" height="8" fill="#3b3558"/>
+    <g transform="translate(34 84)"><rect x="-8" y="-18" width="16" height="18" rx="4" fill="#b8321a"/><path d="M-11 -20q-2-12 9-22q-1 8 4 10q3-6 1-12q12 10 8 24q-10 10-22 0z" fill="#ff8a2b"/><circle cx="-4" cy="-24" r="2.4" fill="#fff"/><circle cx="4" cy="-24" r="2.4" fill="#fff"/></g>
+    <g transform="translate(84 84)"><rect x="-8" y="-18" width="16" height="18" rx="4" fill="#1f5fb8"/><path d="M0 -46q14 16 10 24q-10 10-20 0q-4-8 10-24z" fill="#5ab8ff"/><circle cx="-4" cy="-26" r="2.4" fill="#fff"/><circle cx="4" cy="-26" r="2.4" fill="#fff"/></g>
+    <path d="M58 40l5 6-5 6-5-6z" fill="#ff6b3d"/><path d="M40 52l5 6-5 6-5-6z" fill="#3da9fc"/></svg>`,
+});
 const GAMES = [
-  { g: BOMB, c1: "#ff7a45", c2: "#c2362f", tag: "Pon bombas, rompe muros y atrapa a tu rival antes de que te atrape a ti.", tags: ["Estrategia", "Al mejor de 3"],
+  { g: BOMB, cat: "accion", c1: "#ff7a45", c2: "#c2362f", tag: "Pon bombas, rompe muros y atrapa a tu rival antes de que te atrape a ti.", tags: ["Estrategia", "Al mejor de 3"],
     steps: ["Mueve a tu personaje con el <b>joystick</b> (lado izquierdo de tu zona) y pon bombas con el <b>botón</b> (lado derecho).",
       "Las bombas explotan en <b>cruz</b>: rompen ladrillos y eliminan a quien toquen… <b>¡también a ti!</b> Pon la bomba y escóndete detrás de un bloque.",
       "Los ladrillos esconden poderes: <b>+1 bomba</b>, <b>+1 fuego</b> (explosión más larga) y <b>velocidad</b>. Al llegar a 0:00 la arena se empieza a cerrar."],
     goal: "Gana la ronda quien quede vivo. Gana la partida el primero en ganar 2 rondas." },
-  { g: DUEL, c1: "#6a5ae0", c2: "#2a1d7a", tag: "Cada uno en su lado: esquiva, apunta y dispara cara a cara.", tags: ["Acción", "Al mejor de 3"],
+  { g: DUEL, cat: "accion", c1: "#6a5ae0", c2: "#2a1d7a", tag: "Cada uno en su lado: esquiva, apunta y dispara cara a cara.", tags: ["Acción", "Al mejor de 3"],
     steps: ["<b>Desliza</b> el dedo en la barra de tu zona para mover tu nave a los lados.",
       "Toca <b>DISPARAR</b>. Tienes 3 balas que se recargan solas. Si disparas <b>mientras te mueves</b>, la bala sale en diagonal y rebota en las paredes.",
       "Dispárale a los <b>poderes</b> que cruzan por el centro para ganarlos: triple disparo, ráfaga, escudo y vida extra. Las balas que chocan se anulan."],
     goal: "Cada uno tiene 3 vidas. Quien se queda sin vidas pierde la ronda. Gana el primero en ganar 2." },
-  { g: HOCKEY, c1: "#18a0b8", c2: "#0d4a73", tag: "Rápido y a lo loco, como la mesa de aire de las maquinitas.", tags: ["Reflejos", "A 5 goles"],
+  { g: HOCKEY, cat: "accion", c1: "#18a0b8", c2: "#0d4a73", tag: "Rápido y a lo loco, como la mesa de aire de las maquinitas.", tags: ["Reflejos", "A 5 goles"],
     steps: ["Cada uno pone <b>un dedo en su mitad</b> de la mesa y mueve su mazo.",
       "Golpea el disco para meterlo en la <b>portería del otro</b>. Mientras más rápido lo golpeas, más fuerte sale.",
       "No puedes cruzar la <b>línea del centro</b>. Defiende tu portería."],
     goal: "Gana el primero en meter 5 goles." },
+  { g: CHESS, cat: "mesa", c1: "#8d99c7", c2: "#394478", tag: "Ajedrez completo, con todas las reglas.", tags: ["Estrategia", "Reglas oficiales"],
+    steps: ["Toca una pieza para ver a dónde puede moverse y luego toca la casilla de destino.",
+      "Están todas las reglas: <b>enroque</b>, captura <b>al paso</b> y <b>coronación</b> (tú eliges la pieza). Si tu rey está en jaque, solo te deja hacer jugadas que lo salven.",
+      "El jugador <b>rojo lleva las blancas</b> y empieza. En línea, cada uno ve sus piezas abajo."],
+    goal: "Gana quien dé jaque mate o si el rival se rinde. El ahogado, la falta de material, las 50 jugadas o la triple repetición son tablas.",
+    setup: "En el mismo celular se turnan: las blancas van abajo." },
+  { g: TRIKI, cat: "mesa", c1: "#ff6b8b", c2: "#7a2a8a", tag: "El clásico X y O: rápido, pero con estrategia.", tags: ["Clásico", "A 3 victorias"],
+    steps: ["En tu turno, toca una casilla vacía para poner tu <b style='color:#ff5a5f'>X</b> o tu <b style='color:#3da9fc'>O</b>.", "Haz <b>3 en línea</b>: en fila, en columna o en diagonal.", "Cada ronda empieza un jugador distinto."],
+    goal: "Gana la partida el primero en ganar 3 rondas.", setup: "Se turnan en el mismo celular." },
+  { g: LUDO, cat: "mesa", c1: "#ffb627", c2: "#2e9e6a", tag: "Tira el dado, saca tus fichas y llévalas a la meta.", tags: ["2 a 4 jugadores", "Suerte"], np: 1,
+    steps: ["Toca el <b>dado</b> en tu turno. Con un <b>6</b> sacas una ficha de tu casa.",
+      "Toca la ficha que quieres mover: las que se pueden mover <b>brillan</b>. Si caes sobre una ficha rival, la mandas a su casa. Las casillas con <b>estrella</b> y las de salida son seguras.",
+      "Si sacas 6, capturas o llegas a la meta, <b>tiras otra vez</b>. Con tres 6 seguidos pierdes el turno."],
+    goal: "Gana el primero en llevar sus 4 fichas a la meta del centro.", setup: "Se turnan en el mismo celular. Con 3 o 4 jugadores se usan también Amarillo y Verde." },
+  { g: CARDS, cat: "mesa", c1: "#ff5a5f", c2: "#3d8bfc", tag: "Quédate sin cartas antes que nadie. Cuidado con los +4.", tags: ["2 a 4 jugadores", "Cartas"], np: 1,
+    steps: ["Juega una carta del <b>mismo color o número</b> que la de la mesa. Los <b>comodines</b> sirven siempre y te dejan elegir el color.",
+      "Especiales: <b>⊘</b> salta al siguiente, <b>⇄</b> cambia el sentido, <b>+2</b> y <b>+4</b> hacen robar al siguiente y le quitan el turno. Si no tienes jugada, toca el mazo para robar.",
+      "Cuando te quede <b>una sola carta</b>, toca <b>¡ÚLTIMA!</b> rápido. Si se te olvida, robas 2."],
+    goal: "Gana el primero que se quede sin cartas.", setup: "En el mismo celular, cuando le toca a otro le pasas el celular: tus cartas se esconden solas." },
+  { g: DUO, cat: "aventura", c1: "#ff7a1a", c2: "#1f74bd", tag: "Fuego y Agua tienen que ayudarse para escapar del templo.", tags: ["Cooperativo", `${DUO_LEVELS.length} niveles`], lv: 1,
+    steps: ["<b>Fuego</b> puede pisar lava y <b>Agua</b> puede pisar agua. El charco del otro color los elimina, y el <b>veneno verde</b> elimina a los dos.",
+      "Muévete con <b>◀ ▶</b> y salta con <b>▲</b>. Pon el celular <b>de lado</b>: Fuego usa los botones de la izquierda y Agua los de la derecha. En línea, cada uno maneja a su personaje.",
+      "Los <b>botones morados</b> abren compuertas mientras alguien está encima, y los <b>elevadores</b> suben cuando te paras en ellos. ¡Tienen que ayudarse!"],
+    goal: "Pasan el nivel cuando Fuego y Agua llegan a sus puertas. Junten todas las gemas y no se caigan para ganar 3 estrellas.",
+    setup: "Pongan el celular de lado entre los dos. Con teclado: Fuego usa WASD y Agua las flechas." },
 ];
 function show(html) { const w = h(`<div class="wrap">${html}</div>`); $("#app").replaceChildren(w); $("#app").scrollTop = 0; return w; }
 const tot = i => Object.values(S.wins).reduce((a, v) => a + (v[i] || 0), 0);
-
+function launch(g, online, opts = {}) {
+  if (g.kind === "turn") return startTurn(g, online, opts);
+  if (g === DUO && opts.lv !== undefined) DUO.lv = opts.lv;
+  startMatch(g, online);
+}
+const CATS = [["accion", "⚡ Acción"], ["mesa", "♟️ Juegos de mesa"], ["aventura", "🗺️ Aventura para dos"]];
+function gcards(list, small, attr = "") {
+  return list.map(x => { const k = GAMES.indexOf(x); return `<button class="gcard ${small ? "sm" : ""}" data-k="${k}" style="--c1:${x.c1};--c2:${x.c2}" ${attr}>${ART[x.g.id]}<div><h3>${x.g.name}</h3>${small ? "" : `<p>${x.tag}</p>`}<div class="tags">${x.tags.map(t => `<span>${t}</span>`).join("")}</div></div></button>`; }).join("");
+}
 function home() {
   const v = show(`
     <div style="height:8px"></div>
     <div class="logo"><span class="a">A</span><span class="b">R</span><span class="c">E</span><span class="d">N</span><span class="a">A</span><small>MINI</small></div>
-    <p class="center dim" style="font-weight:800">Juegos para <b style="color:#fff">2 personas</b>: cada uno en su celular o los dos en el mismo.</p>
+    <p class="center dim" style="font-weight:800">${GAMES.length} juegos para jugar con amigos: cada uno en su celular o todos en el mismo.</p>
     <button class="gcard online" id="onl" style="--c1:#ffb627;--c2:#e8590c;grid-template-columns:64px 1fr">
       <svg viewBox="0 0 64 64" style="width:64px;height:64px;border-radius:14px"><rect width="64" height="64" fill="#0005"/><rect x="8" y="14" width="18" height="34" rx="4" fill="#ff5a5f"/><rect x="38" y="14" width="18" height="34" rx="4" fill="#3da9fc"/><path d="M28 24q4-5 8 0M26 20q6-8 12 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="32" cy="28" r="2.5" fill="#fff"/></svg>
       <div><h3>Jugar en línea</h3><p>Cada uno en su celular, estén donde estén. Crea una sala y pásale el código a tu amigo.</p>${S.onl[0] + S.onl[1] ? `<div class="tags"><span>Tu récord en línea: ${S.onl[0]} ganadas · ${S.onl[1]} perdidas</span></div>` : ""}</div></button>
-    <p class="label" style="margin-top:6px">En el mismo celular · pongan el teléfono en la mesa</p>
     <div class="rival">
       <div class="pl"><span class="nm" style="color:var(--p1)">${esc(nm(0))}</span><span class="w">${tot(0)} victorias</span></div>
       <div class="vs">VS</div>
       <div class="pl"><span class="nm" style="color:var(--p2)">${esc(nm(1))}</span><span class="w">${tot(1)} victorias</span></div>
       <button id="names">Cambiar nombres</button>
     </div>
-    ${GAMES.map((x, k) => `<button class="gcard" data-k="${k}" style="--c1:${x.c1};--c2:${x.c2}">${ART[x.g.id]}<div><h3>${x.g.name}</h3><p>${x.tag}</p><div class="tags">${x.tags.map(t => `<span>${t}</span>`).join("")}</div></div></button>`).join("")}
+    ${CATS.map(([c, t]) => `<p class="label" style="margin-top:6px">${t} · en el mismo celular</p>${c === "mesa" ? `<div class="ggrid">${gcards(GAMES.filter(x => x.cat === c), true)}</div>` : gcards(GAMES.filter(x => x.cat === c))}`).join("")}
     <div style="height:4px"></div>`);
   v.querySelectorAll(".gcard[data-k]").forEach(b => b.onclick = () => info(GAMES[+b.dataset.k]));
   $("#onl", v).onclick = () => onlineMenu();
@@ -1372,10 +2348,10 @@ function home() {
 function names() {
   const v = show(`<div class="topbar"><button class="back" id="bk">‹ Volver</button></div>
     <h2 style="font-size:34px">¿Quién juega?</h2>
-    <p class="dim" style="font-weight:700">El jugador <b style="color:var(--p1)">rojo</b> se sienta abajo y el <b style="color:var(--p2)">azul</b> enfrente.</p>
-    ${[0, 1].map(i => `<label class="namef" style="--c:${COL[i]}"><svg width="30" height="30"><circle cx="15" cy="15" r="14" fill="${COL[i]}"/></svg><input maxlength="10" value="${esc(nm(i))}" data-i="${i}" aria-label="Nombre del jugador ${i + 1}"></label>`).join("")}
+    <p class="dim" style="font-weight:700">En los juegos de acción el <b style="color:var(--p1)">rojo</b> se sienta abajo y el <b style="color:var(--p2)">azul</b> enfrente. Amarillo y Verde se usan en Ludo y Última Carta con 3 o 4 jugadores.</p>
+    ${[0, 1, 2, 3].map(i => `<label class="namef" style="--c:${COL[i]}"><svg width="30" height="30"><circle cx="15" cy="15" r="14" fill="${COL[i]}"/></svg><input maxlength="10" value="${esc(S.names[i] || PNAMES[i])}" data-i="${i}" aria-label="Nombre del jugador ${i + 1}"></label>`).join("")}
     <div class="grow"></div><button class="btn green" id="ok">LISTO</button>`);
-  const done = () => { v.querySelectorAll("input").forEach(inp => S.names[+inp.dataset.i] = inp.value.trim() || (inp.dataset.i === "0" ? "Rojo" : "Azul")); save(); home(); };
+  const done = () => { v.querySelectorAll("input").forEach(inp => S.names[+inp.dataset.i] = inp.value.trim() || PNAMES[+inp.dataset.i]); save(); home(); };
   $("#bk", v).onclick = done; $("#ok", v).onclick = done;
 }
 function phone(id) {
@@ -1402,19 +2378,26 @@ function phone(id) {
   return `<svg class="phone" viewBox="0 0 160 280"><rect x="3" y="3" width="154" height="274" rx="24" fill="#0b0d1f" stroke="#fff4" stroke-width="3"/>${zone(14, 1, true)}${board}${zone(206, 0, false)}</svg>`;
 }
 function info(x, mode) {
-  const g = x.g, rec = S.wins[g.id] || [0, 0], onl = !!mode, N = i => onl ? NET.names[i] : nm(i);
+  const g = x.g, rec = S.wins[g.id] || [0, 0], onl = !!mode, N = i => onl ? NET.names[i] : nm(i), turn = g.kind === "turn", pads = !turn && g !== DUO;
+  const opts = { np: 2 }; const maxLv = Math.min(S.duo || 1, DUO_LEVELS.length); if (g === DUO) opts.lv = maxLv - 1;
+  const npHtml = !onl && x.np ? `<p class="label">¿Cuántos juegan?</p><div class="row" id="np">${[2, 3, 4].map(n => `<button class="chip ${n === 2 ? "on" : ""}" data-n="${n}">${n}</button>`).join("")}</div>` : "";
+  const lvHtml = g === DUO && mode !== "guest" ? `<p class="label">Nivel</p><div class="row" id="lv">${DUO_LEVELS.map((L, k) => `<button class="chip ${k === opts.lv ? "on" : ""}" data-n="${k}" ${k >= maxLv ? "disabled" : ""} title="${esc(L.name)}">${k >= maxLv ? "🔒" : k + 1}</button>`).join("")}</div><p class="dim center" style="font-size:12px;font-weight:800;margin-top:-6px">Pasa un nivel para desbloquear el siguiente</p>` : "";
+  const setupTxt = onl ? (pads ? `En línea, <b>cada uno se ve abajo</b> en su propio celular y tu rival aparece arriba.` : g === DUO ? "Cada uno maneja a su personaje desde su celular. Pongan el celular de lado." : "Cada uno juega desde su celular; solo puedes tocar en tu turno.") + ` Tu color: <b style="color:${COL[mode === "host" ? 0 : 1]}">${mode === "host" ? "ROJO" : "AZUL"}</b>${g === DUO ? ` (${mode === "host" ? "Fuego" : "Agua"})` : g === CHESS ? ` (${mode === "host" ? "blancas" : "negras"})` : ""}.`
+    : x.setup || `Pongan el celular plano en la mesa: <b style="color:var(--p1)">${esc(nm(0))}</b> del lado de abajo y <b style="color:var(--p2)">${esc(nm(1))}</b> del lado de arriba. Desactiven el giro automático de pantalla.`;
   const v = show(`<div class="topbar"><button class="back" id="bk">${onl ? (mode === "host" ? "‹ Sala" : "") : "‹ Juegos"}</button>${onl ? `<span class="label">En línea · ${esc(N(0))} vs ${esc(N(1))}</span>` : ""}</div>
-    <div class="hero">${ART[g.id]}<div><h2>${g.name}</h2><p class="dim" style="font-weight:800;margin-top:6px">${onl ? (mode === "host" ? "Tú eres el rojo" : "Tú eres el azul") : `${esc(nm(0))} ${rec[0]} · ${rec[1]} ${esc(nm(1))}`}</p></div></div>
+    <div class="hero">${ART[g.id]}<div><h2>${g.name}</h2><p class="dim" style="font-weight:800;margin-top:6px">${onl ? (mode === "host" ? "Tú eres el rojo" : "Tú eres el azul") : pads ? `${esc(nm(0))} ${rec[0]} · ${rec[1]} ${esc(nm(1))}` : x.tag}</p></div></div>
+    ${npHtml}${lvHtml}
     <p class="label">Cómo se juega</p>
-    <div style="display:grid;grid-template-columns:1fr;gap:12px">${onl ? phoneOnline(g.id, mode === "host" ? 0 : 1) : phone(g.id)}</div>
+    ${pads ? `<div style="display:grid;grid-template-columns:1fr;gap:12px">${onl ? phoneOnline(g.id, mode === "host" ? 0 : 1) : phone(g.id)}</div>` : ""}
     <div class="steps">${x.steps.map((s, k) => `<div class="step"><b class="n">${k + 1}</b><p>${s}</p></div>`).join("")}</div>
     <div class="goal">🏆 ${x.goal}</div>
-    ${onl ? `<div class="setup"><span>En línea, <b>cada uno se ve abajo</b> en su propio celular y tu rival aparece arriba. Tu color: <b style="color:${COL[mode === "host" ? 0 : 1]}">${mode === "host" ? "ROJO" : "AZUL"}</b>.</span></div>` : `<div class="setup"><svg width="30" height="30" viewBox="0 0 30 30"><rect x="8" y="2" width="14" height="26" rx="3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="15" cy="7" r="2" fill="${COL[1]}"/><circle cx="15" cy="23" r="2" fill="${COL[0]}"/></svg>
-      <span>Pongan el celular plano en la mesa: <b style="color:var(--p1)">${esc(nm(0))}</b> del lado de abajo y <b style="color:var(--p2)">${esc(nm(1))}</b> del lado de arriba. Desactiven el giro automático de pantalla.</span></div>`}
+    <div class="setup"><span>${setupTxt}</span></div>
     <div class="stick">${mode === "guest" ? `<button class="btn ghost" id="go" disabled style="opacity:.85">Esperando que ${esc(N(0))} empiece…</button>` : `<button class="btn green" id="go">¡JUGAR!</button>`}</div>`);
+  const chips = (sel, key) => v.querySelectorAll(sel + " .chip").forEach(b => b.onclick = () => { if (b.disabled) return; opts[key] = +b.dataset.n; v.querySelectorAll(sel + " .chip").forEach(z => z.classList.toggle("on", z === b)); });
+  chips("#np", "np"); chips("#lv", "lv");
   if (mode === "guest") { $("#bk", v).style.display = "none"; return; }
-  if (mode === "host") { $("#bk", v).onclick = () => { NET.send({ k: "lobby" }); lobby(); }; $("#go", v).onclick = () => startMatch(g, true); return; }
-  $("#bk", v).onclick = home; $("#go", v).onclick = () => startMatch(g);
+  if (mode === "host") { $("#bk", v).onclick = () => { NET.send({ k: "lobby" }); lobby(); }; $("#go", v).onclick = () => launch(g, true, opts); return; }
+  $("#bk", v).onclick = home; $("#go", v).onclick = () => launch(g, false, opts);
 }
 function result(g, w, sc) {
   const x = GAMES.find(q => q.g === g), rec = S.wins[g.id];
@@ -1547,7 +2530,7 @@ function onNetBye() {
   $("#bk", v).onclick = home;
 }
 function resultOnline(w, sc) {
-  const me = NET.me, won = w === me, g = [BOMB, DUEL, HOCKEY].find(x => x.id === NET.game) || E.game || BOMB, host = NET.role === "host", N = NET.names;
+  const me = NET.me, won = w === me, g = ALLG().find(x => x.id === NET.game) || E.game || BOMB, host = NET.role === "host", N = NET.names;
   S.onl[won ? 0 : 1]++; save();
   const v = show(`<div style="height:10px"></div>
     <svg class="trophy" viewBox="0 0 120 120"><path d="M30 18h60v22a30 30 0 0 1-60 0z" fill="${won ? "#ffd23f" : "#6b7194"}"/><path d="M30 26H16a14 14 0 0 0 16 20M90 26h14a14 14 0 0 1-16 20" fill="none" stroke="${won ? "#ffd23f" : "#6b7194"}" stroke-width="7"/>
@@ -1560,7 +2543,7 @@ function resultOnline(w, sc) {
     ${host ? `<button class="btn green" id="re">REVANCHA</button><button class="btn ghost" id="ot">Elegir otro juego</button>`
       : `<button class="btn green" id="rq">PEDIR REVANCHA</button><p class="center dim" style="font-weight:800">Esperando que ${esc(N[0])} elija…</p>`}
     <button class="btn ghost" id="lv">Salir de la sala</button>`);
-  if (host) { $("#re", v).onclick = () => startMatch(g, true); $("#ot", v).onclick = () => { NET.send({ k: "lobby" }); lobby(); }; }
+  if (host) { $("#re", v).onclick = () => launch(g, true, { np: 2, lv: DUO.lv }); $("#ot", v).onclick = () => { NET.send({ k: "lobby" }); lobby(); }; }
   else $("#rq", v).onclick = () => { NET.send({ k: "sug", game: g.id }); toast("Le pediste la revancha"); };
   $("#lv", v).onclick = () => { NET.leave(); home(); };
   if (won) setTimeout(() => confetti(150, innerWidth / 2, innerHeight * .25), 250);
@@ -1568,13 +2551,13 @@ function resultOnline(w, sc) {
 /* mensajes de sala (fuera de la partida) */
 const _onNetMsg = onNetMsg;
 onNetMsg = function (m) {
-  if (m.k === "pick" && NET.role === "guest") { const x = GAMES.find(q => q.g.id === m.game); if (x) { NET.game = m.game; if (E.st !== "off") stopMatch(); info(x, "guest"); } return; }
+  if (m.k === "pick" && NET.role === "guest") { const x = GAMES.find(q => q.g.id === m.game); if (x) { NET.game = m.game; if (E.st !== "off") stopMatch(); tStop(); info(x, "guest"); } return; }
   if (m.k === "start" && NET.role === "guest") NET.game = m.game;
   if (m.k === "sug" && NET.role === "host") { const x = GAMES.find(q => q.g.id === m.game); if (x) { toast(`${NET.names[1]} quiere jugar ${x.g.name}`); sfx.pick(); } return; }
   _onNetMsg(m);
 };
 
-window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound };
+window.AM = { E, Pads, BOMB, DUEL, HOCKEY, NET, startMatch, endRound, T, TRIKI, CHESS, LUDO, CARDS, DUO, tApply, tAct, launch, S };
 /* arranque: si el link trae #sala-XXXX, ir directo a unirse */
 (() => { const m = location.hash.match(/sala-([A-Z0-9]{4})/i); if (m) onlineMenu(m[1].toUpperCase()); else home(); })();
 function phoneOnline(id, me) {
