@@ -263,7 +263,7 @@ body.tplay #app{padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(
 .bt-cus{display:flex;gap:8px}.bt-cus textarea{flex:1;background:var(--bg2);border:2px solid var(--line);border-radius:12px;color:#fff;font:800 15px var(--body);padding:8px;resize:none;user-select:text;-webkit-user-select:text}.bt-cus .btn{width:auto;padding:10px 16px;font-size:16px}
 .bt-card{border-radius:18px;padding:16px;text-align:center;display:grid;gap:6px;animation:pop .35s}.bt-card span{font:900 12px var(--body);letter-spacing:.15em}.bt-card b{font:400 24px var(--disp)}
 .bt-card.v{background:linear-gradient(135deg,#3d8bfc,#1f4fa8)}.bt-card.r{background:linear-gradient(135deg,#ff5a5f,#a82a3a)}.bt-card.s{background:linear-gradient(135deg,#ffb627,#b87400)}
-.bt-up{display:flex;gap:8px}.bt-up .btn{flex:1;font-size:18px}.bt-note{text-align:center;color:var(--dim);font-weight:800;font-size:12px}
+.bt-up{display:flex;flex-wrap:wrap;gap:8px}.bt-up .btn{flex:1 1 40%;font-size:16px;padding-left:6px;padding-right:6px}.bt-up .bt-gal{flex-basis:100%}.bt-miss{color:#ffd23f!important}.bt-note{text-align:center;color:var(--dim);font-weight:800;font-size:12px}
 .bt-load{font-weight:800}
 .mview{position:fixed;inset:0;z-index:95;background:rgba(5,6,16,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 .mv-box{position:relative;max-width:100%;max-height:74vh;display:grid;place-items:center;overflow:hidden;border-radius:14px}
@@ -2723,15 +2723,16 @@ const MEDIA = {
   put(id, type, url) { this.store[id] = Object.assign(this.store[id] || {}, { type, url, ready: true }); },
   clear() { for (const k in this.store) { const m = this.store[k]; if (m.url && m.url.startsWith("blob:")) URL.revokeObjectURL(m.url); } this.store = {}; closeViewer(); },
   async prepare(file) {
-    if (file.type.startsWith("image/")) {
+    const ty = file.type || (/\.(mov|mp4|m4v|webm|3gp)$/i.test(file.name) ? "video/" : "image/");
+    if (ty.startsWith("image/")) {
       const url = URL.createObjectURL(file), img = new Image(); img.src = url; await img.decode();
       const k = Math.min(1, 1080 / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
       c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k); c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
       return { type: "img", data: c.toDataURL("image/jpeg", .74) };
     }
-    if (file.type.startsWith("video/")) {
+    if (ty.startsWith("video/")) {
       const lim = !T.online ? 1e12 : NET.kind() === "mqtt" ? 4e6 : 14e6;
-      if (file.size > lim) throw new Error(`El video pesa ${(file.size / 1e6).toFixed(1)} MB. Graba uno más corto (máximo ${Math.round(lim / 1e6)} MB, unos 10 segundos).`);
+      if (file.size > lim) throw new Error(`El video pesa ${(file.size / 1e6).toFixed(1)} MB. Elige o graba uno más corto (máximo ${Math.round(lim / 1e6)} MB, unos 10 segundos).`);
       if (!T.online) return { type: "vid", blob: file };
       const data = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
       return { type: "vid", data };
@@ -2776,16 +2777,19 @@ const BOTTLE = {
   move(s, p, a) {
     if (s.w !== null) return null;
     if (a.end) { if (p !== 0) return null; s.w = -1; s.n++; return s; }
-    if (a.landed) { if (s.phase !== "spinning") return null; s.phase = "choose"; s.turn = s.target; s.n++; return s; }
+    if (a.landed) { if (s.phase !== "spinning") return null; if (s.mid) { s.mid = false; s.miss = true; s.phase = "spin"; s.turn = s.spinner; s.target = -1; s.asker = -1; s.n++; return s; } s.phase = "choose"; s.turn = s.target; s.n++; return s; }
     if (p !== s.turn && !(a.done && p === s.asker && s.phase === "do")) return null;
     if (a.spin) {
       if (s.phase !== "spin") return null;
       let cand = [...Array(s.np).keys()].filter(i => i !== s.spinner); if (s.np > 2 && cand.length > 1) cand = cand.filter(i => i !== s.lastT);
       const t = cand[Math.floor(Math.random() * cand.length)], step = 360 / s.np;
-      const cur = ((s.ang % 360) + 360) % 360, want = this.seatAng(s, t) + rnd(-.28, .28) * step;
+      const mid = s.miss ? Math.random() < .1 : Math.random() < .15;          // a veces queda en el medio: nadie, se vuelve a girar
+      const jit = Math.min(8, step * .1), cur = ((s.ang % 360) + 360) % 360, want = this.seatAng(s, t) + (mid ? step / 2 : rnd(-jit, jit));
       s.ang = s.ang + (5 + Math.floor(Math.random() * 2)) * 360 + ((want - cur + 720) % 360);
       let back = -1, bd = 1e9; for (let i = 0; i < s.np; i++) { if (i === t) continue; const d = Math.abs(((this.seatAng(s, i) - (want + 180)) % 360 + 540) % 360 - 180); if (d < bd) { bd = d; back = i; } }
-      s.target = t; s.asker = back; s.lastT = t; s.phase = "spinning"; s.n++; return s;
+      s.miss = false; s.phase = "spinning"; s.n++;
+      if (mid) { s.mid = true; s.target = -1; s.asker = -1; return s; }
+      s.target = t; s.asker = back; s.lastT = t; return s;
     }
     if (a.pick) {
       if (s.phase !== "choose") return null;
@@ -2817,6 +2821,7 @@ const BOTTLE = {
       const fresh = this.lastN !== undefined && prev; this.lastN = s.n;
       if (fresh && s.phase === "spinning" && prev.phase !== "spinning") { let k = 0; clearInterval(this.tk); this.tk = setInterval(() => { tone(300 + k * 8, .03, "triangle", .06); if (++k > 26) clearInterval(this.tk); }, 90 + k); }
       if (fresh && s.phase === "choose" && prev.phase === "spinning") { sfx.win(); vib(80); }
+      if (fresh && s.miss && prev.phase === "spinning") { sfx.lose(); vib(40); }
       if (fresh && s.media && (!prev.media || prev.media.id !== s.media.id) && this.sent !== s.media.id) this.autoOpen = s.media.id;
       if (!s.media && Object.keys(MEDIA.store).length && s.phase === "spin") MEDIA.clear();
     }
@@ -2834,7 +2839,7 @@ const BOTTLE = {
     table.querySelectorAll(".bt-p").forEach(el => { const i = +el.dataset.i; el.classList.toggle("tgt", !spinning && i === s.target); el.classList.toggle("ask", !spinning && i === s.asker && s.phase !== "spin"); el.classList.toggle("sp", s.phase === "spin" && i === s.spinner); });
     const P = root.querySelector(".bt-panel"); let html = "";
     const info = s.target >= 0 && !spinning ? `<p class="bt-who">🍾 La botella apunta a <b style="color:${COL[s.target % COL.length]}">${N(s.target)}</b> · la parte de atrás a <b style="color:${COL[s.asker % COL.length]}">${N(s.asker)}</b></p>` : "";
-    if (s.phase === "spin") html = mine(s.spinner) ? `<p class="bt-h">${ctx.online ? "¡Te toca girar!" : `Gira ${N(s.spinner)}`}</p><button class="btn gold bt-go" id="spin">🍾 ¡GIRAR LA BOTELLA!</button>` : `<p class="bt-h">Le toca girar a ${N(s.spinner)}…</p>`;
+    if (s.phase === "spin") html = (s.miss ? `<p class="bt-who bt-miss">😅 ¡La botella quedó en el medio! No le cayó a nadie.</p>` : "") + (mine(s.spinner) ? `<p class="bt-h">${s.miss ? (ctx.online ? "¡Gírala otra vez!" : `${N(s.spinner)}, gírala otra vez`) : ctx.online ? "¡Te toca girar!" : `Gira ${N(s.spinner)}`}</p><button class="btn gold bt-go" id="spin">🍾 ${s.miss ? "¡GIRAR DE NUEVO!" : "¡GIRAR LA BOTELLA!"}</button>` : `<p class="bt-h">${s.miss ? "Vuelve a girar" : "Le toca girar a"} ${N(s.spinner)}…</p>`);
     else if (spinning) html = `<p class="bt-h">Girando…</p>`;
     else if (s.phase === "choose") html = info + (mine(s.target) ? `<p class="bt-h">${ctx.online ? "¡Te tocó! ¿Qué eliges?" : `${N(s.target)}, ¿qué eliges?`}</p><div class="bt-ch"><button class="btn" id="pv" style="background:#3d8bfc">🗣️ VERDAD</button><button class="btn" id="pr" style="background:#ff5a5f">🔥 RETO</button>${s.shots ? `<button class="btn" id="ps" style="background:#ffb627;color:#2a2100">🥃 SHOT</button>` : ""}</div>` : `<p class="bt-h">${N(s.target)} está eligiendo: verdad o reto…</p>`);
     else if (s.phase === "ask") {
@@ -2847,7 +2852,7 @@ const BOTTLE = {
       const m = s.media && MEDIA.store[s.media.id];
       html = info + `<div class="bt-card ${s.choice}"><span>${s.choice === "v" ? "VERDAD" : s.choice === "r" ? "RETO" : "SHOT"} para ${N(s.target)}</span><b>${esc(s.prompt)}</b></div>` +
         (s.media ? (m && m.ready ? `<button class="btn ghost" id="see">👀 Ver la prueba (${s.media.type === "vid" ? "video" : "foto"})</button>` : `<p class="bt-load center dim">Recibiendo la prueba…</p>`) : "") +
-        (mine(s.target) ? (s.choice === "r" && !s.media ? `<div class="bt-up"><label class="btn ghost">📸 Foto<input type="file" accept="image/*" capture="environment" id="fph" hidden></label><label class="btn ghost">🎥 Video<input type="file" accept="video/*" capture="environment" id="fvd" hidden></label></div><p class="bt-note">La prueba es opcional. Solo se ve dentro del juego y se borra al terminar el turno.</p>` : "")
+        (mine(s.target) ? (s.choice === "r" && !s.media ? `<div class="bt-up"><label class="btn ghost">📸 Tomar foto<input type="file" accept="image/*" capture="environment" id="fph" hidden></label><label class="btn ghost">🎥 Grabar video<input type="file" accept="video/*" capture="environment" id="fvd" hidden></label><label class="btn ghost bt-gal">🖼️ Subir de la galería<input type="file" accept="image/*,video/*" id="fgl" hidden></label></div><p class="bt-note">La prueba es opcional. Solo se ve dentro del juego y se borra al terminar el turno.</p>` : "")
           + `<button class="btn green" id="done">${s.choice === "v" ? "YA RESPONDÍ" : "¡LISTO, SIGUIENTE!"}</button>` : `<p class="dim center" style="font-weight:800">Esperando a ${N(s.target)}…</p>`);
     }
     if ((ctx.online ? ctx.me === 0 : true) && s.phase === "spin") html += `<button class="back" id="fin" style="margin-top:10px">Terminar el juego</button>`;
@@ -2860,7 +2865,7 @@ const BOTTLE = {
     on("done", () => ctx.act({ done: 1, p: s.target }));
     on("see", () => openViewer(s.media.id, `${s.choice === "r" ? "Reto" : ""} de ${ctx.name(s.target)}: ${s.prompt}`));
     on("fin", () => { if (confirm("¿Terminar la Botellita?")) ctx.act({ end: 1, p: 0 }); });
-    for (const id of ["fph", "fvd"]) { const inp = $("#" + id, P); if (inp) inp.onchange = () => this.upload(inp.files[0], ctx, s); }
+    for (const id of ["fph", "fvd", "fgl"]) { const inp = $("#" + id, P); if (inp) inp.onchange = () => this.upload(inp.files[0], ctx, s); }
     if (this.autoOpen && s.media && MEDIA.store[s.media.id] && MEDIA.store[s.media.id].ready) { const id = this.autoOpen; this.autoOpen = null; openViewer(id, `Reto de ${ctx.name(s.target)}: ${s.prompt}`); }
   },
   async upload(file, ctx, s) {
